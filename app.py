@@ -675,7 +675,11 @@ with tab_listas:
     else:
         df_view_show = df_view
         
-    cols_tabela = [pos_col, 'Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Direito Penal e Processo Penal', 'Língua Portuguesa', 'Previsao_TAF', 'Previsao_Vagas_Imediatas']
+    colunas_padrao = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Direito Penal e Processo Penal', 'Língua Portuguesa', 'Previsao_TAF', 'Previsao_Vagas_Imediatas']
+    if pos_col == 'Posição_Geral':
+        cols_tabela = colunas_padrao
+    else:
+        cols_tabela = [pos_col] + [c for c in colunas_padrao if c != pos_col]
     
     st.dataframe(
         df_view_show[cols_tabela],
