@@ -432,50 +432,51 @@ with tab_busca:
         pos_class = "pos-top" if pos_geral <= 140 else "pos-standard"
         medalha = "🥇 " if pos_geral == 1 else ("🥈 " if pos_geral == 2 else ("🥉 " if pos_geral == 3 else "🎖️ "))
         
-        st.markdown(f"""
-        <div class="candidate-card">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
-                <div>
-                    <span class="badge-pill">BOLETIM OFICIAL DEFINITIVO PÓS-RECURSOS</span>
-                    <h2 style="color: #FFF; margin: 4px 0 6px 0; font-size: 1.8rem;">{nome}</h2>
-                    <p style="color: #94A3B8; margin: 0 0 10px 0; font-size: 0.95rem;">
-                        Inscrição: <strong>{inscricao}</strong> &nbsp;•&nbsp; Cargo: <strong>401 - Policial Penal RN</strong>
-                    </p>
-                    <div>{tags_html}</div>
-                </div>
-                <div style="text-align: right;">
-                    <div class="pos-badge {pos_class}">
-                        {medalha}{pos_geral}º LUGAR GERAL
-                    </div>
-                    <div style="color: #60A5FA; font-size: 0.85rem; margin-top: 6px; font-weight: 600;">
-                        Top {top_pct:.2f}% de todos os {TOTAL_CANDIDATOS:,} candidatos
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card-fase-presencial">
-                <div style="font-size: 0.85rem; font-weight: 800; color: #F59E0B; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
-                    📢 CONVOCAÇÃO PARA ETAPA PRESENCIAL (EDITAIS DE 09 DE OUTUBRO)
-                </div>
-                <div style="font-size: 1.05rem; font-weight: 700; color: #F8FAFC;">
-                    {candidato_selecionado['Convocacao_Fase_Presencial']}
-                </div>
-                <div style="font-size: 0.82rem; color: #CBD5E1; margin-top: 6px;">
-                    Consulte o seu <strong>Cartão de Informação do Candidato</strong> no site <a href="https://www.avalia.org.br" target="_blank" style="color: #60A5FA;">avalia.org.br</a> a partir das 15h de 13/10 para verificar o horário e local exato.
-                </div>
-            </div>
+        total_candidatos_fmt = f"{TOTAL_CANDIDATOS:,}".replace(",", ".")
+        top_pct_fmt = f"{top_pct:.2f}%"
 
-            <div class="card-previsao">
-                <div style="font-size: 0.82rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 8px;">
-                    🎯 PREVISÃO OFICIAL DO EDITAL (PROVA OBJETIVA)
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.95rem; color: #F1F5F9;">
-                    <div><strong>🏃‍♂️ Status Previsão TAF:</strong> {candidato_selecionado['Previsao_TAF']}</div>
-                    <div><strong>🏆 Vagas Imediatas:</strong> {candidato_selecionado['Previsao_Vagas_Imediatas']}</div>
-                </div>
-            </div>
-        </div>
-        """.replace(",", "."), unsafe_allow_html=True)
+        card_html = f"""<div class="candidate-card">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
+<div>
+<span class="badge-pill">BOLETIM OFICIAL DEFINITIVO PÓS-RECURSOS</span>
+<h2 style="color: #FFF; margin: 4px 0 6px 0; font-size: 1.8rem;">{nome}</h2>
+<p style="color: #94A3B8; margin: 0 0 10px 0; font-size: 0.95rem;">
+Inscrição: <strong>{inscricao}</strong> &nbsp;•&nbsp; Cargo: <strong>401 - Policial Penal RN</strong>
+</p>
+<div>{tags_html}</div>
+</div>
+<div style="text-align: right;">
+<div class="pos-badge {pos_class}">
+{medalha}{pos_geral}º LUGAR GERAL
+</div>
+<div style="color: #60A5FA; font-size: 0.85rem; margin-top: 6px; font-weight: 600;">
+Top {top_pct_fmt} de todos os {total_candidatos_fmt} candidatos
+</div>
+</div>
+</div>
+<div class="card-fase-presencial">
+<div style="font-size: 0.85rem; font-weight: 800; color: #F59E0B; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+📢 CONVOCAÇÃO PARA ETAPA PRESENCIAL (EDITAIS DE 09 DE OUTUBRO)
+</div>
+<div style="font-size: 1.05rem; font-weight: 700; color: #F8FAFC;">
+{candidato_selecionado['Convocacao_Fase_Presencial']}
+</div>
+<div style="font-size: 0.82rem; color: #CBD5E1; margin-top: 6px;">
+Consulte o seu <strong>Cartão de Informação do Candidato</strong> no site <a href="https://www.avalia.org.br" target="_blank" style="color: #60A5FA;">avalia.org.br</a> a partir das 15h de 13/10 para verificar o horário e local exato.
+</div>
+</div>
+<div class="card-previsao">
+<div style="font-size: 0.82rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 8px;">
+🎯 PREVISÃO OFICIAL DO EDITAL (PROVA OBJETIVA)
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.95rem; color: #F1F5F9;">
+<div><strong>🏃‍♂️ Status Previsão TAF:</strong> {candidato_selecionado['Previsao_TAF']}</div>
+<div><strong>🏆 Vagas Imediatas:</strong> {candidato_selecionado['Previsao_Vagas_Imediatas']}</div>
+</div>
+</div>
+</div>"""
+
+        st.markdown(card_html, unsafe_allow_html=True)
         
         # Posições Específicas em Cada Lista
         col_pos1, col_pos2, col_pos3, col_pos4 = st.columns(4)
