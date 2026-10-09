@@ -11,7 +11,7 @@ import streamlit as st
 # CONFIGURAÇÃO DA PÁGINA
 # ==============================================================================
 st.set_page_config(
-    page_title="PPRN - Resultado & Análise de Cotas",
+    page_title="PPRN - Resultado Definitivo & Convocação de Cotas",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -30,30 +30,30 @@ st.markdown("""
     
     /* Header Hero */
     .hero-container {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 58, 138, 0.65) 50%, rgba(15, 23, 42, 0.98) 100%);
-        border: 1px solid rgba(59, 130, 246, 0.35);
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 58, 138, 0.7) 50%, rgba(15, 23, 42, 0.98) 100%);
+        border: 1px solid rgba(59, 130, 246, 0.4);
         border-radius: 16px;
         padding: 24px 30px;
         margin-bottom: 24px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.15);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.18);
     }
     
     .badge-pill {
         display: inline-block;
-        background: rgba(59, 130, 246, 0.15);
-        color: #60A5FA;
-        border: 1px solid rgba(96, 165, 250, 0.3);
-        padding: 4px 14px;
+        background: rgba(16, 185, 129, 0.18);
+        color: #34D399;
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.82rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-bottom: 12px;
     }
     
     .hero-title {
-        font-size: 2.1rem;
+        font-size: 2.15rem;
         font-weight: 800;
         color: #FFFFFF;
         margin: 0 0 8px 0;
@@ -175,12 +175,20 @@ st.markdown("""
         border: 1px solid rgba(236, 72, 153, 0.4);
     }
     
+    .card-fase-presencial {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(30, 41, 59, 0.9) 100%);
+        border: 1px solid rgba(245, 158, 11, 0.4);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 15px;
+    }
+    
     .card-previsao {
         background: rgba(15, 23, 42, 0.85);
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 12px;
         padding: 16px;
-        margin-top: 15px;
+        margin-top: 12px;
     }
     
     /* Custom Tabs */
@@ -232,7 +240,7 @@ def normalizar_texto(texto):
         texto = str(texto)
     return ''.join(c for c in unicodedata.normalize('NFD', texto) if unicodedata.category(c) != 'Mn').upper().strip()
 
-@st.cache_data(show_spinner="Carregando base tratada com desempates e cotas do Edital...")
+@st.cache_data(show_spinner="Carregando base oficial definitiva pós-recursos...")
 def carregar_dados():
     parquet_path = "pprn_dados.parquet"
     if os.path.exists(parquet_path):
@@ -256,7 +264,7 @@ if df_base is None:
     st.error("⚠️ Dados não carregados.")
     st.stop()
 
-# Totais gerais
+# Totais gerais definitivos
 TOTAL_CANDIDATOS = len(df_base)
 TOTAL_AMPLA_PURA = int(df_base['Ampla_Pura'].sum())
 TOTAL_ETNICO = int(df_base['Cota_Etnico_Racial'].sum())
@@ -276,11 +284,11 @@ MEDIANA_NOTA = float(df_base['Nota Objetiva'].median())
 # ==============================================================================
 st.markdown("""
 <div class="hero-container">
-    <span class="badge-pill">🛡️ POLÍCIA PENAL DO RN (PPRN) • CONCURSO 002/2026</span>
-    <h1 class="hero-title">Portal de Resultados • Classificação & Análise de Cotas</h1>
+    <span class="badge-pill">✅ RESULTADO DEFINITIVO PÓS-RECURSOS • ATUALIZAÇÃO 09 DE OUTUBRO DE 2026</span>
+    <h1 class="hero-title">Portal de Resultados Definitivos • Classificação & Cotas PPRN</h1>
     <p class="hero-subtitle">
-        Dados completos tratados conforme o <strong>Edital Geral</strong> e o <strong>Edital de Resultado Preliminar</strong>.
-        Separação precisa entre <strong>Ampla Concorrência</strong>, <strong>Cotas Étnico-Raciais (Pretos, Pardos, Indígenas, Quilombolas)</strong> e <strong>PCD</strong>, com aplicação das regras oficiais de desempate e previsão de convocação do TAF.
+        Dados 100% atualizados conforme o <strong>Edital de Resultado Definitivo da Prova Objetiva</strong> e os <strong>Editais de Convocação para Heteroidentificação e Perícia Médica</strong>.
+        Aplicação rigorosa dos critérios oficiais de desempate do Edital (Item 21.2.1) e previsão de vagas para ampla e cotistas.
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -293,7 +301,7 @@ with m1:
     <div class="stat-card">
         <div class="stat-label">👥 Total Aprovados</div>
         <div class="stat-value">{TOTAL_CANDIDATOS:,}</div>
-        <div class="stat-sub">100% da lista objetiva</div>
+        <div class="stat-sub">100% da lista definitiva</div>
     </div>
     """.replace(",", "."), unsafe_allow_html=True)
 
@@ -311,7 +319,7 @@ with m3:
     <div class="stat-card">
         <div class="stat-label">🧑🏿 Étnico-Racial</div>
         <div class="stat-value">{TOTAL_ETNICO:,}</div>
-        <div class="stat-sub">{(TOTAL_ETNICO/TOTAL_CANDIDATOS)*100:.1f}% (Preto/Pardo/Ind/Quil)</div>
+        <div class="stat-sub">{(TOTAL_ETNICO/TOTAL_CANDIDATOS)*100:.1f}% convocados hetero/doc</div>
     </div>
     """.replace(",", "."), unsafe_allow_html=True)
 
@@ -320,7 +328,7 @@ with m4:
     <div class="stat-card">
         <div class="stat-label">♿ PCD</div>
         <div class="stat-value">{TOTAL_PCD:,}</div>
-        <div class="stat-sub">{(TOTAL_PCD/TOTAL_CANDIDATOS)*100:.1f}% ({TOTAL_PCD_ETNICO} com dupla cota)</div>
+        <div class="stat-sub">{(TOTAL_PCD/TOTAL_CANDIDATOS)*100:.1f}% convocados perícia ({TOTAL_PCD_ETNICO} dupla cota)</div>
     </div>
     """.replace(",", "."), unsafe_allow_html=True)
 
@@ -340,7 +348,7 @@ st.write("")
 # ==============================================================================
 tab_busca, tab_listas, tab_stats, tab_simulador, tab_comparador, tab_deploy = st.tabs([
     "🔍 Consulta Individual",
-    "📋 As 4 Listas Oficiais do Edital",
+    "📋 As 4 Listas Oficiais Definitivas",
     "📊 Raio-X & Análise por Cotas",
     "🎯 Previsão TAF & Simulador de Vagas",
     "⚔️ Comparador de Candidatos",
@@ -348,10 +356,10 @@ tab_busca, tab_listas, tab_stats, tab_simulador, tab_comparador, tab_deploy = st
 ])
 
 # ==============================================================================
-# ABA 1: CONSULTA INDIVIDUAL (BOLETIM DO CANDIDATO COM COTAS)
+# ABA 1: CONSULTA INDIVIDUAL (BOLETIM DO CANDIDATO COM CONVOCAÇÃO PRESENCIAL)
 # ==============================================================================
 with tab_busca:
-    st.subheader("🔍 Localize seu Desempenho e Situação nas Cotas")
+    st.subheader("🔍 Localize seu Desempenho e Convocação para Fases Presenciais")
     st.write("Digite o seu **Nome** (ou parte dele) ou o número da sua **Inscrição**:")
     
     col_search, col_action = st.columns([3, 1])
@@ -395,7 +403,7 @@ with tab_busca:
     # Exibição do Perfil do Candidato
     if candidato_selecionado is not None:
         pos_geral = int(candidato_selecionado['Posição_Geral'])
-        pos_orig = int(candidato_selecionado.get('Posição_Original', pos_geral))
+        pos_orig = int(candidato_selecionado.get('Posição_Original_Definitiva', pos_geral))
         nome = candidato_selecionado['Nome']
         inscricao = candidato_selecionado['Inscrição']
         nota_total = int(candidato_selecionado['Nota Objetiva'])
@@ -428,7 +436,7 @@ with tab_busca:
         <div class="candidate-card">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
                 <div>
-                    <span class="badge-pill">BOLETIM OFICIAL INDIVIDUAL</span>
+                    <span class="badge-pill">BOLETIM OFICIAL DEFINITIVO PÓS-RECURSOS</span>
                     <h2 style="color: #FFF; margin: 4px 0 6px 0; font-size: 1.8rem;">{nome}</h2>
                     <p style="color: #94A3B8; margin: 0 0 10px 0; font-size: 0.95rem;">
                         Inscrição: <strong>{inscricao}</strong> &nbsp;•&nbsp; Cargo: <strong>401 - Policial Penal RN</strong>
@@ -440,40 +448,52 @@ with tab_busca:
                         {medalha}{pos_geral}º LUGAR GERAL
                     </div>
                     <div style="color: #60A5FA; font-size: 0.85rem; margin-top: 6px; font-weight: 600;">
-                        Top {top_pct:.2f}% de todos os 18.944 candidatos
+                        Top {top_pct:.2f}% de todos os {TOTAL_CANDIDATOS:,} candidatos
                     </div>
                 </div>
             </div>
             
+            <div class="card-fase-presencial">
+                <div style="font-size: 0.85rem; font-weight: 800; color: #F59E0B; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+                    📢 CONVOCAÇÃO PARA ETAPA PRESENCIAL (EDITAIS DE 09 DE OUTUBRO)
+                </div>
+                <div style="font-size: 1.05rem; font-weight: 700; color: #F8FAFC;">
+                    {candidato_selecionado['Convocacao_Fase_Presencial']}
+                </div>
+                <div style="font-size: 0.82rem; color: #CBD5E1; margin-top: 6px;">
+                    Consulte o seu <strong>Cartão de Informação do Candidato</strong> no site <a href="https://www.avalia.org.br" target="_blank" style="color: #60A5FA;">avalia.org.br</a> a partir das 15h de 13/10 para verificar o horário e local exato.
+                </div>
+            </div>
+
             <div class="card-previsao">
                 <div style="font-size: 0.82rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; margin-bottom: 8px;">
-                    🎯 PREVISÃO OFICIAL CONFORME REGRAS DO EDITAL (PROVA OBJETIVA)
+                    🎯 PREVISÃO OFICIAL DO EDITAL (PROVA OBJETIVA)
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.95rem; color: #F1F5F9;">
-                    <div><strong>🏃‍♂️ Status Convocação TAF:</strong> {candidato_selecionado['Previsao_TAF']}</div>
+                    <div><strong>🏃‍♂️ Status Previsão TAF:</strong> {candidato_selecionado['Previsao_TAF']}</div>
                     <div><strong>🏆 Vagas Imediatas:</strong> {candidato_selecionado['Previsao_Vagas_Imediatas']}</div>
                 </div>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """.replace(",", "."), unsafe_allow_html=True)
         
         # Posições Específicas em Cada Lista
         col_pos1, col_pos2, col_pos3, col_pos4 = st.columns(4)
         with col_pos1:
-            st.metric("Posição Geral Oficial", f"{pos_geral}º", f"De 18.944 (Desempate Edital)")
+            st.metric("Posição Geral Oficial", f"{pos_geral}º", f"De {TOTAL_CANDIDATOS:,} (Desempate Edital)".replace(",", "."))
         with col_pos2:
             if is_etnico and pd.notnull(candidato_selecionado['Pos_Lista_Etnico']):
-                st.metric("Posição Cota Étnica", f"{int(candidato_selecionado['Pos_Lista_Etnico'])}º", f"De {TOTAL_ETNICO} cotistas étnicos")
+                st.metric("Posição Cota Étnica", f"{int(candidato_selecionado['Pos_Lista_Etnico'])}º", f"De {TOTAL_ETNICO:,} cotistas étnicos".replace(",", "."))
             else:
                 st.metric("Posição Cota Étnica", "N/A", "Não optou por cota étnica")
         with col_pos3:
             if is_pcd and pd.notnull(candidato_selecionado['Pos_Lista_PCD']):
-                st.metric("Posição Cota PCD", f"{int(candidato_selecionado['Pos_Lista_PCD'])}º", f"De {TOTAL_PCD} cotistas PCD")
+                st.metric("Posição Cota PCD", f"{int(candidato_selecionado['Pos_Lista_PCD'])}º", f"De {TOTAL_PCD:,} cotistas PCD".replace(",", "."))
             else:
                 st.metric("Posição Cota PCD", "N/A", "Não optou por PCD")
         with col_pos4:
             if is_ampla_pura and pd.notnull(candidato_selecionado['Pos_Lista_Ampla_Pura']):
-                st.metric("Posição Não Cotista", f"{int(candidato_selecionado['Pos_Lista_Ampla_Pura'])}º", f"De {TOTAL_AMPLA_PURA} da Ampla Pura")
+                st.metric("Posição Não Cotista", f"{int(candidato_selecionado['Pos_Lista_Ampla_Pura'])}º", f"De {TOTAL_AMPLA_PURA:,} da Ampla Pura".replace(",", "."))
             else:
                 st.metric("Posição na Ampla", f"{pos_geral}º Geral", "Concorre concomitantemente")
                 
@@ -507,7 +527,7 @@ with tab_busca:
                 r=medias_disciplinas,
                 theta=nomes_curtos,
                 fill='toself',
-                name='Média Geral (18.944)',
+                name=f'Média Geral ({TOTAL_CANDIDATOS:,})'.replace(",", "."),
                 line_color='#94A3B8',
                 fillcolor='rgba(148, 163, 184, 0.15)',
                 line_dash='dot'
@@ -582,7 +602,7 @@ with tab_busca:
         st.caption("Veja os candidatos imediatamente antes e depois da sua posição:")
         start_idx = max(0, pos_geral - 6)
         end_idx = min(TOTAL_CANDIDATOS, pos_geral + 5)
-        vizinhos = df_base.iloc[start_idx:end_idx][['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Direito Penal e Processo Penal', 'Língua Portuguesa']]
+        vizinhos = df_base.iloc[start_idx:end_idx][['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Direito Penal e Processo Penal', 'Língua Portuguesa', 'Convocacao_Fase_Presencial']]
         
         def destacar_linha(row):
             if row['Posição_Geral'] == pos_geral:
@@ -596,54 +616,54 @@ with tab_busca:
         )
 
 # ==============================================================================
-# ABA 2: AS 4 LISTAS OFICIAIS DO EDITAL (ITEM 21.3)
+# ABA 2: AS 4 LISTAS OFICIAIS DEFINITIVAS (ITEM 21.3 DO EDITAL)
 # ==============================================================================
 with tab_listas:
-    st.subheader("📋 As 4 Listas Oficiais do Concurso (Item 21.3 do Edital)")
+    st.subheader("📋 As 4 Listas Oficiais Definitivas do Concurso (Pós-Recursos)")
     st.write("""
-    Conforme o **Item 21.3 do Edital**, o resultado é publicado em listas oficiais separadas.
-    Aqui você pode visualizar, filtrar e baixar cada uma das listas individualmente em formato Excel oficial:
+    Conforme o **Item 21.3 do Edital** e os resultados definitivos divulgados em **09 de outubro de 2026**:
+    Visualize, filtre e faça o download de cada lista oficial definitiva em formato Excel (.xlsx):
     """)
     
     tipo_lista = st.radio(
-        "Selecione a Lista que deseja visualizar e baixar:",
+        "Selecione a Lista Definitiva que deseja visualizar e baixar:",
         [
-            f"🌐 1. Lista Geral Oficial (AC Universal - {TOTAL_CANDIDATOS:,} candidatos)",
-            f"🧑🏿 2. Lista Étnico-Racial (Pretos, Pardos, Indígenas, Quilombolas - {TOTAL_ETNICO:,} candidatos)",
-            f"♿ 3. Lista de Pessoas com Deficiência - PCD ({TOTAL_PCD:,} candidatos)",
-            f"🏛️ 4. Lista Ampla Concorrência (Apenas Não Cotistas - {TOTAL_AMPLA_PURA:,} candidatos)"
+            f"🌐 1. Lista Definitiva Geral (AC Universal - {TOTAL_CANDIDATOS:,} candidatos)",
+            f"🧑🏿 2. Lista Definitiva Étnico-Racial (Pretos, Pardos, Indígenas, Quilombolas - {TOTAL_ETNICO:,} candidatos)",
+            f"♿ 3. Lista Definitiva PCD (Pessoas com Deficiência - {TOTAL_PCD:,} candidatos)",
+            f"🏛️ 4. Lista Definitiva Ampla Concorrência (Apenas Não Cotistas - {TOTAL_AMPLA_PURA:,} candidatos)"
         ],
         index=0
     )
     
     st.write("---")
     
-    if "1. Lista Geral Oficial" in tipo_lista:
+    if "1. Lista Definitiva Geral" in tipo_lista:
         df_view = df_base.copy()
         pos_col = 'Posição_Geral'
-        nome_arquivo_excel = "LISTA_OFICIAL_GERAL_PPRN.xlsx"
-        titulo_lista = "Lista Geral (AC Universal) - Todos os Candidatos Aprovados"
+        nome_arquivo_excel = "LISTA_DEFINITIVA_GERAL_PPRN.xlsx"
+        titulo_lista = "Lista Definitiva Geral (AC Universal) - Todos os Candidatos Aprovados Pós-Recursos"
         corte_taf_info = "Top 960 (119 pts) + empates = 1.095 convocados"
         
-    elif "2. Lista Étnico-Racial" in tipo_lista:
+    elif "2. Lista Definitiva Étnico-Racial" in tipo_lista:
         df_view = df_base[df_base['Cota_Etnico_Racial']].copy().sort_values(by="Pos_Lista_Etnico", ascending=True)
         pos_col = 'Pos_Lista_Etnico'
-        nome_arquivo_excel = "LISTA_OFICIAL_ETNICO_RACIAL_PPRN.xlsx"
-        titulo_lista = "Lista de Reserva Étnico-Racial (Pretos, Pardos, Indígenas e Quilombolas)"
+        nome_arquivo_excel = "LISTA_DEFINITIVA_ETNICO_RACIAL_PPRN.xlsx"
+        titulo_lista = "Lista Definitiva de Reserva Étnico-Racial (Pretos, Pardos, Indígenas e Quilombolas)"
         corte_taf_info = "Top 240 na cota (120 pts direto / 115 pts com aproveitamento da ampla)"
         
-    elif "3. Lista de Pessoas com Deficiência" in tipo_lista:
+    elif "3. Lista Definitiva PCD" in tipo_lista:
         df_view = df_base[df_base['Cota_PCD']].copy().sort_values(by="Pos_Lista_PCD", ascending=True)
         pos_col = 'Pos_Lista_PCD'
-        nome_arquivo_excel = "LISTA_OFICIAL_PCD_PPRN.xlsx"
-        titulo_lista = "Lista de Pessoas com Deficiência (PCD)"
+        nome_arquivo_excel = "LISTA_DEFINITIVA_PCD_PPRN.xlsx"
+        titulo_lista = "Lista Definitiva de Pessoas com Deficiência (PCD) Convocadas para Perícia"
         corte_taf_info = "Sem linha de corte! Todos os 659 PCDs habilitados vão para o TAF (Item 13.1.2)"
         
     else:
         df_view = df_base[df_base['Ampla_Pura']].copy().sort_values(by="Pos_Lista_Ampla_Pura", ascending=True)
         pos_col = 'Pos_Lista_Ampla_Pura'
-        nome_arquivo_excel = "LISTA_OFICIAL_AMPLA_CONCORRENCIA_PURA_PPRN.xlsx"
-        titulo_lista = "Lista Exclusiva de Candidatos Não Cotistas (Ampla Concorrência Pura)"
+        nome_arquivo_excel = "LISTA_DEFINITIVA_AMPLA_CONCORRENCIA_PURA_PPRN.xlsx"
+        titulo_lista = "Lista Definitiva Exclusiva de Não Cotistas (Ampla Concorrência Pura)"
         corte_taf_info = "783 candidatos não cotistas classificados dentro do Top 960 da Geral"
 
     # Métricas da Lista Selecionada
@@ -675,7 +695,7 @@ with tab_listas:
     else:
         df_view_show = df_view
         
-    colunas_padrao = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Direito Penal e Processo Penal', 'Língua Portuguesa', 'Previsao_TAF', 'Previsao_Vagas_Imediatas']
+    colunas_padrao = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Convocacao_Fase_Presencial', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Direito Penal e Processo Penal', 'Língua Portuguesa', 'Previsao_TAF', 'Previsao_Vagas_Imediatas']
     if pos_col == 'Posição_Geral':
         cols_tabela = colunas_padrao
     else:
@@ -705,30 +725,30 @@ with tab_listas:
 # ABA 3: RAIO-X & ANÁLISE POR COTAS
 # ==============================================================================
 with tab_stats:
-    st.subheader("📊 Raio-X & Comparativo entre Ampla e Cotas")
-    st.write("Análise detalhada de distribuição de notas, médias comparativas e comportamento das notas por cota:")
+    st.subheader("📊 Raio-X & Comparativo Estatístico Definitivo")
+    st.write("Análise aprofundada de distribuição de notas definitivas pós-recurso:")
     
     # Médias comparativas
     col_c1, col_c2, col_c3, col_c4 = st.columns(4)
     with col_c1:
-        st.metric("Média Ampla Concorrência", f"{df_base[df_base['Ampla_Pura']]['Nota Objetiva'].mean():.2f} pts", "12.134 candidatos")
+        st.metric("Média Ampla Concorrência", f"{df_base[df_base['Ampla_Pura']]['Nota Objetiva'].mean():.2f} pts", f"{TOTAL_AMPLA_PURA:,} candidatos".replace(",", "."))
     with col_c2:
-        st.metric("Média Étnico-Racial", f"{df_base[df_base['Cota_Etnico_Racial']]['Nota Objetiva'].mean():.2f} pts", "6.309 candidatos")
+        st.metric("Média Étnico-Racial", f"{df_base[df_base['Cota_Etnico_Racial']]['Nota Objetiva'].mean():.2f} pts", f"{TOTAL_ETNICO:,} candidatos".replace(",", "."))
     with col_c3:
-        st.metric("Média PCD", f"{df_base[df_base['Cota_PCD']]['Nota Objetiva'].mean():.2f} pts", "659 candidatos")
+        st.metric("Média PCD", f"{df_base[df_base['Cota_PCD']]['Nota Objetiva'].mean():.2f} pts", f"{TOTAL_PCD:,} candidatos".replace(",", "."))
     with col_c4:
-        st.metric("Média Geral da Prova", f"{MEDIA_NOTA:.2f} pts", "18.944 candidatos")
+        st.metric("Média Geral Definitiva", f"{MEDIA_NOTA:.2f} pts", f"{TOTAL_CANDIDATOS:,} candidatos".replace(",", "."))
         
     st.write("")
     
     # Gráfico de Boxplot / Distribuição comparativa
-    st.markdown("#### 📦 Distribuição das Notas por Modalidade de Concorrência")
+    st.markdown("#### 📦 Dispersão de Notas por Modalidade de Concorrência")
     fig_box = px.box(
         df_base,
         x="Modalidade_Concorrencia",
         y="Nota Objetiva",
         color="Modalidade_Concorrencia",
-        title="Dispersão de Notas por Modalidade",
+        title="Distribuição das Notas por Modalidade",
         points="outliers"
     )
     fig_box.update_layout(
@@ -742,7 +762,7 @@ with tab_stats:
     st.plotly_chart(fig_box, use_container_width=True)
     
     # Histograma Geral de Notas com Linha de Corte
-    st.markdown("#### 📈 Histograma de Notas com Marcos de Convocação")
+    st.markdown("#### 📈 Histograma Definitivo com Marcos de Corte")
     fig_hist = px.histogram(
         df_base,
         x="Nota Objetiva",
@@ -776,7 +796,7 @@ with tab_simulador:
     - **PCD:** **Sem linha de corte!** Todos os aprovados com nota mínima (≥ 73 pts) são convocados (Item 13.1.2).
     """)
     
-    st.markdown("#### 📊 Quadro Resumo da Previsão Oficial do TAF")
+    st.markdown("#### 📊 Quadro Resumo Oficial da Previsão do TAF")
     quadro_taf = [
         {
             "Modalidade": "Ampla Concorrência (AC)",
@@ -797,7 +817,7 @@ with tab_simulador:
             "Vagas no Edital (Tab 13.1)": "Todos os habilitados",
             "Corte Estimado": "73 pontos (nota mínima)",
             "Convocados Reais (com empates)": "659 candidatos",
-            "Composição do Grupo": "100% dos candidatos PCD aprovados (sem linha de corte)"
+            "Composição do Grupo": "100% dos candidatos PCD convocados para a Perícia Médica"
         }
     ]
     st.dataframe(pd.DataFrame(quadro_taf), use_container_width=True, hide_index=True)
@@ -823,7 +843,7 @@ with tab_simulador:
     s4.metric("Cotistas no Grupo", f"{qtd_etnico_sim} Étnicos | {qtd_pcd_sim} PCD")
     
     st.dataframe(
-        grupo_sim[['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Previsao_TAF']].head(100),
+        grupo_sim[['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Previsao_TAF', 'Convocacao_Fase_Presencial']].head(100),
         use_container_width=True,
         hide_index=True
     )
@@ -833,7 +853,7 @@ with tab_simulador:
 # ==============================================================================
 with tab_comparador:
     st.subheader("⚔️ Confronto Direto entre Candidatos")
-    st.write("Compare dois candidatos quaisquer da lista geral ou de cotas matéria a matéria:")
+    st.write("Compare dois candidatos quaisquer da lista definitiva matéria a matéria:")
     
     col_comp1, col_comp2 = st.columns(2)
     with col_comp1:
@@ -935,11 +955,11 @@ with tab_comparador:
 with tab_deploy:
     st.subheader("🚀 Como Hospedar no Streamlit Community Cloud")
     st.markdown("""
-    O site já está configurado e pronto para a nuvem! Todas as 4 planilhas oficiais, os dados tratados e os arquivos de configuração estão no repositório.
+    O site já está 100% atualizado com a base definitiva pós-recursos de 09 de outubro de 2026!
     
     👉 **Link do Repositório no GitHub:** [https://github.com/Pedra1/pprn-analises](https://github.com/Pedra1/pprn-analises)
     
-    Para publicar em 1 clique:
+    Para publicar na nuvem:
     1. Acesse: **[share.streamlit.io](https://share.streamlit.io)**
     2. Clique em **"Create app"**
     3. Selecione o repositório `Pedra1/pprn-analises`, branch `main` e arquivo `app.py`.
@@ -952,7 +972,7 @@ with tab_deploy:
 st.write("---")
 st.markdown("""
 <div style="text-align: center; color: #64748B; font-size: 0.85rem; padding: 10px 0;">
-    🛡️ <strong>Portal de Análises Independentes PPRN</strong> • Dados extraídos do Edital de Resultado Preliminar e Editais de Deferimento de Cotas.<br>
+    🛡️ <strong>Portal de Resultados Definitivos PPRN</strong> • Dados extraídos do Edital de Resultado Definitivo Pós-Recursos e Editais de Convocação de Cotas (09/10/2026).<br>
     Construído com Python & Streamlit • Hospedagem Streamlit Community Cloud
 </div>
 """, unsafe_allow_html=True)
