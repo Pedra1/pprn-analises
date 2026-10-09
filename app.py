@@ -18,217 +18,297 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# ESTILOS CSS CUSTOMIZADOS (DESIGN SYSTEM ELEGANTE & MODERNO)
+# ESTILOS CSS CUSTOMIZADOS (DESIGN FLAT, CLARO & MODERNO - INSPIRAÇÃO BANCA)
 # ==============================================================================
 st.markdown("""<style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
-    html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Base Global em Tons Claros */
+    html, body, [class*="css"], .stApp {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+        background-color: #F8FAFC !important;
+        color: #1E293B !important;
     }
-    
-    /* Header Hero */
+
+    header[data-testid="stHeader"] {
+        background-color: #F8FAFC !important;
+    }
+
+    .stApp > header {
+        background-color: #F8FAFC !important;
+    }
+
+    /* Hero Banner Institucional Flat */
     .hero-container {
-        background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 58, 138, 0.7) 50%, rgba(15, 23, 42, 0.98) 100%);
-        border: 1px solid rgba(59, 130, 246, 0.4);
-        border-radius: 16px;
-        padding: 22px 28px;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-top: 4px solid #0284C7;
+        border-radius: 12px;
+        padding: 24px 28px;
         margin-bottom: 20px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.18);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
     
     .badge-pill {
         display: inline-block;
-        background: rgba(16, 185, 129, 0.18);
-        color: #34D399;
-        border: 1px solid rgba(16, 185, 129, 0.4);
-        padding: 5px 14px;
+        background: #DCFCE7;
+        color: #15803D;
+        border: 1px solid #BBF7D0;
+        padding: 4px 12px;
         border-radius: 9999px;
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 10px;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
     }
     
     .hero-title {
-        font-size: 2.05rem;
+        font-size: 1.85rem;
         font-weight: 800;
-        color: #FFFFFF;
-        margin: 0 0 8px 0;
+        color: #0F172A;
+        margin: 0 0 6px 0;
         letter-spacing: -0.02em;
-        line-height: 1.2;
+        line-height: 1.25;
     }
     
     .hero-subtitle {
-        color: #94A3B8;
+        color: #64748B;
         font-size: 0.95rem;
         margin: 0;
         line-height: 1.5;
     }
     
-    /* Stat Cards */
+    /* Stat Cards Flat */
     .stat-card {
-        background: linear-gradient(145deg, #1E293B 0%, #0F172A 100%);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 10px;
         padding: 14px 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
     
     .stat-card:hover {
-        transform: translateY(-2px);
-        border-color: rgba(96, 165, 250, 0.4);
+        border-color: #CBD5E1;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06);
     }
     
     .stat-label {
-        color: #94A3B8;
+        color: #64748B;
         font-size: 0.74rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 4px;
+        letter-spacing: 0.03em;
+        margin-bottom: 3px;
     }
     
     .stat-value {
         font-size: 1.55rem;
         font-weight: 800;
-        color: #F8FAFC;
+        color: #0F172A;
         line-height: 1.1;
     }
     
     .stat-sub {
-        font-size: 0.72rem;
+        font-size: 0.73rem;
         color: #64748B;
         margin-top: 3px;
     }
     
-    /* Candidate Spotlight Card */
+    /* Candidate Spotlight Card Flat */
     .candidate-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.98) 100%);
-        border: 1px solid rgba(59, 130, 246, 0.35);
-        border-radius: 16px;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
         padding: 22px;
         margin-bottom: 20px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
     }
     
     .pos-badge {
         display: inline-block;
         padding: 6px 16px;
         border-radius: 8px;
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         font-weight: 800;
     }
     
     .pos-top {
-        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-        color: #000;
-        box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        background: #FEF3C7;
+        color: #92400E;
+        border: 1px solid #FDE68A;
     }
     
     .pos-standard {
-        background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-        color: #FFF;
-        box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+        background: #E0F2FE;
+        color: #0369A1;
+        border: 1px solid #BAE6FD;
     }
     
+    /* Tags de Cotas Flat */
     .tag-cota {
         display: inline-block;
-        padding: 4px 10px;
+        padding: 3px 9px;
         border-radius: 6px;
-        font-size: 0.8rem;
-        font-weight: 700;
+        font-size: 0.78rem;
+        font-weight: 600;
         margin-right: 6px;
         margin-top: 4px;
     }
     
     .tag-ampla {
-        background: rgba(59, 130, 246, 0.2);
-        color: #93C5FD;
-        border: 1px solid rgba(59, 130, 246, 0.4);
+        background: #F1F5F9;
+        color: #334155;
+        border: 1px solid #E2E8F0;
     }
     
     .tag-negro {
-        background: rgba(168, 85, 247, 0.2);
-        color: #D8B4FE;
-        border: 1px solid rgba(168, 85, 247, 0.4);
+        background: #F3E8FF;
+        color: #7E22CE;
+        border: 1px solid #E9D5FF;
     }
     
     .tag-pcd {
-        background: rgba(16, 185, 129, 0.2);
-        color: #6EE7B7;
-        border: 1px solid rgba(16, 185, 129, 0.4);
+        background: #DCFCE7;
+        color: #15803D;
+        border: 1px solid #BBF7D0;
     }
     
     .tag-indigena {
-        background: rgba(245, 158, 11, 0.2);
-        color: #FCD34D;
-        border: 1px solid rgba(245, 158, 11, 0.4);
+        background: #FEF3C7;
+        color: #B45309;
+        border: 1px solid #FDE68A;
     }
     
     .tag-quilombola {
-        background: rgba(236, 72, 153, 0.2);
-        color: #F472B6;
-        border: 1px solid rgba(236, 72, 153, 0.4);
+        background: #FCE7F3;
+        color: #BE185D;
+        border: 1px solid #FBCFE8;
     }
     
-    /* Notification Status Cards */
+    /* Cards de Notificação Flat */
     .card-fase-presencial {
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(30, 41, 59, 0.95) 100%);
-        border: 1px solid rgba(245, 158, 11, 0.5);
-        border-radius: 12px;
-        padding: 16px 20px;
+        background: #FFFBEB;
+        border: 1.5px solid #FCD34D;
+        border-radius: 10px;
+        padding: 16px 18px;
         margin-top: 14px;
     }
 
     .card-fase-ampla {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(30, 41, 59, 0.95) 100%);
-        border: 1px solid rgba(59, 130, 246, 0.35);
-        border-radius: 12px;
-        padding: 16px 20px;
+        background: #F0F9FF;
+        border: 1.5px solid #BAE6FD;
+        border-radius: 10px;
+        padding: 16px 18px;
         margin-top: 14px;
     }
     
     .card-previsao {
-        background: rgba(15, 23, 42, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        padding: 16px 20px;
+        background: #F8FAFC;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 10px;
+        padding: 16px 18px;
         margin-top: 12px;
     }
     
     .card-previsao-ok {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(15, 23, 42, 0.95) 100%);
-        border: 1px solid rgba(16, 185, 129, 0.45);
-        border-radius: 12px;
-        padding: 16px 20px;
+        background: #F0FDF4;
+        border: 1.5px solid #86EFAC;
+        border-radius: 10px;
+        padding: 16px 18px;
         margin-top: 12px;
     }
 
-    /* Custom Tabs */
+    /* Tabs Flat */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 10px;
+        gap: 6px;
+        background-color: transparent;
+        border-bottom: 2px solid #E2E8F0;
+        padding-bottom: 0px;
     }
     
     .stTabs [data-baseweb="tab"] {
-        height: 48px;
+        height: 44px;
         white-space: pre-wrap;
-        background-color: rgba(30, 41, 59, 0.6);
-        border-radius: 10px 10px 0px 0px;
-        gap: 8px;
-        padding: 10px 22px;
-        font-weight: 700;
-        font-size: 0.95rem;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: #FFFFFF;
+        border-radius: 8px 8px 0px 0px;
+        gap: 6px;
+        padding: 8px 18px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #64748B;
+        border: 1px solid #E2E8F0;
         border-bottom: none;
     }
     
     .stTabs [aria-selected="true"] {
-        background-color: rgba(37, 99, 235, 0.25) !important;
-        border-color: rgba(59, 130, 246, 0.6) !important;
-        color: #60A5FA !important;
+        background-color: #0284C7 !important;
+        border-color: #0284C7 !important;
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
+    }
+
+    /* Metric Containers Light */
+    [data-testid="stMetric"] {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 10px;
+        padding: 12px 14px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Inputs Light */
+    .stTextInput input, .stSelectbox [data-baseweb="select"] {
+        background-color: #FFFFFF !important;
+        border-color: #CBD5E1 !important;
+        color: #0F172A !important;
+    }
+
+    /* Timeline Cards */
+    .timeline-card {
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 10px;
+        padding: 16px 18px;
+        margin-bottom: 12px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    }
+
+    .timeline-card-past {
+        border-left: 4px solid #16A34A;
+    }
+
+    .timeline-card-active {
+        border-left: 4px solid #D97706;
+        background: #FFFDF5;
+    }
+
+    .timeline-card-next {
+        border-left: 4px solid #0284C7;
+    }
+
+    .timeline-card-future {
+        border-left: 4px solid #94A3B8;
+        opacity: 0.9;
+    }
+
+    /* Dataframe container */
+    [data-testid="stDataFrame"] {
+        border: 1px solid #E2E8F0;
+        border-radius: 8px;
+        background: #FFFFFF;
+    }
+
+    /* Footer Flat */
+    .footer-container {
+        text-align: center;
+        color: #64748B;
+        font-size: 0.85rem;
+        padding: 24px 0 12px 0;
+        border-top: 1px solid #E2E8F0;
+        margin-top: 30px;
+        line-height: 1.6;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -302,17 +382,20 @@ TOTAL_ETNICO_FMT = f"{TOTAL_ETNICO:,}".replace(",", ".")
 TOTAL_PCD_FMT = f"{TOTAL_PCD:,}".replace(",", ".")
 
 # ==============================================================================
-# HEADER HERO & VISÃO GERAL
+# HEADER HERO & VISÃO GERAL (INSPIRAÇÃO BANCA - ESTILO FLAT & CLARO)
 # ==============================================================================
 st.markdown("""<div class="hero-container">
-<span class="badge-pill">✅ RESULTADO DEFINITIVO PÓS-RECURSOS • ATUALIZADO EM 09/10/2026</span>
+<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+<span class="badge-pill">✅ RESULTADO DEFINITIVO PÓS-RECURSOS • 09 DE OUTUBRO DE 2026</span>
+<span style="font-size: 0.82rem; font-weight: 700; color: #0284C7; letter-spacing: 0.05em; text-transform: uppercase;">GOVERNO DO ESTADO DO RIO GRANDE DO NORTE • SEAD / SEAP</span>
+</div>
 <h1 class="hero-title">Portal de Resultados Definitivos • Concurso Policial Penal RN</h1>
 <p class="hero-subtitle">
-Classificação oficial definitiva com todos os critérios de desempate do edital (Item 21.2.1), convocação para as etapas presenciais de 17-18 de outubro e previsão oficial do TAF.
+Consulta rápida do boletim individual, classificação oficial pós-recursos com critérios de desempate do edital (Item 21.2.1), convocação para as etapas presenciais de cotas e cronograma oficial atualizado.
 </p>
 </div>""", unsafe_allow_html=True)
 
-# 4 Métricas Principais Objetivas
+# 4 Métricas Principais Flat
 m1, m2, m3, m4 = st.columns(4)
 
 with m1:
@@ -331,14 +414,14 @@ with m2:
 
 with m3:
     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">🧑🏿 Étnico-Racial</div>
+<div class="stat-label">🧑🏿 Reserva Étnico-Racial</div>
 <div class="stat-value">{TOTAL_ETNICO_FMT}</div>
 <div class="stat-sub">{(TOTAL_ETNICO/TOTAL_CANDIDATOS)*100:.1f}% convocados hetero/análise doc</div>
 </div>""", unsafe_allow_html=True)
 
 with m4:
     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">♿ PCD</div>
+<div class="stat-label">♿ Reserva PCD</div>
 <div class="stat-value">{TOTAL_PCD_FMT}</div>
 <div class="stat-sub">{(TOTAL_PCD/TOTAL_CANDIDATOS)*100:.1f}% convocados para perícia ({TOTAL_PCD_ETNICO} dupla cota)</div>
 </div>""", unsafe_allow_html=True)
@@ -346,12 +429,13 @@ with m4:
 st.write("")
 
 # ==============================================================================
-# NAVEGAÇÃO PRINCIPAL EM 3 ABAS LIMPAS & DIRETAS
+# NAVEGAÇÃO PRINCIPAL EM 4 ABAS DIRETAS & OBJETIVAS
 # ==============================================================================
-tab_busca, tab_listas, tab_regras = st.tabs([
+tab_busca, tab_listas, tab_regras, tab_cronograma = st.tabs([
     "🔍 Meu Boletim (Consulta Rápida)",
     "📋 As 4 Listas Oficiais & Downloads",
-    "🎯 Entenda as Regras & Previsão TAF"
+    "🎯 Entenda as Regras & Previsão TAF",
+    "📅 Cronograma Oficial do Concurso"
 ])
 
 # ==============================================================================
@@ -436,26 +520,26 @@ with tab_busca:
         convocacao_texto = str(candidato_selecionado['Convocacao_Fase_Presencial'])
         if "Convocado" in convocacao_texto:
             presencial_html = f"""<div class="card-fase-presencial">
-<div style="font-size: 0.85rem; font-weight: 800; color: #F59E0B; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+<div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
 📢 CONVOCAÇÃO PARA ETAPA PRESENCIAL (EDITAIS DE 09 DE OUTUBRO)
 </div>
-<div style="font-size: 1.05rem; font-weight: 700; color: #F8FAFC;">
+<div style="font-size: 1.05rem; font-weight: 700; color: #0F172A;">
 {convocacao_texto}
 </div>
-<div style="font-size: 0.84rem; color: #CBD5E1; margin-top: 8px; line-height: 1.4;">
-📅 <strong>Data da Etapa:</strong> 17 e 18 de outubro de 2026 em Natal/RN.<br>
-🎫 <strong>Cartão de Informação:</strong> Acesse <a href="https://www.avalia.org.br" target="_blank" style="color: #60A5FA; font-weight: 600;">avalia.org.br</a> a partir das 15h de 13/10 para consultar seu local, sala e horário exato.
+<div style="font-size: 0.86rem; color: #475569; margin-top: 8px; line-height: 1.45;">
+📅 <strong>Datas da Avaliação:</strong> 17 e 18 de outubro de 2026 em Natal/RN.<br>
+🎫 <strong>Cartão de Informação:</strong> Acesse <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 600;">avalia.org.br</a> a partir das 15h de 13/10 para consultar seu local, sala e horário exato.
 </div>
 </div>"""
         else:
             presencial_html = """<div class="card-fase-ampla">
-<div style="font-size: 0.85rem; font-weight: 800; color: #60A5FA; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
+<div style="font-size: 0.82rem; font-weight: 800; color: #0369A1; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
 ℹ️ ETAPA PRESENCIAL DE 17-18/10 NÃO SE APLICA (AMPLA CONCORRÊNCIA)
 </div>
-<div style="font-size: 1.02rem; font-weight: 700; color: #F8FAFC;">
+<div style="font-size: 1.02rem; font-weight: 700; color: #0F172A;">
 ⚪ Não Convocado para Avaliações de Cotas (Candidato de Ampla Concorrência)
 </div>
-<div style="font-size: 0.84rem; color: #94A3B8; margin-top: 6px; line-height: 1.4;">
+<div style="font-size: 0.86rem; color: #475569; margin-top: 6px; line-height: 1.45;">
 As bancas de 17 e 18 de outubro são exclusivas para heteroidentificação de cotas étnicas e perícia médica PCD. Como candidato de Ampla Concorrência, você não realiza esta etapa — sua próxima fase avaliativa é diretamente a convocação do TAF (conforme classificação).
 </div>
 </div>"""
@@ -464,14 +548,14 @@ As bancas de 17 e 18 de outubro são exclusivas para heteroidentificação de co
         status_taf = str(candidato_selecionado['Previsao_TAF'])
         is_taf_convocado = "Convocado" in status_taf
         taf_class = "card-previsao-ok" if is_taf_convocado else "card-previsao"
-        taf_title_color = "#34D399" if is_taf_convocado else "#94A3B8"
+        taf_title_color = "#15803D" if is_taf_convocado else "#64748B"
         taf_badge_text = "🟢 PREVISÃO OFICIAL: DENTRO DO LIMITE DE CONVOCAÇÃO DO TAF!" if is_taf_convocado else "⚪ PREVISÃO OFICIAL: FORA DO CORTE PRELIMINAR DO TAF"
 
         taf_html = f"""<div class="{taf_class}">
-<div style="font-size: 0.85rem; font-weight: 800; color: {taf_title_color}; text-transform: uppercase; margin-bottom: 8px;">
+<div style="font-size: 0.82rem; font-weight: 800; color: {taf_title_color}; text-transform: uppercase; margin-bottom: 8px;">
 🎯 {taf_badge_text}
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.95rem; color: #F1F5F9; margin-bottom: 4px;">
+<div style="display: flex; flex-wrap: wrap; gap: 20px; font-size: 0.95rem; color: #1E293B; margin-bottom: 4px;">
 <div><strong>🏃‍♂️ Status no TAF:</strong> {status_taf}</div>
 <div><strong>🏆 Vagas Imediatas:</strong> {candidato_selecionado['Previsao_Vagas_Imediatas']}</div>
 </div>
@@ -482,9 +566,9 @@ As bancas de 17 e 18 de outubro são exclusivas para heteroidentificação de co
 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
 <div>
 <span class="badge-pill">BOLETIM OFICIAL DEFINITIVO PÓS-RECURSOS</span>
-<h2 style="color: #FFF; margin: 4px 0 6px 0; font-size: 1.8rem;">{nome}</h2>
-<p style="color: #94A3B8; margin: 0 0 10px 0; font-size: 0.95rem;">
-Inscrição: <strong>{inscricao}</strong> &nbsp;•&nbsp; Cargo: <strong>401 - Policial Penal RN</strong>
+<h2 style="color: #0F172A; margin: 4px 0 6px 0; font-size: 1.8rem; font-weight: 800;">{nome}</h2>
+<p style="color: #64748B; margin: 0 0 10px 0; font-size: 0.95rem;">
+Inscrição: <strong style="color: #1E293B;">{inscricao}</strong> &nbsp;•&nbsp; Cargo: <strong style="color: #1E293B;">401 - Policial Penal RN</strong>
 </p>
 <div>{tags_html}</div>
 </div>
@@ -492,7 +576,7 @@ Inscrição: <strong>{inscricao}</strong> &nbsp;•&nbsp; Cargo: <strong>401 - P
 <div class="pos-badge {pos_class}">
 {medalha}{pos_geral}º LUGAR GERAL
 </div>
-<div style="color: #60A5FA; font-size: 0.85rem; margin-top: 6px; font-weight: 600;">
+<div style="color: #0284C7; font-size: 0.85rem; margin-top: 6px; font-weight: 700;">
 Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
 </div>
 </div>
@@ -542,7 +626,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
             })
         st.dataframe(pd.DataFrame(dados_detalhamento), use_container_width=True, hide_index=True)
         
-        # Gráfico de barras horizontal limpo de aproveitamento
+        # Gráfico de barras horizontal limpo de aproveitamento (Estilo Flat Claro)
         pct_candidato = [(candidato_selecionado[d] / PONTOS_MAXIMOS[d]) * 100 for d in DISCIPLINAS]
         nomes_curtos = [
             d.replace("História do RN e Aspectos Geoeconômicos do RN", "História RN")
@@ -551,7 +635,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
              .replace("Legislação Específica", "Leg. Específica")
             for d in DISCIPLINAS
         ]
-        cores = ['#10B981' if p >= 80 else ('#F59E0B' if p >= 60 else '#EF4444') for p in pct_candidato]
+        cores = ['#16A34A' if p >= 80 else ('#D97706' if p >= 60 else '#DC2626') for p in pct_candidato]
 
         fig_bar = go.Figure(go.Bar(
             x=pct_candidato,
@@ -561,16 +645,16 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
             text=[f"{p:.1f}% ({candidato_selecionado[d]}/{PONTOS_MAXIMOS[d]} pts)" for p, d in zip(pct_candidato, DISCIPLINAS)],
             textposition='inside',
             insidetextanchor='middle',
-            textfont=dict(color='white', size=11, family='Inter')
+            textfont=dict(color='white', size=11, family='Inter', weight=700)
         ))
         fig_bar.update_layout(
-            title="Aproveitamento Percentual por Disciplina",
-            xaxis=dict(range=[0, 105], title="Aproveitamento (%)", gridcolor='rgba(255, 255, 255, 0.1)'),
-            yaxis=dict(autorange="reversed"),
-            template="plotly_dark",
+            title=dict(text="Aproveitamento Percentual por Disciplina", font=dict(color='#0F172A', size=14)),
+            xaxis=dict(range=[0, 105], title="Aproveitamento (%)", gridcolor='#E2E8F0', tickfont=dict(color='#64748B')),
+            yaxis=dict(autorange="reversed", tickfont=dict(color='#1E293B')),
+            template="plotly_white",
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(l=10, r=20, t=35, b=30),
+            margin=dict(l=10, r=20, t=40, b=30),
             height=340
         )
         st.plotly_chart(fig_bar, use_container_width=True)
@@ -584,7 +668,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
             
             def destacar_linha(row):
                 if row['Posição_Geral'] == pos_geral:
-                    return ['background-color: rgba(59, 130, 246, 0.35); font-weight: bold;'] * len(row)
+                    return ['background-color: #E0F2FE; font-weight: bold; color: #0369A1;'] * len(row)
                 return [''] * len(row)
                 
             st.dataframe(
@@ -771,35 +855,6 @@ with tab_listas:
 with tab_regras:
     st.subheader("🎯 Entenda as Regras de Convocação, Vagas e TAF")
     
-    # Cronograma Oficial em Cards
-    st.markdown("#### 📅 Cronograma Oficial dos Próximos Passos (Editais de 09/10/2026)")
-    t1, t2, t3, t4 = st.columns(4)
-    with t1:
-        st.markdown("""<div class="stat-card" style="border-left: 4px solid #10B981;">
-<div class="stat-label">09 DE OUTUBRO</div>
-<div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">Resultado Definitivo</div>
-<div class="stat-sub">Publicação das listas definitivas e convocação presencial.</div>
-</div>""", unsafe_allow_html=True)
-    with t2:
-        st.markdown("""<div class="stat-card" style="border-left: 4px solid #3B82F6;">
-<div class="stat-label">13 DE OUTUBRO (15H)</div>
-<div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">Cartão de Confirmação</div>
-<div class="stat-sub">Horário, local e sala no site avalia.org.br para os convocados.</div>
-</div>""", unsafe_allow_html=True)
-    with t3:
-        st.markdown("""<div class="stat-card" style="border-left: 4px solid #F59E0B;">
-<div class="stat-label">17 E 18 DE OUTUBRO</div>
-<div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">Bancas Presenciais</div>
-<div class="stat-sub">Heteroidentificação (Pretos/Pardos) e Perícia PCD em Natal/RN.</div>
-</div>""", unsafe_allow_html=True)
-    with t4:
-        st.markdown("""<div class="stat-card" style="border-left: 4px solid #8B5CF6;">
-<div class="stat-label">PRÓXIMA ETAPA GERAL</div>
-<div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">Convocação do TAF</div>
-<div class="stat-sub">Teste de Aptidão Física após a homologação das cotas.</div>
-</div>""", unsafe_allow_html=True)
-
-    st.write("")
     st.markdown("#### 🏃‍♂️ Como Funciona a Linha de Corte do TAF (Tabela 13.1 do Edital)")
     st.markdown("""
     O **Item 13 do Edital** estabelece o número máximo de candidatos habilitados para realizar o Teste de Aptidão Física (TAF):
@@ -881,10 +936,129 @@ with tab_regras:
         """)
 
 # ==============================================================================
-# RODAPÉ
+# ABA 4: CRONOGRAMA OFICIAL DO CONCURSO (TIMELINE FLAT)
 # ==============================================================================
-st.write("---")
-st.markdown("""<div style="text-align: center; color: #64748B; font-size: 0.85rem; padding: 10px 0;">
-🛡️ <strong>Portal de Resultados Definitivos PPRN</strong> • Dados extraídos do Edital de Resultado Definitivo Pós-Recursos e Editais de Convocação de Cotas (09/10/2026).<br>
-Construído com Python & Streamlit • Hospedagem Streamlit Community Cloud
+with tab_cronograma:
+    st.subheader("📅 Cronograma Oficial do Concurso (Edital nº 002/2026)")
+    st.write("""
+    Acompanhe as principais datas e marcos temporais do Concurso de Policial Penal do RN, baseadas no Edital de Abertura, nas publicações oficiais e nas retificações da banca Instituto Avalia:
+    """)
+    
+    # Destaque da Fase Atual
+    st.markdown("""<div class="stat-card" style="border-left: 4px solid #D97706; background: #FFFDF5; margin-bottom: 20px;">
+<div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em;">
+🚨 FASE VIGENTE (ATENÇÃO AOS CONVOCADOS)
+</div>
+<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0;">
+Consulta do Cartão de Informação (13/10 às 15h) & Bancas Presenciais (17 e 18 de Outubro)
+</div>
+<div style="font-size: 0.88rem; color: #475569; line-height: 1.5;">
+Os candidatos convocados para Heteroidentificação Étnica e Perícia Médica PCD devem emitir seu Cartão de Informação no site <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a> para verificar o horário e local da avaliação presencial em Natal/RN.
+</div>
+</div>""", unsafe_allow_html=True)
+
+    # Timeline Estruturada
+    marcos_cronograma = [
+        {
+            "data": "18 de Junho de 2026",
+            "titulo": "Publicação do Edital de Abertura nº 002/2026",
+            "descricao": "Publicação oficial do concurso com 260 vagas totais (200 para Policial Penal) e regras gerais.",
+            "status": "Concluído",
+            "tipo": "past"
+        },
+        {
+            "data": "13 de Setembro de 2026",
+            "titulo": "Aplicação da Prova Objetiva",
+            "descricao": "Realização das provas objetivas no turno matutino para o cargo de Policial Penal do RN.",
+            "status": "Concluído",
+            "tipo": "past"
+        },
+        {
+            "data": "30 de Setembro de 2026",
+            "titulo": "Publicação do Resultado Preliminar da Prova Objetiva",
+            "descricao": "Divulgação da primeira relação de notas e abertura do prazo recursal contra o resultado da prova.",
+            "status": "Concluído",
+            "tipo": "past"
+        },
+        {
+            "data": "09 de Outubro de 2026",
+            "titulo": "Resultado Definitivo da Prova Objetiva & Convocação de Cotas",
+            "descricao": "Divulgação da lista definitiva de 18.945 habilitados (≥ 73 pts) e convocação de cotistas e PCDs.",
+            "status": "Concluído",
+            "tipo": "past"
+        },
+        {
+            "data": "13 de Outubro de 2026 (a partir das 15h)",
+            "titulo": "Disponibilização do Cartão de Informação do Candidato",
+            "descricao": "Liberação no site da banca (avalia.org.br) dos horários, salas e locais individuais das etapas presenciais.",
+            "status": "Fase Atual",
+            "tipo": "active"
+        },
+        {
+            "data": "17 e 18 de Outubro de 2026",
+            "titulo": "Realização das Bancas de Heteroidentificação e Análise Documental",
+            "descricao": "Avaliação presencial dos candidatos autodeclarados Pretos, Pardos, Indígenas e Quilombolas.",
+            "status": "Etapa Presencial",
+            "tipo": "active"
+        },
+        {
+            "data": "18 de Outubro de 2026",
+            "titulo": "Realização da Perícia Médica Presencial (PCD)",
+            "descricao": "Exame presencial por equipe multidisciplinar dos candidatos inscritos na reserva PCD.",
+            "status": "Etapa Presencial",
+            "tipo": "active"
+        },
+        {
+            "data": "04 de Novembro de 2026 (Data Provável Oficial)",
+            "titulo": "Divulgação da Classificação Preliminar por Modalidade & Aplicação do Corte do TAF",
+            "descricao": "Conforme o Artigo 4º do Edital de 09/10: após o enquadramento das cotas, será divulgada a classificação com linhas de corte para o TAF.",
+            "status": "Próximo Marco Oficial",
+            "tipo": "next"
+        },
+        {
+            "data": "A Definir (Novembro/Dezembro 2026)",
+            "titulo": "Convocação e Aplicação do Teste de Aptidão Física (TAF)",
+            "descricao": "Realização do TAF para os convocados dentro dos limites do Item 13 (até 960º na Ampla, 240º nas Cotas e todos os PCDs habilitados).",
+            "status": "Etapa Subsequente",
+            "tipo": "future"
+        },
+        {
+            "data": "Fases Seguintes",
+            "titulo": "Avaliação Psicológica, Exames Médicos, Investigação Social e CFP",
+            "descricao": "Demais etapas eliminatórias até a homologação final e matrícula no Curso de Formação Profissional (CFP).",
+            "status": "Etapas Finais",
+            "tipo": "future"
+        }
+    ]
+
+    for m in marcos_cronograma:
+        card_class = f"timeline-card timeline-card-{m['tipo']}"
+        badge_color = "#15803D" if m['tipo'] == 'past' else ("#B45309" if m['tipo'] == 'active' else ("#0369A1" if m['tipo'] == 'next' else "#64748B"))
+        badge_bg = "#DCFCE7" if m['tipo'] == 'past' else ("#FEF3C7" if m['tipo'] == 'active' else ("#E0F2FE" if m['tipo'] == 'next' else "#F1F5F9"))
+        
+        st.markdown(f"""<div class="{card_class}">
+<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
+<div style="font-size: 0.82rem; font-weight: 800; color: #0284C7; text-transform: uppercase; letter-spacing: 0.04em;">
+📅 {m['data']}
+</div>
+<span style="background: {badge_bg}; color: {badge_color}; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">
+{m['status']}
+</span>
+</div>
+<div style="font-size: 1.05rem; font-weight: 700; color: #0F172A; margin: 2px 0 4px 0;">
+{m['titulo']}
+</div>
+<div style="font-size: 0.88rem; color: #64748B; line-height: 1.45;">
+{m['descricao']}
+</div>
+</div>""", unsafe_allow_html=True)
+
+# ==============================================================================
+# RODAPÉ COM CRÉDITOS DO CRIADOR @PEDRONILDU
+# ==============================================================================
+st.markdown("""<div class="footer-container">
+<div>🛡️ <strong>Portal de Resultados Definitivos PPRN</strong> • Dados oficiais extraídos do Edital de Resultado Definitivo Pós-Recursos e Editais de Convocação (09/10/2026).</div>
+<div style="margin-top: 6px; font-size: 0.88rem; color: #475569;">
+Desenvolvido com dedicação por <strong>Pedro Nildo</strong> • Instagram do Criador: <a href="https://instagram.com/pedronildu" target="_blank" style="color: #0284C7; font-weight: 700; text-decoration: none;">📸 @pedronildu</a>
+</div>
 </div>""", unsafe_allow_html=True)
