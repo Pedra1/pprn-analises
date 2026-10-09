@@ -896,11 +896,12 @@ with tab_listas:
     # Métricas da Lista Selecionada
     st.markdown(f"### {titulo_lista}")
     
+    total_view_fmt = f"{len(df_view):,}".replace(",", ".")
     col_l1, col_l2, col_l3, col_l4 = st.columns(4)
     with col_l1:
         st.markdown(f"""<div class="stat-card">
 <div class="stat-label">Total de Candidatos</div>
-<div class="stat-value">{len(df_view):,}".replace(",", ".")</div>
+<div class="stat-value">{total_view_fmt}</div>
 <div class="stat-sub">Candidatos habilitados</div>
 </div>""", unsafe_allow_html=True)
     with col_l2:
