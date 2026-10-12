@@ -371,6 +371,49 @@ st.markdown("""<style>
         background: #FFFFFF;
     }
 
+    /* Simulation Styles */
+    .sim-banner {
+        background: #FFFFFF;
+        border: 1px solid #CBD5E1;
+        border-top: 4px solid #7C3AED;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .sim-badge {
+        display: inline-block;
+        background: #EDE9FE;
+        color: #6D28D9;
+        border: 1px solid #C4B5FD;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 0.78rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-bottom: 8px;
+    }
+
+    .sim-gain-pill {
+        display: inline-block;
+        background: #DCFCE7;
+        color: #15803D;
+        font-weight: 800;
+        font-size: 0.78rem;
+        padding: 2px 8px;
+        border-radius: 6px;
+        border: 1px solid #86EFAC;
+    }
+
+    .sim-notice-card {
+        background: #F8FAFC;
+        border: 1px solid #CBD5E1;
+        border-left: 4px solid #0284C7;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 16px;
     /* Footer Flat */
     .footer-container {
         text-align: center;
@@ -453,6 +496,154 @@ TOTAL_ETNICO_FMT = f"{TOTAL_ETNICO:,}".replace(",", ".")
 TOTAL_PCD_FMT = f"{TOTAL_PCD:,}".replace(",", ".")
 
 # ==============================================================================
+# MOTOR PREDITIVO DE SIMULAÇÃO (HETEROIDENTIFICAÇÃO, PCD & TAF)
+# ==============================================================================
+@st.cache_data(show_spinner="Calculando simulação de heteroidentificação, PCD e TAF...")
+def executar_simulacao_fases(taxa_hetero_pct, taxa_pcd_pct, regra_inaptos, taxa_taf_pct):
+    taxa_hetero = taxa_hetero_pct / 100.0
+    taxa_pcd = taxa_pcd_pct / 100.0
+    taxa_taf = taxa_taf_pct / 100.0
+    
+    df = df_base.copy()
+    
+    # Sementes determinísticas para reproducibilidade estável
+    rng_etnico = np.random.RandomState(42)
+    scores_etnico = pd.Series(rng_etnico.rand(len(df)), index=df.index)
+
+    rng_pcd = np.random.RandomState(123)
+    scores_pcd = pd.Series(rng_pcd.rand(len(df)), index=df.index)
+
+    rng_taf = np.random.RandomState(777)
+    scores_taf = pd.Series(rng_taf.rand(len(df)), index=df.index)
+
+    # 1. Identificação de Inaptos nas Bancas de Cotas
+    is_inapto_etnico = df['Cota_Etnico_Racial'] & (scores_etnico < taxa_hetero)
+    is_inapto_pcd = df['Cota_PCD'] & (scores_pcd < taxa_pcd)
+    
+    df_sim = df.copy()
+    df_sim['Inapto_Hetero_Sim'] = is_inapto_etnico
+    df_sim['Inapto_PCD_Sim'] = is_inapto_pcd
+    
+    total_inaptos_etnico = int(is_inapto_etnico.sum())
+    total_inaptos_pcd = int(is_inapto_pcd.sum())
+    
+    if regra_inaptos == 'migrar_ampla':
+        # Conforme Art. 4º Hetero e Art. 3º PCD: perdem a cota e concorrem apenas na Ampla
+        df_sim['Cota_Etnico_Sim'] = df_sim['Cota_Etnico_Racial'] & (~is_inapto_etnico)
+        df_sim['Cota_PCD_Sim'] = df_sim['Cota_PCD'] & (~is_inapto_pcd)
+        df_sim['Eliminado_Cota_Sim'] = False
+        df_sim['Posicao_Geral_Sim'] = df_sim['Posição_Geral']
+    else:
+        # Cenário Severo: Eliminados sumariamente do certame
+        df_sim['Cota_Etnico_Sim'] = df_sim['Cota_Etnico_Racial'] & (~is_inapto_etnico)
+        df_sim['Cota_PCD_Sim'] = df_sim['Cota_PCD'] & (~is_inapto_pcd)
+        df_sim['Eliminado_Cota_Sim'] = is_inapto_etnico | is_inapto_pcd
+        df_sim = df_sim[~df_sim['Eliminado_Cota_Sim']].copy()
+        df_sim['Posicao_Geral_Sim'] = range(1, len(df_sim) + 1)
+        
+    df_sim['Ampla_Pura_Sim'] = (~df_sim['Cota_Etnico_Sim']) & (~df_sim['Cota_PCD_Sim'])
+    
+    # Reclassificação na Cota Étnica
+    idx_etnico_aptos = df_sim[df_sim['Cota_Etnico_Sim']].index
+    df_sim['Pos_Etnico_Sim'] = np.nan
+    df_sim.loc[idx_etnico_aptos, 'Pos_Etnico_Sim'] = range(1, len(idx_etnico_aptos) + 1)
+    
+    # Reclassificação PCD
+    idx_pcd_aptos = df_sim[df_sim['Cota_PCD_Sim']].index
+    df_sim['Pos_PCD_Sim'] = np.nan
+    df_sim.loc[idx_pcd_aptos, 'Pos_PCD_Sim'] = range(1, len(idx_pcd_aptos) + 1)
+    
+    # 2. Convocação TAF Simulada
+    idx_960 = min(959, len(df_sim) - 1)
+    candidato_960 = df_sim.iloc[idx_960]
+    nota_corte_ampla_taf = int(candidato_960['Nota Objetiva'])
+    convocados_ampla_taf = df_sim['Nota Objetiva'] >= nota_corte_ampla_taf
+    
+    cotistas_fora_ampla = df_sim[df_sim['Cota_Etnico_Sim'] & (~convocados_ampla_taf)]
+    if len(cotistas_fora_ampla) >= 240:
+        cand_240_cota = cotistas_fora_ampla.iloc[239]
+        nota_corte_etnico_taf = int(cand_240_cota['Nota Objetiva'])
+        convocados_etnico_reserva = cotistas_fora_ampla['Nota Objetiva'] >= nota_corte_etnico_taf
+        idx_etnico_reserva = cotistas_fora_ampla[convocados_etnico_reserva].index
+    else:
+        nota_corte_etnico_taf = int(cotistas_fora_ampla['Nota Objetiva'].min()) if len(cotistas_fora_ampla) > 0 else 73
+        idx_etnico_reserva = cotistas_fora_ampla.index
+        
+    idx_pcd_taf = df_sim[df_sim['Cota_PCD_Sim']].index
+    
+    df_sim['Convocado_TAF_Sim'] = False
+    df_sim.loc[df_sim[convocados_ampla_taf].index, 'Convocado_TAF_Sim'] = True
+    df_sim.loc[idx_etnico_reserva, 'Convocado_TAF_Sim'] = True
+    df_sim.loc[idx_pcd_taf, 'Convocado_TAF_Sim'] = True
+    
+    total_convocados_taf = int(df_sim['Convocado_TAF_Sim'].sum())
+    
+    novos_convocados_taf_etnico = df_sim[
+        df_sim['Cota_Etnico_Sim'] & 
+        df_sim['Convocado_TAF_Sim'] & 
+        (df_sim['Previsao_TAF'].str.contains('Não Convocado', na=False))
+    ]
+    
+    # 3. Simulação de Desempenho no TAF
+    reprovados_taf = df_sim['Convocado_TAF_Sim'] & (scores_taf.loc[df_sim.index] < taxa_taf)
+    total_reprovados_taf = int(reprovados_taf.sum())
+    
+    df_sim['Status_TAF_Sim'] = 'Não Convocado'
+    df_sim.loc[df_sim['Convocado_TAF_Sim'], 'Status_TAF_Sim'] = 'Apto no TAF'
+    df_sim.loc[reprovados_taf, 'Status_TAF_Sim'] = 'Reprovado / Ausente no TAF'
+    
+    # 4. Distribuição das Vagas Imediatas pós-TAF
+    aptos_taf = df_sim[df_sim['Status_TAF_Sim'] == 'Apto no TAF'].copy()
+    aptos_taf['Pos_Final_Geral_Aptos'] = range(1, len(aptos_taf) + 1)
+    
+    vagas_ampla = aptos_taf.head(140)
+    idx_vagas_ampla = vagas_ampla.index
+    
+    cotistas_restantes = aptos_taf[(~aptos_taf.index.isin(idx_vagas_ampla)) & aptos_taf['Cota_Etnico_Sim']]
+    vagas_etnico = cotistas_restantes.head(40)
+    idx_vagas_etnico = vagas_etnico.index
+    
+    pcds_restantes = aptos_taf[(~aptos_taf.index.isin(idx_vagas_ampla)) & (~aptos_taf.index.isin(idx_vagas_etnico)) & aptos_taf['Cota_PCD_Sim']]
+    vagas_pcd = pcds_restantes.head(20)
+    idx_vagas_pcd = vagas_pcd.index
+    
+    df_sim['Vaga_Imediata_Sim'] = 'Cadastro de Reserva'
+    df_sim.loc[idx_vagas_ampla, 'Vaga_Imediata_Sim'] = '🏆 Vaga Imediata (Ampla Concorrência)'
+    df_sim.loc[idx_vagas_etnico, 'Vaga_Imediata_Sim'] = '🏆 Vaga Imediata (Cota Étnico-Racial)'
+    df_sim.loc[idx_vagas_pcd, 'Vaga_Imediata_Sim'] = '🏆 Vaga Imediata (Cota PCD)'
+    
+    ultimo_ampla_orig = int(vagas_ampla.iloc[-1]['Posição_Geral']) if len(vagas_ampla) > 0 else 140
+    ultimo_etnico_orig = int(vagas_etnico.iloc[-1]['Pos_Lista_Etnico']) if len(vagas_etnico) > 0 else 40
+    ultimo_pcd_orig = int(vagas_pcd.iloc[-1]['Pos_Lista_PCD']) if len(vagas_pcd) > 0 else 20
+    
+    novos_vagas_ampla = vagas_ampla[vagas_ampla['Posição_Geral'] > 140]
+    novos_vagas_etnico = vagas_etnico[vagas_etnico['Pos_Lista_Etnico'] > 40]
+    novos_vagas_pcd = vagas_pcd[vagas_pcd['Pos_Lista_PCD'] > 20]
+    
+    resumo = {
+        'total_inaptos_etnico': total_inaptos_etnico,
+        'total_inaptos_pcd': total_inaptos_pcd,
+        'total_convocados_taf': total_convocados_taf,
+        'total_reprovados_taf': total_reprovados_taf,
+        'total_aptos_taf': len(aptos_taf),
+        'nota_corte_ampla_taf': nota_corte_ampla_taf,
+        'nota_corte_etnico_taf': nota_corte_etnico_taf,
+        'ultimo_ampla_orig': ultimo_ampla_orig,
+        'ganho_ampla': ultimo_ampla_orig - 140,
+        'ultimo_etnico_orig': ultimo_etnico_orig,
+        'ganho_etnico': ultimo_etnico_orig - 40,
+        'ultimo_pcd_orig': ultimo_pcd_orig,
+        'ganho_pcd': ultimo_pcd_orig - 20,
+        'qtd_novos_vagas_ampla': len(novos_vagas_ampla),
+        'qtd_novos_vagas_etnico': len(novos_vagas_etnico),
+        'qtd_novos_vagas_pcd': len(novos_vagas_pcd),
+        'qtd_novos_taf_etnico': len(novos_convocados_taf_etnico)
+    }
+    
+    return df_sim, resumo, novos_vagas_ampla, novos_vagas_etnico, novos_convocados_taf_etnico, novos_vagas_pcd
+
+
+# ==============================================================================
 # HEADER HERO & VISÃO GERAL (INSPIRAÇÃO BANCA - ESTILO FLAT & CLARO)
 # ==============================================================================
 st.markdown("""<div class="hero-container">
@@ -502,10 +693,11 @@ st.write("")
 # ==============================================================================
 # NAVEGAÇÃO PRINCIPAL EM 4 ABAS DIRETAS & OBJETIVAS
 # ==============================================================================
-tab_busca, tab_listas, tab_regras, tab_cronograma = st.tabs([
+tab_busca, tab_simuladores, tab_listas, tab_regras, tab_cronograma = st.tabs([
     "🔍 Meu Boletim (Consulta Rápida)",
+    "🔮 Simulador de Colocações (Hetero, PCD & TAF)",
     "📋 As 4 Listas Oficiais & Downloads",
-    "🎯 Entenda as Regras & Previsão TAF",
+    "🎯 Entenda as Regras & Linhas de Corte",
     "📅 Cronograma Oficial do Concurso"
 ])
 
@@ -707,6 +899,74 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
                 
         st.write("")
         
+        # Projeção Preditiva Individual nas Fases Seguintes (Hetero, PCD & TAF)
+        df_sim_padrao, resumo_padrao, _, _, _, _ = executar_simulacao_fases(15, 20, "migrar_ampla", 20)
+        candidato_sim = df_sim_padrao.loc[candidato_selecionado.name] if candidato_selecionado.name in df_sim_padrao.index else None
+        
+        if candidato_sim is not None:
+            with st.expander("🔮 Sua Projeção Preditiva nas Próximas Fases (Heteroidentificação, PCD & TAF)", expanded=True):
+                st.caption("Cenário de referência baseado nas médias históricas de concursos: **15% de inaptidão/abstenção na heteroidentificação**, **20% na perícia PCD** e **20% de reprovação no TAF** (regra oficial de migração para Ampla Concorrência):")
+                
+                col_sim1, col_sim2, col_sim3 = st.columns(3)
+                
+                with col_sim1:
+                    if is_etnico and pd.notnull(candidato_sim.get('Pos_Etnico_Sim')):
+                        pos_cota_atual = int(candidato_selecionado['Pos_Lista_Etnico'])
+                        nova_pos_cota = int(candidato_sim['Pos_Etnico_Sim'])
+                        ganho_cota = pos_cota_atual - nova_pos_cota
+                        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Posição Estimada na Cota Étnica</div>
+<div class="stat-value" style="color: #6D28D9;">{nova_pos_cota}º</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Avanço de +{ganho_cota} posições pós-hetero!</div>
+</div>""", unsafe_allow_html=True)
+                    elif is_pcd and pd.notnull(candidato_sim.get('Pos_PCD_Sim')):
+                        pos_pcd_atual = int(candidato_selecionado['Pos_Lista_PCD'])
+                        nova_pos_pcd = int(candidato_sim['Pos_PCD_Sim'])
+                        ganho_pcd = pos_pcd_atual - nova_pos_pcd
+                        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Posição Estimada na Cota PCD</div>
+<div class="stat-value" style="color: #15803D;">{nova_pos_pcd}º</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Avanço de +{ganho_pcd} posições pós-perícia!</div>
+</div>""", unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Situação na Ampla Concorrência</div>
+<div class="stat-value" style="color: #0284C7;">{pos_geral}º</div>
+<div class="stat-sub" style="color: #475569; font-weight: 700;">Disputa geral na Ampla Universal</div>
+</div>""", unsafe_allow_html=True)
+                
+                with col_sim2:
+                    is_convocado_taf_sim = bool(candidato_sim.get('Convocado_TAF_Sim', False))
+                    status_taf_text = "🟢 Convocado para o TAF!" if is_convocado_taf_sim else "⚪ Fora do corte do TAF"
+                    color_taf_text = "#15803D" if is_convocado_taf_sim else "#64748B"
+                    sub_taf_text = "Dentro da linha de corte simulada" if is_convocado_taf_sim else "Abaixo da pontuação de corte"
+                    st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Convocação para o TAF</div>
+<div class="stat-value" style="color: {color_taf_text}; font-size: 1.25rem;">{status_taf_text}</div>
+<div class="stat-sub" style="color: #475569; font-weight: 700;">{sub_taf_text}</div>
+</div>""", unsafe_allow_html=True)
+                
+                with col_sim3:
+                    vaga_sim = str(candidato_sim.get('Vaga_Imediata_Sim', 'Cadastro de Reserva'))
+                    is_vaga_imediata = "Vaga Imediata" in vaga_sim
+                    if is_vaga_imediata:
+                        val_vaga_text = "Vaga Imediata 🏆"
+                        sub_vaga_text = "↑ Entra nas 200 vagas imediatas pós-TAF!"
+                        color_vaga_text = "#15803D"
+                    else:
+                        val_vaga_text = "Cadastro Reserva 📋"
+                        sub_vaga_text = f"Alcance Geral foi até o {resumo_padrao['ultimo_ampla_orig']}º colocado"
+                        color_vaga_text = "#0F172A"
+                    st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Projeção Pós-TAF</div>
+<div class="stat-value" style="color: {color_vaga_text}; font-size: 1.25rem;">{val_vaga_text}</div>
+<div class="stat-sub" style="color: #475569; font-weight: 700;">{sub_vaga_text}</div>
+</div>""", unsafe_allow_html=True)
+                
+                st.info("💡 **Deseja simular outras porcentagens de inaptidão e atrito?** Acesse a aba **'🔮 Simulador de Colocações (Hetero, PCD & TAF)'** no menu superior para personalizar todos os parâmetros!")
+        
+        st.write("")
+        
         # Detalhamento de Disciplinas
         st.markdown("#### 📋 Detalhamento do seu Aproveitamento por Disciplina")
         dados_detalhamento = []
@@ -843,7 +1103,205 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
             """)
 
 # ==============================================================================
-# ABA 2: AS 4 LISTAS OFICIAIS DEFINITIVAS (ITEM 21.3 DO EDITAL)
+# ABA 2: SIMULADOR DE COLOCAÇÕES (HETEROIDENTIFICAÇÃO, PCD & TAF)
+# ==============================================================================
+with tab_simuladores:
+    st.markdown("""<div class="sim-banner">
+<span class="sim-badge">🔮 SIMULADOR PREDITIVO DE ETAPAS • PPRN 2026</span>
+<h2 style="margin: 4px 0 8px 0; color: #0F172A; font-weight: 800; font-size: 1.7rem;">Simulador de Colocações pós-Bancas de Cotas e TAF</h2>
+<p style="margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.55;">
+Projete o efeito em cascata da <strong>heteroidentificação étnica</strong>, da <strong>perícia médica PCD</strong> (17 e 18 de outubro) e da <strong>taxa de reprovação do TAF</strong> na classificação final e na conquista de vagas imediatas.
+</p>
+</div>""", unsafe_allow_html=True)
+
+    st.markdown("""<div class="sim-notice-card">
+⚖️ <strong>Fundamentação Legal dos Editais de 09 de Outubro:</strong><br>
+Conforme o <strong>Art. 4º do Edital de Convocação para Heteroidentificação</strong> e o <strong>Art. 3º do Edital de Convocação PCD</strong>, os candidatos cuja autodeclaração ou condição PCD não for homologada <em>perdem o direito às vagas reservadas e passam a concorrer apenas pela Ampla Concorrência</em>. Isso libera a vaga da cota para o próximo cotista da fila e reclassifica as listas oficiais!
+</div>""", unsafe_allow_html=True)
+
+    # Painel de Controles
+    st.markdown("#### ⚙️ Parâmetros de Simulação das Fases")
+    col_ctrl1, col_ctrl2 = st.columns(2)
+    
+    with col_ctrl1:
+        st.markdown("**🧑🏿/♿ Etapa 1: Bancas de Cotas (17 e 18 de Outubro)**")
+        sim_taxa_hetero = st.slider(
+            "Taxa Estimada de Inaptidão / Abstenção na Heteroidentificação Étnica:",
+            min_value=0, max_value=35, value=15, step=1, format="%d%%",
+            help="Candidatos autodeclarados pretos, pardos, indígenas ou quilombolas com ausência ou autodeclaração indeferida. Média histórica em concursos: 10% a 20%."
+        )
+        sim_taxa_pcd = st.slider(
+            "Taxa Estimada de Inaptidão / Laudo Não Homologado na Perícia PCD:",
+            min_value=0, max_value=40, value=20, step=1, format="%d%%",
+            help="Candidatos da reserva PCD cujo laudo pericial presencial não for homologado pela junta médica. Média histórica: 15% a 30%."
+        )
+        sim_regra = st.selectbox(
+            "Destino dos Candidatos Inaptos nas Cotas:",
+            [
+                "Regra Oficial (Art. 4º/3º dos Editais): Perdem a cota e disputam na Ampla",
+                "Cenário Severo: Eliminação sumária do concurso"
+            ],
+            index=0
+        )
+        
+    with col_ctrl2:
+        st.markdown("**🏃‍♂️ Etapa 2: Teste de Aptidão Física (TAF - Novembro/Dezembro)**")
+        sim_taxa_taf = st.slider(
+            "Taxa Estimada de Reprovação / Abstenção no TAF:",
+            min_value=0, max_value=45, value=20, step=1, format="%d%%",
+            help="Porcentagem de convocados para o TAF que reprovam nos testes físicos (barra, corrida, abdominal) ou não comparecem. Média em carreiras policiais: 18% a 28%."
+        )
+        st.markdown(f"""
+        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px; font-size: 0.85rem; color: #334155; margin-top: 10px; line-height: 1.45;">
+        📌 <strong>Configuração Atual da Simulação:</strong><br>
+        • Cotas Étnicas: <strong>{sim_taxa_hetero}%</strong> de indeferimentos / ausências<br>
+        • Perícia PCD: <strong>{sim_taxa_pcd}%</strong> de laudos não homologados<br>
+        • Reprovação TAF: <strong>{sim_taxa_taf}%</strong> de atrito nos testes físicos<br>
+        • Regra inaptos cota: <strong>{'Migram para a Ampla' if 'Regra Oficial' in sim_regra else 'Eliminação total'}</strong>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Execução do cálculo simulado
+    regra_key = 'migrar_ampla' if 'Regra Oficial' in sim_regra else 'eliminado'
+    df_simulada, res_sim, novos_ampla, novos_etnico, novos_taf_etnico, novos_pcd = executar_simulacao_fases(
+        sim_taxa_hetero, sim_taxa_pcd, regra_key, sim_taxa_taf
+    )
+
+    st.write("---")
+    st.markdown("#### 📊 Impacto nas Vagas e Linhas de Corte")
+    
+    # 4 Stat Cards Comparativos
+    sc1, sc2, sc3, sc4 = st.columns(4)
+    with sc1:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Alcance Vagas Ampla (140 vagas)</div>
+<div class="stat-value" style="color: #0284C7;">Até o {res_sim['ultimo_ampla_orig']}º</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Original: 140º (+{res_sim['ganho_ampla']} posições de gordura pós-TAF!)</div>
+</div>""", unsafe_allow_html=True)
+        
+    with sc2:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Alcance Vagas Cota Étnica (40 vagas)</div>
+<div class="stat-value" style="color: #7C3AED;">Até o {res_sim['ultimo_etnico_orig']}º</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Original: 40º (+{res_sim['ganho_etnico']} cotistas beneficiados!)</div>
+</div>""", unsafe_allow_html=True)
+
+    with sc3:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Alcance Vagas PCD (20 vagas)</div>
+<div class="stat-value" style="color: #15803D;">Até o {res_sim['ultimo_pcd_orig']}º</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Original: 20º (+{res_sim['ganho_pcd']} PCDs beneficiados!)</div>
+</div>""", unsafe_allow_html=True)
+
+    with sc4:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Linha de Corte TAF (Cota Étnica)</div>
+<div class="stat-value" style="color: #0F172A;">{res_sim['nota_corte_etnico_taf']} pts</div>
+<div class="stat-sub" style="color: #0284C7; font-weight: 700;">↑ Original: 115 pts ({res_sim['qtd_novos_taf_etnico']} novos cotistas chamados)</div>
+</div>""", unsafe_allow_html=True)
+
+    st.write("")
+
+    # Gráfico Comparativo: Alcance Máximo de Convocação
+    fig_comp = go.Figure()
+    modalidades_k = ['Ampla Concorrência', 'Cota Étnico-Racial', 'Cota PCD']
+    valores_orig = [140, 40, 20]
+    valores_sim = [res_sim['ultimo_ampla_orig'], res_sim['ultimo_etnico_orig'], res_sim['ultimo_pcd_orig']]
+    
+    fig_comp.add_trace(go.Bar(
+        name='Oficial (Edital de Abertura)',
+        x=modalidades_k,
+        y=valores_orig,
+        marker_color='#94A3B8',
+        text=[f"{v}º" for v in valores_orig],
+        textposition='auto',
+        textfont=dict(weight=700)
+    ))
+    fig_comp.add_trace(go.Bar(
+        name=f'Simulação pós-Hetero/PCD ({sim_taxa_hetero}%/{sim_taxa_pcd}%) e TAF ({sim_taxa_taf}%)',
+        x=modalidades_k,
+        y=valores_sim,
+        marker_color=['#0284C7', '#7C3AED', '#16A34A'],
+        text=[f"{v}º (+{v-orig})" for v, orig in zip(valores_sim, valores_orig)],
+        textposition='auto',
+        textfont=dict(weight=700)
+    ))
+    fig_comp.update_layout(
+        title=dict(text="Alcance Máximo de Convocação para as Vagas Imediatas (Oficial vs Simulado)", font=dict(color='#0F172A', size=14)),
+        barmode='group',
+        template="plotly_white",
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        yaxis=dict(title="Última Colocação Alcançada", gridcolor='#E2E8F0'),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        margin=dict(l=10, r=20, t=50, b=30),
+        height=350
+    )
+    st.plotly_chart(fig_comp, use_container_width=True)
+
+    # Detalhamento e Listas de Beneficiados em Sub-Abas
+    st.markdown("#### 📋 Detalhamento dos Candidatos no Cenário Simulado")
+    tab_sub1, tab_sub2, tab_sub3, tab_sub4 = st.tabs([
+        f"🏆 Entram nas Vagas da Geral ({len(novos_ampla)} beneficiados)",
+        f"🧑🏿 Entram nas Vagas da Cota Étnica ({len(novos_etnico)} beneficiados)",
+        f"♿ Entram nas Vagas PCD ({len(novos_pcd)} beneficiados)",
+        "🔍 Consultar Candidato na Simulação"
+    ])
+    
+    with tab_sub1:
+        st.write(f"Candidatos que estavam no **Cadastro de Reserva da Geral** (> 140º) e agora alcançam uma das **140 Vagas Imediatas** graças ao atrito do TAF e das cotas:")
+        if len(novos_ampla) > 0:
+            cols_show_ampla = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
+            st.dataframe(novos_ampla[cols_show_ampla], use_container_width=True, hide_index=True)
+        else:
+            st.info("Nenhum candidato além do 140º com a configuração atual.")
+
+    with tab_sub2:
+        st.write(f"Cotistas étnicos que estavam no **Cadastro de Reserva da Cota** (> 40º) e agora alcançam uma das **40 Vagas Imediatas Reservadas**:")
+        if len(novos_etnico) > 0:
+            cols_show_etnico = ['Pos_Lista_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
+            st.dataframe(novos_etnico[cols_show_etnico], use_container_width=True, hide_index=True)
+        else:
+            st.info("Nenhum cotista além do 40º com a configuração atual.")
+
+    with tab_sub3:
+        st.write(f"Candidatos PCD que estavam além da 20ª colocação e agora alcançam uma das **20 Vagas Imediatas PCD**:")
+        if len(novos_pcd) > 0:
+            cols_show_pcd = ['Pos_Lista_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva']
+            st.dataframe(novos_pcd[cols_show_pcd], use_container_width=True, hide_index=True)
+        else:
+            st.info("Nenhum candidato PCD além do 20º com a configuração atual.")
+
+    with tab_sub4:
+        st.write("Verifique como qualquer concorrente se comportaria com as taxas selecionadas nos sliders acima:")
+        col_bs1, col_bs2 = st.columns([2, 1])
+        with col_bs1:
+            nome_busca_sim = st.text_input("Buscar por Nome ou Inscrição na Lista Simulada:", placeholder="Digite o nome ou número de inscrição...", key="input_busca_sim")
+        
+        if nome_busca_sim.strip():
+            norm_bs = normalizar_texto(nome_busca_sim)
+            filtro_sim = df_simulada[
+                df_simulada['Nome_Busca'].str.contains(norm_bs, na=False) |
+                df_simulada['Inscrição_Str'].str.contains(norm_bs, na=False)
+            ]
+            if len(filtro_sim) == 0:
+                st.warning("Nenhum candidato encontrado com esse termo.")
+            else:
+                c_cand_sim = filtro_sim.iloc[0]
+                st.markdown(f"""
+                <div class="candidate-card" style="margin-top: 10px;">
+                <h3 style="margin: 0 0 6px 0; color: #0F172A;">{c_cand_sim['Nome']}</h3>
+                <div style="font-size: 0.9rem; color: #475569; margin-bottom: 12px;">Inscrição: <strong>{c_cand_sim['Inscrição']}</strong> | Modalidade: <strong>{c_cand_sim['Modalidade_Concorrencia']}</strong> | Nota: <strong>{c_cand_sim['Nota Objetiva']} pts</strong></div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <span class="sim-gain-pill">Posição Geral Original: {c_cand_sim['Posição_Geral']}º</span>
+                    <span class="sim-gain-pill">Status TAF Simulado: {c_cand_sim['Status_TAF_Sim']}</span>
+                    <span class="sim-gain-pill">Vagas: {c_cand_sim['Vaga_Imediata_Sim']}</span>
+                </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+# ==============================================================================
+# ABA 3: AS 4 LISTAS OFICIAIS DEFINITIVAS (ITEM 21.3 DO EDITAL)
 # ==============================================================================
 with tab_listas:
     st.subheader("📋 As 4 Listas Oficiais Definitivas do Concurso (Pós-Recursos)")
