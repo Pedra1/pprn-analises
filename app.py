@@ -644,6 +644,61 @@ def executar_simulacao_fases(taxa_hetero_pct, taxa_pcd_pct, regra_inaptos, taxa_
 
 
 # ==============================================================================
+# AVISO LEGAL INICIAL (POPUP MODAL NA PRIMEIRA ABERTURA DO SITE)
+# ==============================================================================
+@st.dialog("📢 Informações Importantes & Aviso Legal", width="large")
+def modal_aviso_legal():
+    st.markdown("""
+<div style="font-family: 'Inter', sans-serif;">
+<div style="background: #FFFDF5; border: 1.5px solid #F59E0B; border-left: 5px solid #D97706; border-radius: 10px; padding: 14px 18px; margin-bottom: 16px;">
+    <div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;">
+        ⚠️ PORTAL INDEPENDENTE • NÃO OFICIAL
+    </div>
+    <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.55; font-weight: 500;">
+        Este portal é uma <strong>iniciativa independente</strong> criada para orientar e auxiliar a comunidade de candidatos do concurso de <strong>Policial Penal do Rio Grande do Norte (PPRN)</strong>.<br>
+        <strong>Não é uma plataforma oficial da banca examinadora (Instituto Avalia) nem do Governo do Estado do RN (SEAD/SEAP).</strong>
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 8px; padding: 14px;">
+        <div style="font-size: 0.85rem; font-weight: 800; color: #0284C7; text-transform: uppercase; margin-bottom: 4px;">
+            📁 Dados Oficiais da Banca
+        </div>
+        <div style="font-size: 0.88rem; color: #475569; line-height: 1.5;">
+            Todos os 18.945 registros foram extraídos integralmente dos <strong>editais e relações definitivas publicadas pela banca em 09/10/2026</strong>. Nenhuma nota ou pontuação foi inventada.
+        </div>
+    </div>
+    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 8px; padding: 14px;">
+        <div style="font-size: 0.85rem; font-weight: 800; color: #7C3AED; text-transform: uppercase; margin-bottom: 4px;">
+            🤖 IA Agêntica Aplicada
+        </div>
+        <div style="font-size: 0.88rem; color: #475569; line-height: 1.5;">
+            Desenvolvido com auxílio de <strong>Inteligência Artificial Agêntica (Agentic AI)</strong> para tratamento avançado de dados, desempates do edital e simulações em alta velocidade.
+        </div>
+    </div>
+</div>
+
+<div style="background: #F0F9FF; border: 1px solid #BAE6FD; border-left: 4px solid #0284C7; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 0.88rem; color: #0369A1; line-height: 1.5;">
+    🔮 <strong>Simulações Preditivas:</strong> Os cálculos de corte do TAF e inaptidão em cotas são modelos matemáticos especulativos para ajudar seu planejamento. Atos oficiais definitivos competem exclusivamente ao Instituto Avalia em <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 800;">avalia.org.br</a>.
+</div>
+</div>
+""", unsafe_allow_html=True)
+
+    if st.button("✅ Entendi e Desejo Acessar o Portal", type="primary", use_container_width=True):
+        st.session_state["disclaimer_visto"] = True
+        st.rerun()
+
+# Disparo na primeira abertura
+if "disclaimer_visto" not in st.session_state:
+    st.session_state["disclaimer_visto"] = False
+
+if not st.session_state["disclaimer_visto"]:
+    st.session_state["disclaimer_visto"] = True
+    modal_aviso_legal()
+
+
+# ==============================================================================
 # HEADER HERO & VISÃO GERAL (INSPIRAÇÃO BANCA - ESTILO FLAT & CLARO)
 # ==============================================================================
 st.markdown("""<div class="hero-container">
