@@ -414,6 +414,19 @@ st.markdown("""<style>
         border-radius: 10px;
         padding: 14px 18px;
         margin-bottom: 16px;
+    }
+
+    .candidate-header-badge {
+        text-align: right;
+    }
+
+    .modal-grid-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-bottom: 16px;
+    }
+
     /* Footer Flat */
     .footer-container {
         text-align: center;
@@ -423,6 +436,182 @@ st.markdown("""<style>
         border-top: 1px solid #CBD5E1;
         margin-top: 30px;
         line-height: 1.6;
+    }
+
+    /* ========================================================================= */
+    /* OTIMIZAÇÕES MOBILE-FIRST (SMARTPHONES E TELAS ATÉ 768px)                  */
+    /* ========================================================================= */
+    @media (max-width: 768px) {
+        /* Aproveitamento máximo de tela sem margens laterais desperdiçadas */
+        .main .block-container {
+            padding: 0.75rem 0.6rem 2.5rem 0.6rem !important;
+            max-width: 100% !important;
+        }
+
+        /* Banner Hero compacto e legível */
+        .hero-container {
+            padding: 14px 14px !important;
+            border-radius: 10px !important;
+            margin-bottom: 12px !important;
+        }
+
+        .hero-title {
+            font-size: 1.35rem !important;
+            line-height: 1.25 !important;
+            margin: 4px 0 6px 0 !important;
+        }
+
+        .hero-subtitle {
+            font-size: 0.84rem !important;
+            line-height: 1.45 !important;
+        }
+
+        .badge-pill {
+            font-size: 0.7rem !important;
+            padding: 3px 8px !important;
+        }
+
+        /* Barra de Abas deslizável horizontalmente (Swipe nativo tipo app) */
+        .stTabs [data-baseweb="tab-list"] {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            scrollbar-width: none !important;
+            gap: 6px !important;
+            padding-bottom: 4px !important;
+            border-bottom: 2px solid #CBD5E1 !important;
+        }
+
+        .stTabs [data-baseweb="tab-list"]::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        .stTabs [data-baseweb="tab"] {
+            flex: 0 0 auto !important;
+            white-space: nowrap !important;
+            height: 38px !important;
+            padding: 6px 14px !important;
+            font-size: 0.82rem !important;
+            border-radius: 6px 6px 0 0 !important;
+        }
+
+        /* Empilhamento limpo de colunas sem espremer cards */
+        [data-testid="column"] {
+            flex: 1 1 100% !important;
+            width: 100% !important;
+            min-width: 100% !important;
+            margin-bottom: 6px !important;
+        }
+
+        /* Stat Cards com tipografia calibrada para mobile */
+        .stat-card {
+            padding: 12px 14px !important;
+            border-radius: 8px !important;
+            margin-bottom: 8px !important;
+        }
+
+        .stat-label {
+            font-size: 0.72rem !important;
+            margin-bottom: 2px !important;
+        }
+
+        .stat-value {
+            font-size: 1.45rem !important;
+            line-height: 1.15 !important;
+        }
+
+        .stat-sub {
+            font-size: 0.72rem !important;
+            margin-top: 2px !important;
+        }
+
+        /* Cartão do Candidato responsivo */
+        .candidate-card {
+            padding: 14px 14px !important;
+            border-radius: 10px !important;
+            margin-bottom: 14px !important;
+        }
+
+        .candidate-card h2 {
+            font-size: 1.35rem !important;
+            margin: 4px 0 !important;
+        }
+
+        .candidate-header-badge {
+            text-align: left !important;
+            width: 100% !important;
+            margin-top: 8px !important;
+        }
+
+        .pos-badge {
+            font-size: 0.95rem !important;
+            padding: 6px 12px !important;
+            display: block !important;
+            text-align: center !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .tag-cota {
+            font-size: 0.72rem !important;
+            padding: 3px 8px !important;
+            margin-bottom: 4px !important;
+        }
+
+        /* Inputs e botões com alvos de toque confortáveis */
+        .stTextInput input, .stSelectbox [data-baseweb="select"] {
+            font-size: 16px !important; /* Evita zoom forçado automático no iOS */
+            min-height: 44px !important;
+        }
+
+        button[data-testid="baseButton-secondary"],
+        button[data-testid="baseButton-primary"],
+        .stDownloadButton button {
+            min-height: 44px !important;
+            width: 100% !important;
+            font-size: 0.9rem !important;
+            padding: 8px 14px !important;
+        }
+
+        /* Modal / Dialog responsivo */
+        .modal-grid-2col {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+
+        div[data-testid="stDialog"] div[role="dialog"] {
+            width: 95vw !important;
+            max-width: 95vw !important;
+            padding: 16px 14px !important;
+            border-radius: 12px !important;
+        }
+
+        /* Tabelas com rolagem touch fluida */
+        [data-testid="stDataFrame"] {
+            border-radius: 6px !important;
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+
+        /* Simulador e Timeline no mobile */
+        .sim-banner {
+            padding: 14px 14px !important;
+            margin-bottom: 12px !important;
+        }
+
+        .sim-banner h2 {
+            font-size: 1.3rem !important;
+        }
+
+        .timeline-card {
+            padding: 12px 14px !important;
+            margin-bottom: 10px !important;
+        }
+
+        .timeline-card h4, .timeline-card div[style*="font-size: 1.05rem"] {
+            font-size: 0.95rem !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -660,7 +849,7 @@ def modal_aviso_legal():
     </div>
 </div>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+<div class="modal-grid-2col">
     <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 8px; padding: 14px;">
         <div style="font-size: 0.85rem; font-weight: 800; color: #0284C7; text-transform: uppercase; margin-bottom: 4px;">
             📁 Dados Oficiais da Banca
@@ -891,7 +1080,7 @@ Inscrição: <strong style="color: #0F172A;">{inscricao}</strong> &nbsp;•&nbsp
 </p>
 <div>{tags_html}</div>
 </div>
-<div style="text-align: right;">
+<div class="candidate-header-badge">
 <div class="pos-badge {pos_class}">
 {medalha}{pos_geral}º LUGAR GERAL
 </div>
