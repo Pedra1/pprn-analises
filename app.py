@@ -693,12 +693,13 @@ st.write("")
 # ==============================================================================
 # NAVEGAÇÃO PRINCIPAL EM 4 ABAS DIRETAS & OBJETIVAS
 # ==============================================================================
-tab_busca, tab_simuladores, tab_listas, tab_regras, tab_cronograma = st.tabs([
+tab_busca, tab_simuladores, tab_listas, tab_regras, tab_cronograma, tab_sobre = st.tabs([
     "🔍 Meu Boletim (Consulta Rápida)",
     "🔮 Simulador de Colocações (Hetero, PCD & TAF)",
     "📋 As 4 Listas Oficiais & Downloads",
     "🎯 Entenda as Regras & Linhas de Corte",
-    "📅 Cronograma Oficial do Concurso"
+    "📅 Cronograma Oficial do Concurso",
+    "ℹ️ Sobre o Portal & Metodologia"
 ])
 
 # ==============================================================================
@@ -1650,6 +1651,101 @@ Os candidatos convocados para Heteroidentificação Étnica e Perícia Médica P
 </div>
 <div style="font-size: 0.88rem; color: #475569; line-height: 1.45; font-weight: 500;">
 {m['descricao']}
+</div>
+</div>""", unsafe_allow_html=True)
+
+# ==============================================================================
+# ABA 6: SOBRE O PORTAL, ORIGEM DOS DADOS E METODOLOGIA
+# ==============================================================================
+with tab_sobre:
+    st.markdown("""<div class="sim-banner" style="border-top-color: #0284C7;">
+<span class="badge-pill">ℹ️ TRANSPARÊNCIA, METODOLOGIA & FONTES</span>
+<h2 style="margin: 4px 0 8px 0; color: #0F172A; font-weight: 800; font-size: 1.7rem;">Sobre o Portal de Resultados do PPRN</h2>
+<p style="margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.55;">
+Conheça como esta aplicação foi desenvolvida, a proveniência dos dados, a metodologia aplicada nos desempates e simuladores, e a finalidade colaborativa do projeto.
+</p>
+</div>""", unsafe_allow_html=True)
+
+    # Card de Aviso Legal / Disclaimer em destaque
+    st.markdown("""<div class="sim-notice-card" style="border-left-color: #D97706; background: #FFFDF5;">
+<div style="font-size: 0.85rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;">
+⚠️ AVISO LEGAL IMPORTANTE (DISCLAIMER DA BANCA)
+</div>
+<div style="font-size: 0.92rem; color: #1E293B; line-height: 1.55;">
+Este portal é uma <strong>iniciativa independente</strong>, desenvolvida para auxiliar e orientar a comunidade de candidatos do Concurso de Policial Penal do Rio Grande do Norte (PPRN).<br>
+<strong>NÃO se trata de uma plataforma oficial do Instituto Avalia nem do Governo do Estado do RN (SEAD/SEAP).</strong><br>
+Todas as comunicações formais, convocações oficiais e atos com efeitos jurídicos devem ser obrigatoriamente consultados e confirmados no endereço oficial da banca examinadora: <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a>.
+</div>
+</div>""", unsafe_allow_html=True)
+
+    col_sob1, col_sob2 = st.columns(2)
+    
+    with col_sob1:
+        st.markdown("""<div class="stat-card" style="margin-bottom: 16px;">
+<div class="stat-label">📁 Origem dos Dados</div>
+<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">100% Baseado em Listas Públicas da Banca</div>
+<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+Todos os <strong>18.945 registros</strong> de candidatos presentes neste painel foram extraídos diretamente dos editais e planilhas oficiais publicados pela banca <strong>Instituto Avalia</strong> no dia <strong>09 de outubro de 2026</strong>:
+<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<li>Edital de Publicação do Resultado Definitivo da Prova Objetiva (Pós-Recursos);</li>
+<li>Edital de Convocação para Heteroidentificação Étnico-Racial (Pretos e Pardos);</li>
+<li>Edital de Convocação para Análise Documental (Indígenas e Quilombolas);</li>
+<li>Edital de Convocação para a Perícia Médica Presencial (PCD).</li>
+</ul>
+</div>
+</div>""", unsafe_allow_html=True)
+
+        st.markdown("""<div class="stat-card">
+<div class="stat-label">🤖 Inteligência Artificial Agêntica</div>
+<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">Engenharia Moderna com IA</div>
+<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+O desenvolvimento deste portal e o processamento dos dados contaram com o suporte de <strong>Inteligência Artificial Agêntica (Agentic AI)</strong> para:
+<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<li>Sanitização, extração e estruturação tabular das notas dos 18.945 candidatos;</li>
+<li>Implementação fiel dos 10 critérios oficiais de desempate do Edital (Item 21.2.1);</li>
+<li>Modelagem matemática do motor de simulações com amostragem consistente;</li>
+<li>Design visual institucional e arquitetura de carregamento em alta performance.</li>
+</ul>
+</div>
+</div>""", unsafe_allow_html=True)
+
+    with col_sob2:
+        st.markdown("""<div class="stat-card" style="margin-bottom: 16px;">
+<div class="stat-label">🛡️ Por que os Dados são Confiáveis?</div>
+<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">Rigor Matemático e Auditoria Cruzada</div>
+<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+A confiabilidade da aplicação fundamenta-se na fidelidade matemática aos documentos originais:
+<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<li><strong>Nenhum dado é inventado:</strong> notas por matéria e notas totais são cópias exatas do resultado definitivo oficial;</li>
+<li><strong>Critérios de Desempate (Item 21.2.1):</strong> empates foram processados na exata ordem do edital (Execução Penal, Legislação Específica, Penal/Processo Penal, Português, Idade);</li>
+<li><strong>Classificação Concomitante (Item 7.3):</strong> os cotistas étnicos e PCDs com nota para ampla são identificados conforme a legislação estadual e regras afirmativas.</li>
+</ul>
+</div>
+</div>""", unsafe_allow_html=True)
+
+        st.markdown("""<div class="stat-card">
+<div class="stat-label">🔮 Natureza das Simulações</div>
+<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">Especulação Estatística para Auxílio</div>
+<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+Os recursos presentes no <strong>Simulador de Colocações</strong> e nas <strong>Projeções do Boletim</strong> são <strong>modelos especulativos de projeção</strong>:
+<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<li>Baseiam-se nas regras regulamentares dos editais de 09/10 (migração de inaptos de cota para ampla) e em médias históricas de reprovação do TAF em carreiras policiais (15% a 30%);</li>
+<li>Não representam resultado homologado futuro, mas servem como balizador estratégico para que os candidatos planejem deslocamentos, hospedagem e preparação física com antecedência.</li>
+</ul>
+</div>
+</div>""", unsafe_allow_html=True)
+
+    st.write("")
+    
+    # Mensagem aos Candidatos
+    st.markdown("""<div class="timeline-card" style="border-left: 5px solid #0284C7; background: #FFFFFF;">
+<div style="font-size: 0.85rem; font-weight: 800; color: #0284C7; text-transform: uppercase; margin-bottom: 4px;">
+💡 Mensagem aos Candidatos
+</div>
+<div style="font-size: 0.93rem; color: #334155; line-height: 1.6;">
+Este portal nasceu com o propósito de oferecer clareza, transparência e conforto aos concurseiros que dedicaram meses de estudo para o certame de Policial Penal do RN. Acompanhar classificações em PDFs extensos de centenas de páginas é um processo exaustivo. Aqui, buscamos transformar dados públicos em informação acessível, rápida e compreensível.<br><br>
+Para dúvidas, correções ou sugestões de novas análises, entre em contato diretamente com o criador do projeto: 
+<a href="https://instagram.com/pedronildu" target="_blank" style="color: #0284C7; font-weight: 800; text-decoration: none;">📸 @pedronildu</a> no Instagram.
 </div>
 </div>""", unsafe_allow_html=True)
 
