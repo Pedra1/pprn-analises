@@ -189,10 +189,10 @@ def main():
                     return '🟢 Convocado para o TAF via Ampla Concorrência (Mesmo com indeferimento na cota, nota alcançou a Ampla!)'
                 else:
                     return '🟢 Convocado para o TAF (Ampla Concorrência)'
-            elif row['Cota_Etnico_Apta_Preliminar']:
-                return '🟣 Convocado para o TAF (Reserva de Vagas da Cota Étnica)'
             elif row['Cota_PCD_Apta_Preliminar']:
                 return '♿ Convocado para o TAF (Reserva de Vagas PCD)'
+            elif row['Cota_Etnico_Apta_Preliminar']:
+                return '🟣 Convocado para o TAF (Reserva de Vagas da Cota Étnica)'
             return '🟢 Convocado para o TAF'
             
     df['Previsao_TAF_Preliminar'] = df.apply(get_previsao_taf_preliminar, axis=1)

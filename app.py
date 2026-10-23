@@ -1096,14 +1096,23 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
 <div class="stat-sub" style="color: #0284C7; font-weight: 700;">↑ De {TOTAL_CANDIDATOS_FMT} candidatos</div>
 </div>""", unsafe_allow_html=True)
         with c2:
-            if is_etnico and res_hetero == 'DEFERIDO' and pd.notnull(candidato_selecionado['Nova_Pos_Lista_Etnico']):
-                lbl_cota = "Posição Preliminar na Cota"
-                val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º"
-                sub_cota = f"↑ De {TOTAL_ETNICO_APTOS:,} cotistas deferidos"
+            if is_pcd and res_pcd == 'DEFERIDO' and is_etnico and res_hetero == 'DEFERIDO':
+                if nota_total < 113:
+                    lbl_cota = "Posição Preliminar PCD (Convocado)"
+                    val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º"
+                    sub_cota = f"♿ {int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º PCD • 🧑🏿 {int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º na Cota Étnica"
+                else:
+                    lbl_cota = "Posição Preliminar nas Cotas"
+                    val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º"
+                    sub_cota = f"🧑🏿 {int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º Étnico • ♿ {int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º PCD"
             elif is_pcd and res_pcd == 'DEFERIDO' and pd.notnull(candidato_selecionado['Nova_Pos_Lista_PCD']):
                 lbl_cota = "Posição Preliminar PCD"
                 val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º"
                 sub_cota = f"↑ De {TOTAL_PCD_APTOS} PCDs deferidos"
+            elif is_etnico and res_hetero == 'DEFERIDO' and pd.notnull(candidato_selecionado['Nova_Pos_Lista_Etnico']):
+                lbl_cota = "Posição Preliminar na Cota"
+                val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º"
+                sub_cota = f"↑ De {TOTAL_ETNICO_APTOS:,} cotistas deferidos"
             elif is_etnico or is_pcd:
                 lbl_cota = "Cota Indeferida (Concorre Ampla)"
                 val_cota = f"{pos_geral}º"
@@ -1147,17 +1156,33 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
             with col_sim1:
                 pos_etn_sim = candidato_selecionado.get('Pos_Etnico_Sim_Padrao')
                 pos_pcd_sim = candidato_selecionado.get('Pos_PCD_Sim_Padrao')
-                if is_etnico and pd.notnull(pos_etn_sim):
+                if is_pcd and res_pcd == 'DEFERIDO' and is_etnico and res_hetero == 'DEFERIDO':
+                    if nota_total < 113:
+                        lbl_sim = "Posição Estimada PCD (Convocado)"
+                        val_sim = f"{int(pos_pcd_sim)}º" if pd.notnull(pos_pcd_sim) else "-"
+                        sub_sim = f"PCD: {val_sim} • Étnico: {int(pos_etn_sim)}º" if pd.notnull(pos_etn_sim) else ""
+                        color_sim = "#15803D"
+                    else:
+                        lbl_sim = "Posição Estimada na Cota Étnica"
+                        val_sim = f"{int(pos_etn_sim)}º" if pd.notnull(pos_etn_sim) else "-"
+                        sub_sim = f"Étnico: {val_sim} • PCD: {int(pos_pcd_sim)}º" if pd.notnull(pos_pcd_sim) else ""
+                        color_sim = "#6D28D9"
                     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Posição Estimada na Cota Étnica</div>
-<div class="stat-value" style="color: #6D28D9;">{int(pos_etn_sim)}º</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">Classificação pós-recursos estimada</div>
+<div class="stat-label">{lbl_sim}</div>
+<div class="stat-value" style="color: {color_sim};">{val_sim}</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">{sub_sim}</div>
 </div>""", unsafe_allow_html=True)
-                elif is_pcd and pd.notnull(pos_pcd_sim):
+                elif is_pcd and res_pcd == 'DEFERIDO' and pd.notnull(pos_pcd_sim):
                     st.markdown(f"""<div class="stat-card">
 <div class="stat-label">Posição Estimada PCD</div>
 <div class="stat-value" style="color: #15803D;">{int(pos_pcd_sim)}º</div>
 <div class="stat-sub" style="color: #15803D; font-weight: 700;">Classificação pós-perícia definitiva</div>
+</div>""", unsafe_allow_html=True)
+                elif is_etnico and res_hetero == 'DEFERIDO' and pd.notnull(pos_etn_sim):
+                    st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Posição Estimada na Cota Étnica</div>
+<div class="stat-value" style="color: #6D28D9;">{int(pos_etn_sim)}º</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">Classificação pós-recursos estimada</div>
 </div>""", unsafe_allow_html=True)
                 else:
                     st.markdown(f"""<div class="stat-card">
