@@ -79,3 +79,10 @@ git push -u origin main
 
 Seu site estará no ar em poucos segundos em um endereço do tipo:
 `https://pprn-analises.streamlit.app`
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença **MIT** - consulte o arquivo [LICENSE](LICENSE) para obter mais detalhes.
+
