@@ -528,7 +528,7 @@ def normalizar_texto(texto):
         texto = str(texto)
     return ''.join(c for c in unicodedata.normalize('NFD', texto) if unicodedata.category(c) != 'Mn').upper().strip()
 
-@st.cache_resource(show_spinner=False)
+@st.cache_data(show_spinner=False)
 def carregar_dados():
     parquet_path = "pprn_dados.parquet"
     if os.path.exists(parquet_path):
@@ -595,7 +595,7 @@ MEDIAS_DISCIPLINAS = {
     'Direito Penal e Processo Penal': 10.01
 }
 
-@st.cache_resource(show_spinner=False)
+@st.cache_data(show_spinner=False)
 def get_mapa_inscricoes(_df):
     return {str(insc): i for i, insc in enumerate(_df['Inscrição'])}
 
