@@ -4,37 +4,34 @@ Aplicação web interativa desenvolvida em **Python** e **Streamlit** para visua
 
 ---
 
-## 🌟 Funcionalidades Principais
+## 🌟 Funcionalidades Principais (Atualizado em 23 de Outubro de 2026)
 
-1. **🔍 Consulta Individual (Boletim do Candidato)**:
-   - Busca instantânea por **Nome** (com busca parcial, insensível a acentos e maiúsculas) ou por **Inscrição**.
-   - Cartão com posição exata no concurso (ex: *1º Lugar*, *Top 0.5%*).
-   - Métricas comparativas (distância da média geral e do primeiro colocado).
-   - **Gráfico Radar (Spider Chart)** comparando notas do candidato com a média dos 18.944 candidatos.
-   - **Gráfico de Aproveitamento (%)** em cada uma das 9 disciplinas.
-   - Tabela detalhada de pontos e vizinhança de classificação (+/- 5 concorrentes ao redor).
+1. **⚡ Consulta Individual de Resultados das Bancas (23/10/2026)**:
+   - Consulta instantânea por **Nome** ou **Inscrição**.
+   - **Status Oficial da Banca**: `DEFERIDO` ou `INDEFERIDO` na Heteroidentificação Étnico-Racial (Pretos, Pardos, Indígenas e Quilombolas) e na Perícia Médica PCD.
+   - **Nova Posição Recalculada na Cota**: Posição oficial pós-banca e cálculo exato de quantas posições o candidato avançou na fila (+XX posições ganhas).
+   - **Orientações Recursais Oficiais**: Prazos de recurso (26 e 27/10/2026), orientações legais sobre o Art. 4º (Hetero) e Art. 3º (PCD) garantindo a concorrência na Ampla Concorrência, e link para o *Boletim de Análise de Reserva de Vagas* no site da banca `avalia.org.br`.
 
-2. **🏆 Classificação Geral Oficial**:
-   - Tabela completa e interativa com os 18.944 candidatos.
-   - Filtros por pontuação mínima e máxima (Slider).
-   - Filtro de grupos rápidos (Top 50, Top 100, Top 500, etc.).
-   - Ordenação personalizada por qualquer coluna.
-   - **Exportação dos dados filtrados para CSV** (compatível com Excel com acentuação).
+2. **🔮 Simulador de Colocações pós-Bancas e TAF**:
+   - Modelagem preditiva baseada nos dados reais de 23 de outubro (3.045 indeferimentos na hetero e 186 no PCD).
+   - Simulação de taxa de reversão em recursos (26 e 27/10) e taxa de reprovação no TAF.
+   - Projeção de alcance para as 140 vagas da Ampla, 40 da Cota Étnica e 20 da Cota PCD.
 
-3. **📊 Raio-X & Inteligência Estatística**:
-   - Histograma de distribuição de notas com linhas de corte e percentis (P90, P99, Média, Mediana).
-   - Análise de dificuldade das disciplinas (% médio de acertos por matéria).
-   - Tabela de marcas de corte histórico (Top 10, 50, 100, 500, 1.000, 5.000).
+3. **📋 As Listas Oficiais & Resultados das Bancas (Downloads Excel)**:
+   - Visualização e download de 6 relações oficiais:
+     - Relação Preliminar da Heteroidentificação & Análise Documental (6.309 candidatos);
+     - Relação Preliminar da Perícia Médica PCD (659 candidatos);
+     - Nova Lista Reclassificada da Cota Étnico-Racial (3.264 cotistas deferidos);
+     - Nova Lista Reclassificada da Cota PCD (473 PCDs deferidos);
+     - Lista Geral Completa com Situação Atualizada das Bancas (18.945 candidatos);
+     - Lista Exclusiva de Não Cotistas (Ampla Concorrência Pura).
 
-4. **🎯 Simulador de Vagas e Linha de Corte**:
-   - Simulação instantânea de nota de corte para qualquer número de vagas (ex: 200, 500, 1.000 vagas).
-   - Identificação de candidatos empatados na nota de corte.
-   - Lista filtrada dos convocados.
+4. **🎯 Entenda as Regras, Recursos & Linhas de Corte do TAF**:
+   - Quadro oficial detalhado com a nova linha de corte do TAF (Ampla: 119 pts | Cota Étnica: desceu de 115 para 113 pts!).
+   - Explicação jurídica sobre o não cancelamento da participação dos indeferidos (migração automática para a Ampla).
 
-5. **⚔️ Comparador Direto de Candidatos**:
-   - Confronto direto entre quaisquer 2 candidatos.
-   - Gráfico de barras agrupadas matéria a matéria.
-   - Tabela de vantagens por disciplina.
+5. **📅 Cronograma Oficial do Concurso Atualizado**:
+   - Timeline interativa com o marco de hoje (23/10 - Resultado Preliminar) e contagem regressiva para os recursos (26 e 27/10) e resultado definitivo com corte do TAF (04/11).
 
 ---
 
