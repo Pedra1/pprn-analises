@@ -764,16 +764,11 @@ def modal_aviso_legal():
 </div>
 """, unsafe_allow_html=True)
 
-    if st.button("✅ Entendi e Desejo Acessar o Portal Atualizado", type="primary", use_container_width=True):
+    if st.button("✅ Entendi e Desejo Acessar o Portal Atualizado", type="primary", width="stretch"):
         st.session_state["disclaimer_visto"] = True
         st.rerun()
 
-if "disclaimer_visto" not in st.session_state:
-    st.session_state["disclaimer_visto"] = False
-
-if not st.session_state["disclaimer_visto"]:
-    st.session_state["disclaimer_visto"] = True
-    modal_aviso_legal()
+# O modal pode ser aberto manualmente pelo usuário sem travar o health check do Streamlit Cloud
 
 # ==============================================================================
 # HEADER HERO & VISÃO GERAL DAS BANCAS (ESTILO BANCA - FLAT & CLARO)
@@ -787,6 +782,9 @@ st.markdown("""<div class="hero-container">
 <p class="hero-subtitle">
 Boletim do candidato com resultado oficial preliminar da <strong>Heteroidentificação Étnico-Racial</strong> e da <strong>Perícia Médica PCD</strong>, orientações recursais (26 e 27/10) e avanço na reclassificação das cotas.
 </p>
+<div style="background: #FFFDF5; border: 1.5px solid #FCD34D; border-left: 5px solid #D97706; border-radius: 8px; padding: 10px 14px; margin-top: 14px; font-size: 0.88rem; color: #1E293B; line-height: 1.5;">
+    ⚖️ <strong>Informação Importante aos Convocados:</strong> Candidatos indeferidos na cota <strong>não estão eliminados</strong> do concurso (Art. 4º Hetero / Art. 3º PCD) e continuam na <strong>Ampla Concorrência</strong>. Prazo para recursos: <strong>26 e 27 de outubro</strong> no site <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a>.
+</div>
 </div>""", unsafe_allow_html=True)
 
 # 4 Métricas Principais Flat
@@ -1194,7 +1192,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
                 "Média Geral da Prova": f"{media_disc:.2f} pts",
                 "Comparativo com a Média": f"{diff_media:+.2f} pts" + (" 🟢 Acima" if diff_media > 0 else " 🔴 Abaixo")
             })
-        st.dataframe(pd.DataFrame(dados_detalhamento), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(dados_detalhamento), width="stretch", hide_index=True)
         
         # Gráfico de barras horizontal
         pct_candidato = [(candidato_selecionado[d] / PONTOS_MAXIMOS[d]) * 100 for d in DISCIPLINAS]
@@ -1227,7 +1225,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
             margin=dict(l=10, r=20, t=40, b=30),
             height=340
         )
-        st.plotly_chart(fig_bar, use_container_width=True)
+        st.plotly_chart(fig_bar, width="stretch")
 
         # Vizinhos de Classificação
         with st.expander("👥 Candidatos Próximos na Classificação Geral (+/- 5 concorrentes ao redor)"):
@@ -1243,7 +1241,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
                 
             st.dataframe(
                 vizinhos.style.apply(destacar_linha, axis=1),
-                use_container_width=True,
+                width="stretch",
                 hide_index=True
             )
 
@@ -1293,7 +1291,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
                             f"{outro_dados['Nome']}": f"{n2} pts",
                             "Vantagem": vantagem
                         })
-                    st.dataframe(pd.DataFrame(confronto_rows), use_container_width=True, hide_index=True)
+                    st.dataframe(pd.DataFrame(confronto_rows), width="stretch", hide_index=True)
                 else:
                     st.warning("Nenhum candidato encontrado com esse nome.")
             else:
@@ -1436,7 +1434,7 @@ Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares 
         margin=dict(l=10, r=20, t=50, b=30),
         height=350
     )
-    st.plotly_chart(fig_comp, use_container_width=True)
+    st.plotly_chart(fig_comp, width="stretch")
 
     # Detalhamento
     st.markdown("#### 📋 Detalhamento dos Candidatos no Cenário Simulado")
@@ -1451,7 +1449,7 @@ Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares 
         st.write(f"Candidatos que estavam no **Cadastro de Reserva da Geral** (> 140º) e agora alcançam uma das **140 Vagas Imediatas**:")
         if len(novos_ampla) > 0:
             cols_show_ampla = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
-            st.dataframe(novos_ampla[cols_show_ampla], use_container_width=True, hide_index=True)
+            st.dataframe(novos_ampla[cols_show_ampla], width="stretch", hide_index=True)
         else:
             st.info("Nenhum candidato além do 140º com a configuração atual.")
 
@@ -1459,7 +1457,7 @@ Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares 
         st.write(f"Cotistas étnicos que estavam no **Cadastro de Reserva da Cota** (> 40º) e agora alcançam uma das **40 Vagas Imediatas Reservadas**:")
         if len(novos_etnico) > 0:
             cols_show_etnico = ['Pos_Lista_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
-            st.dataframe(novos_etnico[cols_show_etnico], use_container_width=True, hide_index=True)
+            st.dataframe(novos_etnico[cols_show_etnico], width="stretch", hide_index=True)
         else:
             st.info("Nenhum cotista além do 40º com a configuração atual.")
 
@@ -1467,7 +1465,7 @@ Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares 
         st.write(f"Candidatos PCD que estavam além da 20ª colocação e agora alcançam uma das **20 Vagas Imediatas PCD**:")
         if len(novos_pcd) > 0:
             cols_show_pcd = ['Pos_Lista_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva']
-            st.dataframe(novos_pcd[cols_show_pcd], use_container_width=True, hide_index=True)
+            st.dataframe(novos_pcd[cols_show_pcd], width="stretch", hide_index=True)
         else:
             st.info("Nenhum candidato PCD além do 20º com a configuração atual.")
 
@@ -1623,7 +1621,7 @@ with tab_listas:
         
     st.dataframe(
         df_view_show[[c for c in cols_tabela if c in df_view_show.columns]],
-        use_container_width=True,
+        width="stretch",
         hide_index=True,
         height=480
     )
@@ -1687,7 +1685,7 @@ with tab_regras:
             "Composição do Grupo": "100% dos candidatos PCDs com laudo deferido preliminarmente na perícia médica"
         }
     ]
-    st.dataframe(pd.DataFrame(quadro_taf), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(quadro_taf), width="stretch", hide_index=True)
     
     st.write("")
     st.markdown("#### ❓ Perguntas Frequentes sobre os Resultados das Bancas")
