@@ -1682,6 +1682,151 @@ with tab_regras:
 </div>
 </div>""", unsafe_allow_html=True)
 
+    st.markdown("#### 📊 Estatísticas Oficiais da Heteroidentificação & Bancas de 23 de Outubro")
+    st.caption("Dados consolidados com base nos Anexos I, II e Único publicados oficialmente pela banca Instituto Avalia:")
+    
+    col_h1, col_h2, col_h3, col_h4 = st.columns(4)
+    with col_h1:
+        st.markdown("""<div class="stat-card">
+<div class="stat-label">Total Avaliado na Hetero</div>
+<div class="stat-value" style="color: #0F172A;">6.309</div>
+<div class="stat-sub" style="color: #475569; font-weight: 700;">100% dos cotistas étnicos</div>
+</div>""", unsafe_allow_html=True)
+    with col_h2:
+        st.markdown("""<div class="stat-card">
+<div class="stat-label">Deferidos na Hetero (Aprovados)</div>
+<div class="stat-value" style="color: #15803D;">3.264</div>
+<div class="stat-sub" style="color: #15803D; font-weight: 700;">✅ 51,74% de confirmação</div>
+</div>""", unsafe_allow_html=True)
+    with col_h3:
+        st.markdown("""<div class="stat-card">
+<div class="stat-label">Indeferidos na Hetero (Reprovados)</div>
+<div class="stat-value" style="color: #B45309;">3.045</div>
+<div class="stat-sub" style="color: #B45309; font-weight: 700;">⚠️ 48,26% de indeferimento</div>
+</div>""", unsafe_allow_html=True)
+    with col_h4:
+        st.markdown("""<div class="stat-card">
+<div class="stat-label">Salvos pela Ampla (Art. 4º)</div>
+<div class="stat-value" style="color: #0284C7;">79</div>
+<div class="stat-sub" style="color: #0284C7; font-weight: 700;">Nota ≥ 119 pts no TAF via Ampla</div>
+</div>""", unsafe_allow_html=True)
+
+    st.write("")
+    
+    # Tabela Analítica Segmentada
+    st.markdown("**📋 Demonstrativo Analítico por Modalidade de Reserva de Vagas:**")
+    tabela_hetero_dados = [
+        {
+            "Segmento de Reserva": "🧑🏿 Pretos e Pardos (Anexo I)",
+            "Total Avaliados": "6.243",
+            "Deferidos": "3.221",
+            "Taxa Deferimento": "51,59%",
+            "Indeferidos (Reprovações)": "3.022",
+            "Taxa Reprovação": "48,41%",
+            "Média Nota (Deferidos)": "97,4 pts",
+            "Média Nota (Indeferidos)": "91,6 pts"
+        },
+        {
+            "Segmento de Reserva": "🏹 Indígenas (Anexo II)",
+            "Total Avaliados": "58",
+            "Deferidos": "37",
+            "Taxa Deferimento": "63,79%",
+            "Indeferidos (Reprovações)": "21",
+            "Taxa Reprovação": "36,21%",
+            "Média Nota (Deferidos)": "92,6 pts",
+            "Média Nota (Indeferidos)": "90,7 pts"
+        },
+        {
+            "Segmento de Reserva": "🏺 Quilombolas (Anexo II)",
+            "Total Avaliados": "29",
+            "Deferidos": "18",
+            "Taxa Deferimento": "62,07%",
+            "Indeferidos (Reprovações)": "11",
+            "Taxa Reprovação": "37,93%",
+            "Média Nota (Deferidos)": "92,5 pts",
+            "Média Nota (Indeferidos)": "82,7 pts"
+        },
+        {
+            "Segmento de Reserva": "📊 TOTAL COTA ÉTNICO-RACIAL",
+            "Total Avaliados": "6.309",
+            "Deferidos": "3.264",
+            "Taxa Deferimento": "51,74%",
+            "Indeferidos (Reprovações)": "3.045",
+            "Taxa Reprovação": "48,26%",
+            "Média Nota (Deferidos)": "97,3 pts",
+            "Média Nota (Indeferidos)": "91,6 pts"
+        },
+        {
+            "Segmento de Reserva": "♿ Perícia Médica PCD (Anexo Único)",
+            "Total Avaliados": "659",
+            "Deferidos": "473",
+            "Taxa Deferimento": "71,78%",
+            "Indeferidos (Reprovações)": "186",
+            "Taxa Reprovação": "28,22%",
+            "Média Nota (Deferidos)": "94,9 pts",
+            "Média Nota (Indeferidos)": "90,0 pts"
+        }
+    ]
+    st.dataframe(pd.DataFrame(tabela_hetero_dados), width="stretch", hide_index=True)
+    
+    st.write("")
+    
+    # Gráfico Visual de Deferimento vs Indeferimento
+    seg_names = ['Pretos/Pardos', 'Indígenas', 'Quilombolas', 'Total Étnico', 'Perícia PCD']
+    def_vals = [51.59, 63.79, 62.07, 51.74, 71.78]
+    ind_vals = [48.41, 36.21, 37.93, 48.26, 28.22]
+    
+    fig_hetero = go.Figure()
+    fig_hetero.add_trace(go.Bar(
+        y=seg_names,
+        x=def_vals,
+        name='Deferidos (Confirmados)',
+        orientation='h',
+        marker_color='#16A34A',
+        text=[f"{v:.1f}%" for v in def_vals],
+        textposition='inside',
+        insidetextanchor='middle',
+        textfont=dict(color='white', size=11, family='Inter', weight=700)
+    ))
+    fig_hetero.add_trace(go.Bar(
+        y=seg_names,
+        x=ind_vals,
+        name='Indeferidos (Reprovados na Banca)',
+        orientation='h',
+        marker_color='#DC2626',
+        text=[f"{v:.1f}%" for v in ind_vals],
+        textposition='inside',
+        insidetextanchor='middle',
+        textfont=dict(color='white', size=11, family='Inter', weight=700)
+    ))
+    fig_hetero.update_layout(
+        barmode='stack',
+        title=dict(text="Proporção Visual: Confirmação vs. Reprovação nas Bancas", font=dict(color='#0F172A', size=13)),
+        xaxis=dict(range=[0, 100], title="Distribuição Percentual (%)", gridcolor='#E2E8F0', tickfont=dict(color='#475569')),
+        yaxis=dict(autorange="reversed", tickfont=dict(color='#0F172A')),
+        template="plotly_white",
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(l=10, r=10, t=35, b=25),
+        height=240,
+        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1, font=dict(size=11))
+    )
+    st.plotly_chart(fig_hetero, width="stretch")
+    
+    st.write("")
+    st.markdown("""<div class="sim-notice-card" style="border-left-color: #0284C7; background: #F8FAFC;">
+<div style="font-size: 0.85rem; font-weight: 800; color: #0284C7; text-transform: uppercase; margin-bottom: 6px;">
+    💡 PRINCIPAIS CONCLUSÕES E IMPACTOS DA HETEROIDENTIFICAÇÃO
+</div>
+<div style="font-size: 0.9rem; color: #334155; line-height: 1.6;">
+    • <strong>Atrito Elevado nas Cotas Étnicas:</strong> Quase metade dos cotistas (<strong>48,26%</strong>) foi indeferida na análise preliminar. Isso representa <strong>3.045 candidatos a menos</strong> na disputa da reserva.<br>
+    • <strong>Efeito Positivo para Cotistas Deferidos:</strong> Como a fila da cota andou mais de 3.000 posições, os cotistas com laudo confirmado ganharam até centenas de posições na classificação.<br>
+    • <strong>Candidatos de Cota com Alto Desempenho (Art. 4º):</strong> Exatamente <strong>79 cotistas indeferidos</strong> possuem nota ≥ 119 pontos (com pontuações que chegam até 136 pontos). Eles continuam <strong>100% convocados para o TAF</strong> pela Ampla Concorrência, sem qualquer prejuízo pelo indeferimento.<br>
+    • <strong>Perícia PCD com Maior Índice de Homologação:</strong> A perícia médica teve <strong>71,78% de laudos deferidos</strong> (473 candidatos aptos de um total de 659 avaliados).
+</div>
+</div>""", unsafe_allow_html=True)
+    
+    st.write("")
     st.markdown("#### 🏃‍♂️ Linhas de Corte do TAF Atualizadas com as Bancas (23 de Outubro)")
     st.markdown("""
     Com o indeferimento preliminar de <strong>3.045 cotistas na Heteroidentificação</strong> e <strong>186 na Perícia PCD</strong>, a fila das cotas andou significativamente, gerando novos cortes para o TAF:
