@@ -785,7 +785,7 @@ st.markdown("""<div class="hero-container">
 </div>
 <h1 class="hero-title">Portal de Resultados • Concurso Policial Penal RN</h1>
 <p class="hero-subtitle">
-Boletim do candidato com resultado oficial preliminar da <strong>Heteroidentificação Étnico-Racial</strong> e da <strong>Perícia Médica PCD</strong>, orientações recursais (26 e 27/10), avanço nas listas de cotas e novo cálculo das linhas de corte do TAF.
+Boletim do candidato com resultado oficial preliminar da <strong>Heteroidentificação Étnico-Racial</strong> e da <strong>Perícia Médica PCD</strong>, orientações recursais (26 e 27/10) e avanço na reclassificação das cotas.
 </p>
 </div>""", unsafe_allow_html=True)
 
@@ -815,10 +815,10 @@ with m3:
 
 with m4:
     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">🏃‍♂️ Convocação TAF Atualizada</div>
-<div class="stat-value" style="color: #0284C7;">{TOTAL_CONVOCADOS_TAF_PRELIMINAR:,} Convocados</div>
-<div class="stat-sub" style="color: #0F172A; font-weight: 700;">Corte AC: 119 pts | Corte Cota: 113 pts!</div>
-</div>""".replace(",", "."), unsafe_allow_html=True)
+<div class="stat-label">🏛️ Não Cotistas (Ampla)</div>
+<div class="stat-value" style="color: #0284C7;">{TOTAL_AMPLA_FMT}</div>
+<div class="stat-sub">{(TOTAL_AMPLA_PURA/TOTAL_CANDIDATOS)*100:.1f}% concorrendo exclusivamente na Ampla</div>
+</div>""", unsafe_allow_html=True)
 
 st.write("")
 
