@@ -18,415 +18,569 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# ESTILOS CSS CUSTOMIZADOS (ALTO CONTRASTE, TEMA CLARO & FLAT)
+# ESTILOS CSS CUSTOMIZADOS (BOOTSTRAP 5 DESIGN SYSTEM & BOOTSTRAP ICONS)
 # ==============================================================================
 st.markdown("""<style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
+    @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+    @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700;800&display=swap');
     
-    /* Base Global em Tons Claros com Alto Contraste */
+    /* Variáveis Globais do Bootstrap 5 */
+    :root {
+        --bs-primary: #0d6efd;
+        --bs-primary-rgb: 13, 110, 253;
+        --bs-secondary: #6c757d;
+        --bs-secondary-rgb: 108, 117, 125;
+        --bs-success: #198754;
+        --bs-success-rgb: 25, 135, 84;
+        --bs-info: #0dcaf0;
+        --bs-info-rgb: 13, 202, 240;
+        --bs-warning: #ffc107;
+        --bs-warning-rgb: 255, 193, 7;
+        --bs-danger: #dc3545;
+        --bs-danger-rgb: 220, 53, 69;
+        --bs-light: #f8f9fa;
+        --bs-light-rgb: 248, 249, 250;
+        --bs-dark: #212529;
+        --bs-dark-rgb: 33, 37, 41;
+        --bs-purple: #6f42c1;
+        --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif;
+        --bs-body-bg: #f8f9fa;
+        --bs-body-color: #212529;
+        --bs-border-color: #dee2e6;
+        --bs-card-border-radius: 0.5rem;
+        --bs-border-radius: 0.375rem;
+        --bs-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    /* Base Global Bootstrap */
     html, body, [class*="css"], .stApp {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-        background-color: #F8FAFC !important;
-        color: #0F172A !important;
+        font-family: var(--bs-body-font-family) !important;
+        background-color: #f8f9fa !important;
+        color: #212529 !important;
     }
 
-    header[data-testid="stHeader"] {
-        background-color: #F8FAFC !important;
-    }
-
-    .stApp > header {
-        background-color: #F8FAFC !important;
+    header[data-testid="stHeader"], .stApp > header {
+        background-color: #f8f9fa !important;
+        border-bottom: 1px solid #dee2e6 !important;
     }
 
     /* Tipografia de Alto Contraste */
     p, span, div, label, li, a {
-        color: #1E293B;
+        color: #212529;
     }
 
     h1, h2, h3, h4, h5, h6 {
-        color: #0F172A !important;
-        font-weight: 800 !important;
+        color: #212529 !important;
+        font-weight: 700 !important;
+        letter-spacing: -0.01em;
     }
 
     .stMarkdown, .stMarkdown p, .stMarkdown span, [data-testid="stMarkdownContainer"] p {
-        color: #1E293B !important;
+        color: #212529 !important;
     }
 
     .stCaption, [data-testid="stCaptionContainer"] p {
-        color: #64748B !important;
+        color: #6c757d !important;
         font-weight: 500 !important;
     }
 
-    /* Hero Banner Institucional Flat */
-    .hero-container {
-        background: #FFFFFF;
-        border: 1px solid #CBD5E1;
-        border-top: 4px solid #0284C7;
-        border-radius: 12px;
-        padding: 24px 28px;
-        margin-bottom: 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-    
-    .badge-pill {
-        display: inline-block;
-        background: #DCFCE7;
-        color: #15803D;
-        border: 1px solid #86EFAC;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        font-size: 0.78rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 8px;
-    }
-
-    .badge-pill-amber {
-        display: inline-block;
-        background: #FEF3C7;
-        color: #B45309;
-        border: 1px solid #FCD34D;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        font-size: 0.78rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 8px;
-    }
-
-    .badge-pill-blue {
-        display: inline-block;
-        background: #E0F2FE;
-        color: #0369A1;
-        border: 1px solid #BAE6FD;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        font-size: 0.78rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        margin-bottom: 8px;
-    }
-    
-    .hero-title {
-        font-size: 1.85rem;
-        font-weight: 800;
-        color: #0F172A !important;
-        margin: 0 0 6px 0;
-        letter-spacing: -0.02em;
-        line-height: 1.25;
-    }
-    
-    .hero-subtitle {
-        color: #475569 !important;
-        font-size: 0.95rem;
-        margin: 0;
-        line-height: 1.5;
-        font-weight: 500;
-    }
-    
-    /* Stat Cards Flat com Alto Contraste */
-    .stat-card {
-        background: #FFFFFF !important;
-        border: 1px solid #CBD5E1 !important;
-        border-radius: 10px !important;
-        padding: 14px 16px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-        transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-    
-    .stat-card:hover {
-        border-color: #94A3B8 !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07) !important;
-    }
-    
-    .stat-label {
-        color: #475569 !important;
-        font-size: 0.76rem !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.04em !important;
-        margin-bottom: 4px !important;
-    }
-    
-    .stat-value {
-        font-size: 1.65rem !important;
-        font-weight: 800 !important;
-        color: #0F172A !important;
-        line-height: 1.2 !important;
-    }
-    
-    .stat-sub {
-        font-size: 0.76rem !important;
-        color: #64748B !important;
-        margin-top: 4px !important;
-        font-weight: 600 !important;
-    }
-
-    /* Cards do Candidato e Resultados das Bancas */
-    .candidate-card {
-        background: #FFFFFF;
-        border: 1px solid #CBD5E1;
-        border-radius: 12px;
-        padding: 22px 24px;
-        margin-bottom: 18px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-    
-    .pos-badge {
-        display: inline-block;
-        padding: 6px 14px;
-        border-radius: 8px;
-        font-weight: 800;
-        font-size: 1.05rem;
-        letter-spacing: -0.01em;
-    }
-    
-    .pos-top {
-        background: #DCFCE7;
-        color: #15803D;
-        border: 1px solid #86EFAC;
-    }
-    
-    .pos-standard {
-        background: #F1F5F9;
-        color: #0F172A;
-        border: 1px solid #CBD5E1;
-    }
-    
-    .tag-cota {
-        display: inline-block;
-        padding: 3px 10px;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        margin-right: 6px;
-        margin-bottom: 6px;
-    }
-    
-    .tag-ampla { background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; }
-    .tag-negro { background: #F3E8FF; color: #6B21A8; border: 1px solid #DDD6FE; }
-    .tag-indigena { background: #FFEDD5; color: #C2410C; border: 1px solid #FED7AA; }
-    .tag-quilombola { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
-    .tag-pcd { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; }
-
-    /* Cards Específicos para Resultado das Bancas */
-    .card-resultado-deferido {
-        background: #F0FDF4;
-        border: 1.5px solid #86EFAC;
-        border-left: 5px solid #16A34A;
-        border-radius: 10px;
-        padding: 16px 18px;
-        margin: 14px 0;
-    }
-
-    .card-resultado-indeferido {
-        background: #FFFDF5;
-        border: 1.5px solid #FCD34D;
-        border-left: 5px solid #D97706;
-        border-radius: 10px;
-        padding: 16px 18px;
-        margin: 14px 0;
-    }
-
-    .card-resultado-ampla {
-        background: #F0F9FF;
-        border: 1.5px solid #BAE6FD;
-        border-left: 5px solid #0284C7;
-        border-radius: 10px;
-        padding: 16px 18px;
-        margin: 14px 0;
-    }
-
-    .recurso-alert-box {
-        background: #EFF6FF;
-        border: 1px solid #BFDBFE;
-        border-left: 4px solid #2563EB;
-        border-radius: 8px;
-        padding: 12px 16px;
-        margin-top: 10px;
-        font-size: 0.88rem;
-        color: #1E3A8A;
-        line-height: 1.5;
-    }
-
-    .card-previsao-ok {
-        background: #F0FDF4;
-        border: 1.5px solid #86EFAC;
-        border-left: 5px solid #16A34A;
-        border-radius: 10px;
-        padding: 14px 18px;
-        margin-top: 12px;
-    }
-
-    .card-previsao {
-        background: #F8FAFC;
-        border: 1px solid #CBD5E1;
-        border-left: 5px solid #64748B;
-        border-radius: 10px;
-        padding: 14px 18px;
-        margin-top: 12px;
-    }
-
-    /* Customização das Abas Flat */
+    /* Abas Streamlit -> Bootstrap 5 Nav Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        border-bottom: 2px solid #CBD5E1;
-        padding-bottom: 2px;
+        gap: 6px;
+        border-bottom: 2px solid #dee2e6 !important;
+        padding-bottom: 0px !important;
+        background: transparent !important;
     }
     
     .stTabs [data-baseweb="tab"] {
         height: 44px;
         white-space: pre-wrap;
-        background-color: #FFFFFF;
-        border-radius: 8px 8px 0px 0px;
-        gap: 6px;
-        padding: 8px 18px;
-        font-weight: 700;
-        font-size: 0.9rem;
-        color: #475569 !important;
-        border: 1px solid #CBD5E1;
-        border-bottom: none;
+        background-color: transparent !important;
+        border-radius: 0.375rem 0.375rem 0 0 !important;
+        gap: 8px;
+        padding: 0.5rem 1.15rem !important;
+        font-weight: 600 !important;
+        font-size: 0.92rem !important;
+        color: #6c757d !important;
+        border: 1px solid transparent !important;
+        border-bottom: none !important;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out !important;
     }
     
+    .stTabs [data-baseweb="tab"]:hover {
+        color: #0d6efd !important;
+        background-color: #ffffff !important;
+        border-color: #dee2e6 #dee2e6 transparent !important;
+    }
+
     .stTabs [aria-selected="true"] {
-        background-color: #0284C7 !important;
-        border-color: #0284C7 !important;
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-    }
-
-    /* Metric Containers Light & High Contrast */
-    [data-testid="stMetric"], div[data-testid="stMetric"] {
-        background: #FFFFFF !important;
-        border: 1px solid #CBD5E1 !important;
-        border-radius: 10px !important;
-        padding: 14px 16px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
-    }
-
-    [data-testid="stMetricLabel"] {
-        color: #475569 !important;
-        font-size: 0.78rem !important;
+        background-color: #ffffff !important;
+        border-color: #dee2e6 #dee2e6 #ffffff !important;
+        color: #0d6efd !important;
         font-weight: 700 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.03em !important;
+        border-bottom: 3px solid #0d6efd !important;
     }
 
-    [data-testid="stMetricValue"] {
-        color: #0F172A !important;
-        font-size: 1.65rem !important;
-        font-weight: 800 !important;
-    }
-
-    /* Inputs e Selectboxes com Alto Contraste */
-    .stTextInput input, .stSelectbox [data-baseweb="select"] {
-        background-color: #FFFFFF !important;
-        border-color: #94A3B8 !important;
-        color: #0F172A !important;
+    /* Botões Streamlit -> Bootstrap 5 .btn .btn-primary */
+    .stButton > button, div.stButton > button {
+        background-color: #0d6efd !important;
+        color: #ffffff !important;
+        border: 1px solid #0d6efd !important;
+        border-radius: 0.375rem !important;
         font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        padding: 0.5rem 1.25rem !important;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, transform 0.1s ease !important;
+    }
+
+    .stButton > button:hover, div.stButton > button:hover {
+        background-color: #0b5ed7 !important;
+        border-color: #0a58ca !important;
+        color: #ffffff !important;
+        box-shadow: 0 0.25rem 0.5rem rgba(13, 110, 253, 0.25) !important;
+        transform: translateY(-1px);
+    }
+
+    .stButton > button:active, div.stButton > button:active {
+        background-color: #0a58ca !important;
+        border-color: #0a53be !important;
+        transform: translateY(0);
+    }
+
+    /* Botão de Download -> Bootstrap .btn .btn-success */
+    .stDownloadButton > button, div.stDownloadButton > button {
+        background-color: #198754 !important;
+        color: #ffffff !important;
+        border: 1px solid #198754 !important;
+        border-radius: 0.375rem !important;
+        font-weight: 600 !important;
+        font-size: 0.95rem !important;
+        padding: 0.5rem 1.25rem !important;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+        transition: all 0.15s ease-in-out !important;
+    }
+
+    .stDownloadButton > button:hover, div.stDownloadButton > button:hover {
+        background-color: #157347 !important;
+        border-color: #146c43 !important;
+        color: #ffffff !important;
+        box-shadow: 0 0.25rem 0.5rem rgba(25, 135, 84, 0.25) !important;
+        transform: translateY(-1px);
+    }
+
+    /* Inputs e Seletores -> Bootstrap 5 .form-control / .form-select */
+    .stTextInput input, .stSelectbox [data-baseweb="select"] {
+        background-color: #ffffff !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 0.375rem !important;
+        color: #212529 !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+    }
+
+    .stTextInput input:focus, .stSelectbox [data-baseweb="select"]:focus-within {
+        border-color: #86b7fe !important;
+        outline: 0 !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
     }
 
     [data-testid="stRadio"] label, [data-testid="stRadio"] span, [data-testid="stRadio"] p,
     [data-testid="stSelectbox"] label, [data-testid="stSelectbox"] span, [data-testid="stSelectbox"] p,
     [data-testid="stTextInput"] label, [data-testid="stTextInput"] span, [data-testid="stTextInput"] p,
     [data-testid="stSlider"] label, [data-testid="stSlider"] span, [data-testid="stSlider"] p {
-        color: #0F172A !important;
+        color: #212529 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Métricas Nativas -> Bootstrap Card Metric */
+    [data-testid="stMetric"], div[data-testid="stMetric"] {
+        background: #ffffff !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 0.5rem !important;
+        padding: 1rem 1.25rem !important;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    }
+
+    [data-testid="stMetricLabel"] {
+        color: #6c757d !important;
+        font-size: 0.8rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.03em !important;
+    }
+
+    [data-testid="stMetricValue"] {
+        color: #212529 !important;
+        font-size: 1.75rem !important;
         font-weight: 700 !important;
     }
 
-    /* Timeline Cards */
-    .timeline-card {
-        background: #FFFFFF;
-        border: 1px solid #CBD5E1;
-        border-radius: 10px;
-        padding: 16px 18px;
-        margin-bottom: 12px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    /* Expanders -> Bootstrap 5 Accordion */
+    [data-testid="stExpander"] {
+        border: 1px solid #dee2e6 !important;
+        border-radius: 0.5rem !important;
+        overflow: hidden !important;
+        background: #ffffff !important;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05) !important;
+        margin-bottom: 0.85rem !important;
     }
 
-    .timeline-card-past { border-left: 5px solid #16A34A; }
-    .timeline-card-active { border-left: 5px solid #D97706; background: #FFFDF5; }
-    .timeline-card-next { border-left: 5px solid #0284C7; }
-    .timeline-card-future { border-left: 5px solid #94A3B8; opacity: 0.9; }
+    [data-testid="stExpander"] summary {
+        background: #f8f9fa !important;
+        color: #212529 !important;
+        font-weight: 600 !important;
+        padding: 0.75rem 1.15rem !important;
+        border-bottom: 1px solid #dee2e6 !important;
+    }
 
-    /* Simulation Styles */
+    /* Modais / Diálogos -> Bootstrap Modal Content */
+    div[data-testid="stDialog"] div[role="dialog"] {
+        border: 1px solid rgba(0,0,0,0.175) !important;
+        border-radius: 0.5rem !important;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+        background: #ffffff !important;
+    }
+
+    /* Dataframes -> Bootstrap Table Styling */
+    [data-testid="stDataFrame"] {
+        border: 1px solid #dee2e6 !important;
+        border-radius: 0.375rem !important;
+        overflow: hidden !important;
+        background: #ffffff !important;
+    }
+
+    /* ==========================================================================
+       COMPONENTES BOOTSTRAP 5 CUSTOMIZADOS
+       ========================================================================== */
+
+    /* Hero Banner Institucional -> Bootstrap Lead Jumbotron */
+    .hero-container {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-top: 4px solid #0d6efd;
+        border-radius: 0.5rem;
+        padding: 1.5rem 1.75rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+    
+    .hero-title {
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: #212529 !important;
+        margin: 0 0 0.4rem 0;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+    }
+    
+    .hero-subtitle {
+        color: #6c757d !important;
+        font-size: 0.95rem;
+        margin: 0;
+        line-height: 1.55;
+        font-weight: 400;
+    }
+
+    /* Badges Pill -> Bootstrap 5 Badges */
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        border: 1px solid #badbcc;
+        padding: 0.35em 0.75em;
+        border-radius: 50rem;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.5rem;
+    }
+
+    .badge-pill-amber {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #fff3cd;
+        color: #664d03;
+        border: 1px solid #ffecb5;
+        padding: 0.35em 0.75em;
+        border-radius: 50rem;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.5rem;
+    }
+
+    .badge-pill-blue {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #cfe2ff;
+        color: #084298;
+        border: 1px solid #b6d4fe;
+        padding: 0.35em 0.75em;
+        border-radius: 50rem;
+        font-size: 0.76rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Stat Cards -> Bootstrap Cards com Hover */
+    .stat-card {
+        background: #ffffff !important;
+        border: 1px solid #dee2e6 !important;
+        border-radius: 0.5rem !important;
+        padding: 1rem 1.25rem !important;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    
+    .stat-card:hover {
+        border-color: #adb5bd !important;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1) !important;
+        transform: translateY(-2px);
+    }
+    
+    .stat-label {
+        color: #6c757d !important;
+        font-size: 0.78rem !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.04em !important;
+        margin-bottom: 0.35rem !important;
+    }
+    
+    .stat-value {
+        font-size: 1.75rem !important;
+        font-weight: 800 !important;
+        color: #212529 !important;
+        line-height: 1.2 !important;
+    }
+    
+    .stat-sub {
+        font-size: 0.78rem !important;
+        color: #6c757d !important;
+        margin-top: 0.35rem !important;
+        font-weight: 600 !important;
+    }
+
+    /* Cards do Candidato -> Bootstrap Card */
+    .candidate-card {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1.5rem 1.75rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+    
+    .pos-badge {
+        display: inline-block;
+        padding: 0.45rem 1.1rem;
+        border-radius: 0.375rem;
+        font-weight: 800;
+        font-size: 1.1rem;
+        letter-spacing: -0.01em;
+    }
+    
+    .pos-top {
+        background-color: #d1e7dd;
+        color: #0f5132;
+        border: 1px solid #badbcc;
+    }
+    
+    .pos-standard {
+        background-color: #f8f9fa;
+        color: #212529;
+        border: 1px solid #dee2e6;
+    }
+    
+    .tag-cota {
+        display: inline-block;
+        padding: 0.25rem 0.65rem;
+        border-radius: 0.375rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-right: 0.4rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .tag-ampla { background-color: #cfe2ff; color: #084298; border: 1px solid #b6d4fe; }
+    .tag-negro { background-color: #e2d9f3; color: #491278; border: 1px solid #c9b8ea; }
+    .tag-indigena { background-color: #ffe5d0; color: #8a3408; border: 1px solid #ffd0aa; }
+    .tag-quilombola { background-color: #fff3cd; color: #664d03; border: 1px solid #ffecb5; }
+    .tag-pcd { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+
+    /* Cards de Resultado das Bancas -> Bootstrap Alerts com Borda Esquerda */
+    .card-resultado-deferido {
+        background-color: #d1e7dd;
+        border: 1px solid #badbcc;
+        border-left: 5px solid #198754;
+        border-radius: 0.5rem;
+        padding: 1.1rem 1.25rem;
+        margin: 1rem 0;
+        color: #0f5132;
+    }
+
+    .card-resultado-indeferido {
+        background-color: #fff3cd;
+        border: 1px solid #ffecb5;
+        border-left: 5px solid #ffc107;
+        border-radius: 0.5rem;
+        padding: 1.1rem 1.25rem;
+        margin: 1rem 0;
+        color: #664d03;
+    }
+
+    .card-resultado-ampla {
+        background-color: #cff4fc;
+        border: 1px solid #b6effb;
+        border-left: 5px solid #0dcaf0;
+        border-radius: 0.5rem;
+        padding: 1.1rem 1.25rem;
+        margin: 1rem 0;
+        color: #055160;
+    }
+
+    .recurso-alert-box {
+        background-color: #cfe2ff;
+        border: 1px solid #b6d4fe;
+        border-left: 4px solid #0d6efd;
+        border-radius: 0.375rem;
+        padding: 0.85rem 1.1rem;
+        margin-top: 0.75rem;
+        font-size: 0.875rem;
+        color: #084298;
+        line-height: 1.55;
+    }
+
+    .card-previsao-ok {
+        background-color: #d1e7dd;
+        border: 1px solid #badbcc;
+        border-left: 5px solid #198754;
+        border-radius: 0.5rem;
+        padding: 1.1rem 1.25rem;
+        margin-top: 0.85rem;
+        color: #0f5132;
+    }
+
+    .card-previsao {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-left: 5px solid #6c757d;
+        border-radius: 0.5rem;
+        padding: 1.1rem 1.25rem;
+        margin-top: 0.85rem;
+        color: #212529;
+    }
+
+    /* Linha do Tempo (Cronograma) -> Bootstrap List Group Style */
+    .timeline-card {
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+        padding: 1rem 1.25rem;
+        margin-bottom: 0.75rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .timeline-card:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.08);
+    }
+
+    .timeline-card-past { border-left: 5px solid #198754; }
+    .timeline-card-active { border-left: 5px solid #ffc107; background-color: #fffdf5; }
+    .timeline-card-next { border-left: 5px solid #0d6efd; }
+    .timeline-card-future { border-left: 5px solid #adb5bd; opacity: 0.85; }
+
+    /* Banners de Simulação */
     .sim-banner {
-        background: #FFFFFF;
-        border: 1px solid #CBD5E1;
-        border-top: 4px solid #7C3AED;
-        border-radius: 12px;
-        padding: 20px 24px;
-        margin-bottom: 20px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        background: #ffffff;
+        border: 1px solid #dee2e6;
+        border-top: 4px solid #6f42c1;
+        border-radius: 0.5rem;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     }
 
     .sim-badge {
-        display: inline-block;
-        background: #EDE9FE;
-        color: #6D28D9;
-        border: 1px solid #C4B5FD;
-        padding: 4px 12px;
-        border-radius: 9999px;
-        font-size: 0.78rem;
-        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #e2d9f3;
+        color: #491278;
+        border: 1px solid #c9b8ea;
+        padding: 0.35em 0.75em;
+        border-radius: 50rem;
+        font-size: 0.75rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.04em;
-        margin-bottom: 8px;
+        margin-bottom: 0.5rem;
     }
 
     .sim-gain-pill {
         display: inline-block;
-        background: #DCFCE7;
-        color: #15803D;
-        font-weight: 800;
-        font-size: 0.78rem;
-        padding: 2px 8px;
-        border-radius: 6px;
-        border: 1px solid #86EFAC;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        font-weight: 700;
+        font-size: 0.75rem;
+        padding: 0.2em 0.6em;
+        border-radius: 0.25rem;
+        border: 1px solid #badbcc;
     }
 
     .sim-notice-card {
-        background: #F8FAFC;
-        border: 1px solid #CBD5E1;
-        border-left: 4px solid #0284C7;
-        border-radius: 10px;
-        padding: 14px 18px;
-        margin-bottom: 16px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-left: 4px solid #0d6efd;
+        border-radius: 0.5rem;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
     }
 
     .candidate-header-badge { text-align: right; }
     .modal-grid-2col {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        margin-bottom: 16px;
+        gap: 1rem;
+        margin-bottom: 1rem;
     }
 
-    /* Footer Flat */
+    /* Rodapé Bootstrap */
     .footer-container {
         text-align: center;
-        color: #475569;
-        font-size: 0.88rem;
-        padding: 24px 0 12px 0;
-        border-top: 1px solid #CBD5E1;
-        margin-top: 30px;
+        color: #6c757d;
+        font-size: 0.875rem;
+        padding: 1.75rem 0 1rem 0;
+        border-top: 1px solid #dee2e6;
+        margin-top: 2rem;
         line-height: 1.6;
     }
 
-    /* Mobile First */
+    /* Responsividade Mobile-First */
     @media (max-width: 768px) {
         .main .block-container {
-            padding: 0.75rem 0.6rem 2.5rem 0.6rem !important;
+            padding: 0.75rem 0.5rem 2rem 0.5rem !important;
             max-width: 100% !important;
         }
 
         .hero-container {
-            padding: 14px 14px !important;
-            border-radius: 10px !important;
-            margin-bottom: 12px !important;
+            padding: 1rem !important;
+            border-radius: 0.375rem !important;
+            margin-bottom: 0.75rem !important;
         }
 
         .hero-title {
@@ -436,13 +590,8 @@ st.markdown("""<style>
         }
 
         .hero-subtitle {
-            font-size: 0.84rem !important;
+            font-size: 0.85rem !important;
             line-height: 1.45 !important;
-        }
-
-        .badge-pill, .badge-pill-amber, .badge-pill-blue {
-            font-size: 0.7rem !important;
-            padding: 3px 8px !important;
         }
 
         .stTabs [data-baseweb="tab-list"] {
@@ -451,54 +600,54 @@ st.markdown("""<style>
             overflow-x: auto !important;
             -webkit-overflow-scrolling: touch !important;
             scrollbar-width: none !important;
-            gap: 6px !important;
-            padding-bottom: 4px !important;
-            border-bottom: 2px solid #CBD5E1 !important;
+            gap: 4px !important;
+            padding-bottom: 2px !important;
+            border-bottom: 2px solid #dee2e6 !important;
         }
 
         .stTabs [data-baseweb="tab"] {
             flex: 0 0 auto !important;
             white-space: nowrap !important;
             height: 38px !important;
-            padding: 6px 14px !important;
-            font-size: 0.82rem !important;
-            border-radius: 6px 6px 0 0 !important;
+            padding: 0.4rem 0.85rem !important;
+            font-size: 0.825rem !important;
+            border-radius: 0.375rem 0.375rem 0 0 !important;
         }
 
         [data-testid="column"] {
             flex: 1 1 100% !important;
             width: 100% !important;
             min-width: 100% !important;
-            margin-bottom: 6px !important;
+            margin-bottom: 0.5rem !important;
         }
 
         .stat-card {
-            padding: 12px 14px !important;
-            border-radius: 8px !important;
-            margin-bottom: 8px !important;
+            padding: 0.85rem 1rem !important;
+            border-radius: 0.375rem !important;
+            margin-bottom: 0.5rem !important;
         }
 
         .candidate-card {
-            padding: 14px 14px !important;
-            border-radius: 10px !important;
-            margin-bottom: 14px !important;
+            padding: 1rem !important;
+            border-radius: 0.375rem !important;
+            margin-bottom: 0.85rem !important;
         }
 
         .candidate-header-badge {
             text-align: left !important;
             width: 100% !important;
-            margin-top: 8px !important;
+            margin-top: 0.5rem !important;
         }
 
         .modal-grid-2col {
             grid-template-columns: 1fr !important;
-            gap: 10px !important;
+            gap: 0.75rem !important;
         }
 
         div[data-testid="stDialog"] div[role="dialog"] {
             width: 95vw !important;
             max-width: 95vw !important;
-            padding: 16px 14px !important;
+            padding: 1rem !important;
         }
     }
 </style>
@@ -747,43 +896,46 @@ def executar_simulacao_pos_bancas(
     return df_sim, resumo, novos_vagas_ampla, novos_vagas_etnico, novos_vagas_pcd
 
 # ==============================================================================
-# AVISO LEGAL INICIAL & NOVIDADES DE 23 DE OUTUBRO (MODAL)
+# AVISO LEGAL INICIAL & NOVIDADES DE 23 DE OUTUBRO (MODAL BOOTSTRAP 5)
 # ==============================================================================
 @st.dialog("📢 Atualização Importante: Listas Preliminares das Bancas (23/10)", width="large")
 def modal_aviso_legal():
     st.markdown("""
-<div style="font-family: 'Inter', sans-serif;">
-<div style="background: #FFFDF5; border: 1.5px solid #F59E0B; border-left: 5px solid #D97706; border-radius: 10px; padding: 14px 18px; margin-bottom: 16px;">
-    <div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;">
-        ⚡ PUBLICAÇÃO OFICIAL DAS BANCAS DE COTAS • 23 DE OUTUBRO DE 2026
+<div>
+<div class="alert alert-warning border-start border-4 border-warning shadow-sm rounded-3 p-3 mb-3">
+    <div class="d-flex align-items-center gap-2 mb-1" style="font-size: 0.82rem; font-weight: 800; color: #664d03; text-transform: uppercase; letter-spacing: 0.04em;">
+        <i class="bi bi-lightning-charge-fill text-warning fs-6"></i> PUBLICAÇÃO OFICIAL DAS BANCAS DE COTAS • 23 DE OUTUBRO DE 2026
     </div>
-    <div style="font-size: 0.95rem; color: #1E293B; line-height: 1.55; font-weight: 500;">
+    <div style="font-size: 0.94rem; color: #212529; line-height: 1.55;">
         Hoje, <strong>23 de outubro de 2026</strong>, a banca examinadora (Instituto Avalia) publicou o <strong>Resultado Preliminar da Heteroidentificação Étnico-Racial</strong> (Pretos, Pardos, Indígenas e Quilombolas) e o <strong>Resultado Preliminar da Perícia Médica PCD</strong>.<br>
         O portal foi integralmente atualizado com todas as informações oficiais!
     </div>
 </div>
 
 <div class="modal-grid-2col">
-    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 8px; padding: 14px;">
-        <div style="font-size: 0.85rem; font-weight: 800; color: #0284C7; text-transform: uppercase; margin-bottom: 4px;">
-            ⚖️ Indeferido(a) na Cota? Não se Desespere!
+    <div class="card border shadow-sm p-3 mb-2 rounded-3">
+        <div class="d-flex align-items-center gap-2 mb-1" style="font-size: 0.85rem; font-weight: 700; color: #0d6efd; text-transform: uppercase;">
+            <i class="bi bi-shield-check text-primary fs-5"></i> Indeferido(a) na Cota? Não se Desespere!
         </div>
-        <div style="font-size: 0.88rem; color: #475569; line-height: 1.5;">
+        <div style="font-size: 0.88rem; color: #6c757d; line-height: 1.5;">
             Conforme o <strong>Art. 4º</strong> (Hetero) e <strong>Art. 3º</strong> (PCD) dos Editais de Convocação, o indeferimento da cota <strong>NÃO elimina o candidato do concurso</strong>. O candidato passa a concorrer normalmente pela Ampla Concorrência!
         </div>
     </div>
-    <div style="background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 8px; padding: 14px;">
-        <div style="font-size: 0.85rem; font-weight: 800; color: #16A34A; text-transform: uppercase; margin-bottom: 4px;">
-            📝 Prazo para Interposição de Recursos
+    <div class="card border shadow-sm p-3 mb-2 rounded-3">
+        <div class="d-flex align-items-center gap-2 mb-1" style="font-size: 0.85rem; font-weight: 700; color: #198754; text-transform: uppercase;">
+            <i class="bi bi-file-earmark-text text-success fs-5"></i> Prazo para Interposição de Recursos
         </div>
-        <div style="font-size: 0.88rem; color: #475569; line-height: 1.5;">
-            Caberá recurso contra o resultado preliminar da <strong>0h00 do dia 26/10/2026 até às 23h59 do dia 27/10/2026</strong> no endereço eletrônico <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a>. O motivo pode ser consultado no link <em>"Boletim de Análise de Reserva de Vagas"</em>.
+        <div style="font-size: 0.88rem; color: #6c757d; line-height: 1.5;">
+            Caberá recurso contra o resultado preliminar da <strong>0h00 do dia 26/10/2026 até às 23h59 do dia 27/10/2026</strong> no endereço eletrônico <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>. O motivo pode ser consultado no link <em>"Boletim de Análise de Reserva de Vagas"</em>.
         </div>
     </div>
 </div>
 
-<div style="background: #F0F9FF; border: 1px solid #BAE6FD; border-left: 4px solid #0284C7; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 0.88rem; color: #0369A1; line-height: 1.5;">
-    ℹ️ <strong>Iniciativa Independente:</strong> Este portal é colaborativo e sem vínculo oficial com o Instituto Avalia ou SEAD/RN. Atos administrativos oficiais competem exclusivamente à banca examinadora em <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 800;">avalia.org.br</a>.
+<div class="alert alert-info border-start border-4 border-info shadow-sm rounded-3 p-3 mb-3 d-flex align-items-start gap-2" style="font-size: 0.88rem; color: #055160; line-height: 1.5;">
+    <i class="bi bi-info-circle-fill text-info fs-5 flex-shrink-0 mt-1"></i>
+    <div>
+        <strong>Iniciativa Independente:</strong> Este portal é colaborativo e sem vínculo oficial com o Instituto Avalia ou SEAD/RN. Atos administrativos oficiais competem exclusivamente à banca examinadora em <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.
+    </div>
 </div>
 </div>
 """, unsafe_allow_html=True)
@@ -792,53 +944,51 @@ def modal_aviso_legal():
         st.session_state["disclaimer_visto"] = True
         st.rerun()
 
-# O modal pode ser aberto manualmente pelo usuário sem travar o health check do Streamlit Cloud
-
 # ==============================================================================
-# HEADER HERO & VISÃO GERAL DAS BANCAS (ESTILO BANCA - FLAT & CLARO)
+# HEADER HERO & VISÃO GERAL DAS BANCAS (BOOTSTRAP 5)
 # ==============================================================================
 st.markdown("""<div class="hero-container">
-<div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
-<span class="badge-pill-amber">⚡ ATUALIZAÇÃO 23 DE OUTUBRO DE 2026 • RESULTADO PRELIMINAR DAS BANCAS</span>
-<span style="font-size: 0.82rem; font-weight: 800; color: #0284C7; letter-spacing: 0.05em; text-transform: uppercase;">GOVERNO DO ESTADO DO RIO GRANDE DO NORTE • SEAD / SEAP</span>
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+    <span class="badge-pill-amber"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> ATUALIZAÇÃO 23 DE OUTUBRO DE 2026 • RESULTADO PRELIMINAR DAS BANCAS</span>
+    <span class="fw-bold text-primary text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;"><i class="bi bi-shield-shaded me-1"></i> GOVERNO DO ESTADO DO RIO GRANDE DO NORTE • SEAD / SEAP</span>
 </div>
-<h1 class="hero-title">Portal de Resultados • Concurso Policial Penal RN</h1>
+<h1 class="hero-title"><i class="bi bi-shield-fill-check text-primary me-2"></i>Portal de Resultados • Concurso Policial Penal RN</h1>
 <p class="hero-subtitle">
 Boletim do candidato com resultado oficial preliminar da <strong>Heteroidentificação Étnico-Racial</strong> e da <strong>Perícia Médica PCD</strong>, orientações recursais (26 e 27/10) e avanço na reclassificação das cotas.
 </p>
-<div style="background: #FFFDF5; border: 1.5px solid #FCD34D; border-left: 5px solid #D97706; border-radius: 8px; padding: 10px 14px; margin-top: 14px; font-size: 0.88rem; color: #1E293B; line-height: 1.5;">
-    ⚖️ <strong>Informação Importante aos Convocados:</strong> Candidatos indeferidos na cota <strong>não estão eliminados</strong> do concurso (Art. 4º Hetero / Art. 3º PCD) e continuam na <strong>Ampla Concorrência</strong>. Prazo para recursos: <strong>26 e 27 de outubro</strong> no site <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a>.
+<div class="alert alert-warning border-start border-4 border-warning rounded-3 p-3 mt-3 mb-0" style="font-size: 0.88rem; line-height: 1.5;">
+    <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i> <strong>Informação Importante aos Convocados:</strong> Candidatos indeferidos na cota <strong>não estão eliminados</strong> do concurso (Art. 4º Hetero / Art. 3º PCD) e continuam na <strong>Ampla Concorrência</strong>. Prazo para recursos: <strong>26 e 27 de outubro</strong> no site <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.
 </div>
 </div>""", unsafe_allow_html=True)
 
-# 4 Métricas Principais Flat
+# 4 Métricas Principais Bootstrap
 m1, m2, m3, m4 = st.columns(4)
 
 with m1:
     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">👥 Total Aprovados</div>
+<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Total Aprovados</div>
 <div class="stat-value">{TOTAL_CANDIDATOS_FMT}</div>
 <div class="stat-sub">100% da lista objetiva oficial</div>
 </div>""", unsafe_allow_html=True)
 
 with m2:
     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">🧑🏿 Heteroidentificação Étnica</div>
-<div class="stat-value" style="color: #6D28D9;">{TOTAL_ETNICO_APTOS:,} Aprovados</div>
-<div class="stat-sub" style="color: #D97706; font-weight: 700;">{TOTAL_ETNICO_APTOS:,} Deferidos ({PCT_ETNICO_APTOS:.1f}%) | {TOTAL_ETNICO_INAPTOS:,} Indeferidos ({PCT_ETNICO_INAPTOS:.1f}%)</div>
+<div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Heteroidentificação Étnica</div>
+<div class="stat-value" style="color: #6f42c1;">{TOTAL_ETNICO_APTOS:,} Aprovados</div>
+<div class="stat-sub text-warning fw-bold">{TOTAL_ETNICO_APTOS:,} Deferidos ({PCT_ETNICO_APTOS:.1f}%) | {TOTAL_ETNICO_INAPTOS:,} Indeferidos ({PCT_ETNICO_INAPTOS:.1f}%)</div>
 </div>""".replace(",", "."), unsafe_allow_html=True)
 
 with m3:
     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">♿ Perícia Médica PCD</div>
-<div class="stat-value" style="color: #15803D;">{TOTAL_PCD_APTOS} Aprovados</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">{TOTAL_PCD_APTOS} Deferidos ({PCT_PCD_APTOS:.1f}%) | {TOTAL_PCD_INAPTOS} Indeferidos ({PCT_PCD_INAPTOS:.1f}%)</div>
+<div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> Perícia Médica PCD</div>
+<div class="stat-value text-success">{TOTAL_PCD_APTOS} Aprovados</div>
+<div class="stat-sub text-success fw-bold">{TOTAL_PCD_APTOS} Deferidos ({PCT_PCD_APTOS:.1f}%) | {TOTAL_PCD_INAPTOS} Indeferidos ({PCT_PCD_INAPTOS:.1f}%)</div>
 </div>""", unsafe_allow_html=True)
 
 with m4:
     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">🏛️ Não Cotistas (Ampla)</div>
-<div class="stat-value" style="color: #0284C7;">{TOTAL_AMPLA_FMT}</div>
+<div class="stat-label"><i class="bi bi-award-fill text-primary me-1"></i> Não Cotistas (Ampla)</div>
+<div class="stat-value text-primary">{TOTAL_AMPLA_FMT}</div>
 <div class="stat-sub">{(TOTAL_AMPLA_PURA/TOTAL_CANDIDATOS)*100:.1f}% concorrendo exclusivamente na Ampla</div>
 </div>""", unsafe_allow_html=True)
 
@@ -1063,21 +1213,21 @@ with tab_busca:
 </div>"""
 
         card_html = f"""<div class="candidate-card">
-<div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
 <div>
-<span class="badge-pill">BOLETIM ATUALIZADO • 23 DE OUTUBRO DE 2026</span>
-<h2 style="color: #0F172A; margin: 4px 0 6px 0; font-size: 1.8rem; font-weight: 800;">{nome}</h2>
-<p style="color: #475569; margin: 0 0 10px 0; font-size: 0.95rem; font-weight: 500;">
-Inscrição: <strong style="color: #0F172A;">{inscricao}</strong> &nbsp;•&nbsp; Cargo: <strong style="color: #0F172A;">401 - Policial Penal RN</strong>
+<span class="badge-pill"><i class="bi bi-patch-check-fill text-success me-1"></i> BOLETIM ATUALIZADO • 23 DE OUTUBRO DE 2026</span>
+<h2 class="hero-title mt-1 mb-2" style="font-size: 1.85rem;">{nome}</h2>
+<p class="text-secondary mb-2" style="font-size: 0.95rem; font-weight: 500;">
+<i class="bi bi-person-vcard text-primary me-1"></i> Inscrição: <strong class="text-dark">{inscricao}</strong> &nbsp;•&nbsp; <i class="bi bi-shield-lock text-primary me-1"></i> Cargo: <strong class="text-dark">401 - Policial Penal RN</strong>
 </p>
-<div>{tags_html}</div>
+<div class="mt-2">{tags_html}</div>
 </div>
 <div class="candidate-header-badge">
 <div class="pos-badge {pos_class}">
 {medalha}{pos_geral}º LUGAR GERAL
 </div>
-<div style="color: #0284C7; font-size: 0.85rem; margin-top: 6px; font-weight: 800;">
-Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
+<div class="fw-bold text-primary mt-1" style="font-size: 0.85rem;">
+<i class="bi bi-graph-up-arrow me-1"></i> Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
 </div>
 </div>
 </div>
@@ -1091,59 +1241,59 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
         c1, c2, c3, c4 = st.columns(4)
         with c1:
             st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Classificação Geral Oficial</div>
-<div class="stat-value" style="color: #0F172A;">{pos_geral}º</div>
-<div class="stat-sub" style="color: #0284C7; font-weight: 700;">↑ De {TOTAL_CANDIDATOS_FMT} candidatos</div>
+<div class="stat-label"><i class="bi bi-list-ol text-primary me-1"></i> Classificação Geral Oficial</div>
+<div class="stat-value">{pos_geral}º</div>
+<div class="stat-sub text-primary fw-bold">↑ De {TOTAL_CANDIDATOS_FMT} candidatos</div>
 </div>""", unsafe_allow_html=True)
         with c2:
             if is_pcd and res_pcd == 'DEFERIDO' and is_etnico and res_hetero == 'DEFERIDO':
                 if nota_total < 113:
-                    lbl_cota = "Posição Preliminar PCD (Convocado)"
+                    lbl_cota = "<i class='bi bi-universal-access text-success me-1'></i> Posição Preliminar PCD (Convocado)"
                     val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º"
                     sub_cota = f"♿ {int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º PCD • 🧑🏿 {int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º na Cota Étnica"
                 else:
-                    lbl_cota = "Posição Preliminar nas Cotas"
+                    lbl_cota = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Preliminar nas Cotas"
                     val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º"
                     sub_cota = f"🧑🏿 {int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º Étnico • ♿ {int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º PCD"
             elif is_pcd and res_pcd == 'DEFERIDO' and pd.notnull(candidato_selecionado['Nova_Pos_Lista_PCD']):
-                lbl_cota = "Posição Preliminar PCD"
+                lbl_cota = "<i class='bi bi-universal-access text-success me-1'></i> Posição Preliminar PCD"
                 val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º"
                 sub_cota = f"↑ De {TOTAL_PCD_APTOS} PCDs deferidos"
             elif is_etnico and res_hetero == 'DEFERIDO' and pd.notnull(candidato_selecionado['Nova_Pos_Lista_Etnico']):
-                lbl_cota = "Posição Preliminar na Cota"
+                lbl_cota = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Preliminar na Cota"
                 val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º"
                 sub_cota = f"↑ De {TOTAL_ETNICO_APTOS:,} cotistas deferidos"
             elif is_etnico or is_pcd:
-                lbl_cota = "Cota Indeferida (Concorre Ampla)"
+                lbl_cota = "<i class='bi bi-exclamation-circle-fill text-warning me-1'></i> Cota Indeferida (Concorre Ampla)"
                 val_cota = f"{pos_geral}º"
                 sub_cota = "Disputa universal na Ampla"
             else:
-                lbl_cota = "Posição Não Cotista"
+                lbl_cota = "<i class='bi bi-award-fill text-primary me-1'></i> Posição Não Cotista"
                 val_cota = f"{int(candidato_selecionado['Pos_Lista_Ampla_Pura'])}º"
                 sub_cota = f"↑ De {TOTAL_AMPLA_FMT} da Ampla Pura"
             st.markdown(f"""<div class="stat-card">
 <div class="stat-label">{lbl_cota}</div>
-<div class="stat-value" style="color: #0F172A;">{val_cota}</div>
-<div class="stat-sub" style="color: #0284C7; font-weight: 700;">{sub_cota}</div>
+<div class="stat-value">{val_cota}</div>
+<div class="stat-sub text-primary fw-bold">{sub_cota}</div>
 </div>""".replace(",", "."), unsafe_allow_html=True)
         with c3:
             st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Nota Objetiva</div>
-<div class="stat-value" style="color: #0F172A;">{nota_total} pts</div>
-<div class="stat-sub" style="color: #16A34A; font-weight: 700;">↑ {aproveitamento_total:.1f}% de aproveitamento (Máx {NOTA_MAXIMA_PROVA})</div>
+<div class="stat-label"><i class="bi bi-clipboard2-check text-success me-1"></i> Nota Objetiva</div>
+<div class="stat-value">{nota_total} pts</div>
+<div class="stat-sub text-success fw-bold">↑ {aproveitamento_total:.1f}% de aproveitamento (Máx {NOTA_MAXIMA_PROVA})</div>
 </div>""", unsafe_allow_html=True)
         with c4:
             vaga_prel = str(candidato_selecionado['Previsao_Vagas_Preliminar'])
             if "Vaga Imediata" in vaga_prel:
                 val_vagas = "Vagas Imediatas 🏆"
-                color_vagas = "#15803D"
+                color_vagas = "#198754"
             else:
                 val_vagas = "Cadastro Reserva 📋"
-                color_vagas = "#0F172A"
+                color_vagas = "#212529"
             st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Situação de Vagas Preliminar</div>
+<div class="stat-label"><i class="bi bi-trophy text-warning me-1"></i> Situação de Vagas Preliminar</div>
 <div class="stat-value" style="color: {color_vagas}; font-size: 1.35rem;">{val_vagas}</div>
-<div class="stat-sub" style="color: #475569; font-weight: 700;">{vaga_prel}</div>
+<div class="stat-sub text-secondary fw-bold">{vaga_prel}</div>
 </div>""", unsafe_allow_html=True)
                 
         st.write("")
@@ -1158,48 +1308,48 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
                 pos_pcd_sim = candidato_selecionado.get('Pos_PCD_Sim_Padrao')
                 if is_pcd and res_pcd == 'DEFERIDO' and is_etnico and res_hetero == 'DEFERIDO':
                     if nota_total < 113:
-                        lbl_sim = "Posição Estimada PCD (Convocado)"
+                        lbl_sim = "<i class='bi bi-universal-access text-success me-1'></i> Posição Estimada PCD (Convocado)"
                         val_sim = f"{int(pos_pcd_sim)}º" if pd.notnull(pos_pcd_sim) else "-"
                         sub_sim = f"PCD: {val_sim} • Étnico: {int(pos_etn_sim)}º" if pd.notnull(pos_etn_sim) else ""
-                        color_sim = "#15803D"
+                        color_sim = "#198754"
                     else:
-                        lbl_sim = "Posição Estimada na Cota Étnica"
+                        lbl_sim = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Estimada na Cota Étnica"
                         val_sim = f"{int(pos_etn_sim)}º" if pd.notnull(pos_etn_sim) else "-"
                         sub_sim = f"Étnico: {val_sim} • PCD: {int(pos_pcd_sim)}º" if pd.notnull(pos_pcd_sim) else ""
-                        color_sim = "#6D28D9"
+                        color_sim = "#6f42c1"
                     st.markdown(f"""<div class="stat-card">
 <div class="stat-label">{lbl_sim}</div>
 <div class="stat-value" style="color: {color_sim};">{val_sim}</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">{sub_sim}</div>
+<div class="stat-sub text-success fw-bold">{sub_sim}</div>
 </div>""", unsafe_allow_html=True)
                 elif is_pcd and res_pcd == 'DEFERIDO' and pd.notnull(pos_pcd_sim):
                     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Posição Estimada PCD</div>
-<div class="stat-value" style="color: #15803D;">{int(pos_pcd_sim)}º</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">Classificação pós-perícia definitiva</div>
+<div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> Posição Estimada PCD</div>
+<div class="stat-value text-success">{int(pos_pcd_sim)}º</div>
+<div class="stat-sub text-success fw-bold">Classificação pós-perícia definitiva</div>
 </div>""", unsafe_allow_html=True)
                 elif is_etnico and res_hetero == 'DEFERIDO' and pd.notnull(pos_etn_sim):
                     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Posição Estimada na Cota Étnica</div>
-<div class="stat-value" style="color: #6D28D9;">{int(pos_etn_sim)}º</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">Classificação pós-recursos estimada</div>
+<div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Posição Estimada na Cota Étnica</div>
+<div class="stat-value" style="color: #6f42c1;">{int(pos_etn_sim)}º</div>
+<div class="stat-sub text-success fw-bold">Classificação pós-recursos estimada</div>
 </div>""", unsafe_allow_html=True)
                 else:
                     st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Situação na Ampla Concorrência</div>
-<div class="stat-value" style="color: #0284C7;">{pos_geral}º</div>
-<div class="stat-sub" style="color: #475569; font-weight: 700;">Disputa geral na Ampla Universal</div>
+<div class="stat-label"><i class="bi bi-award-fill text-primary me-1"></i> Situação na Ampla Concorrência</div>
+<div class="stat-value text-primary">{pos_geral}º</div>
+<div class="stat-sub text-secondary fw-bold">Disputa geral na Ampla Universal</div>
 </div>""", unsafe_allow_html=True)
             
             with col_sim2:
                 is_convocado_taf_sim = bool(candidato_selecionado.get('Convocado_TAF_Sim_Padrao', False))
                 status_taf_text = "🟢 Convocado para o TAF!" if is_convocado_taf_sim else "⚪ Fora do corte do TAF"
-                color_taf_text = "#15803D" if is_convocado_taf_sim else "#64748B"
+                color_taf_text = "#198754" if is_convocado_taf_sim else "#6c757d"
                 sub_taf_text = "Dentro da linha de corte estimada" if is_convocado_taf_sim else "Abaixo da pontuação de corte"
                 st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Convocação para o TAF</div>
+<div class="stat-label"><i class="bi bi-flag-fill me-1" style="color: {color_taf_text};"></i> Convocação para o TAF</div>
 <div class="stat-value" style="color: {color_taf_text}; font-size: 1.25rem;">{status_taf_text}</div>
-<div class="stat-sub" style="color: #475569; font-weight: 700;">{sub_taf_text}</div>
+<div class="stat-sub text-secondary fw-bold">{sub_taf_text}</div>
 </div>""", unsafe_allow_html=True)
             
             with col_sim3:
@@ -1208,15 +1358,15 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
                 if is_vaga_imediata:
                     val_vaga_text = "Vaga Imediata 🏆"
                     sub_vaga_text = "↑ Entra nas 200 vagas imediatas pós-TAF!"
-                    color_vaga_text = "#15803D"
+                    color_vaga_text = "#198754"
                 else:
                     val_vaga_text = "Cadastro Reserva 📋"
                     sub_vaga_text = "Dentro do Cadastro de Reserva"
-                    color_vaga_text = "#0F172A"
+                    color_vaga_text = "#212529"
                 st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Projeção Pós-TAF</div>
+<div class="stat-label"><i class="bi bi-award me-1" style="color: {color_vaga_text};"></i> Projeção Pós-TAF</div>
 <div class="stat-value" style="color: {color_vaga_text}; font-size: 1.25rem;">{val_vaga_text}</div>
-<div class="stat-sub" style="color: #475569; font-weight: 700;">{sub_vaga_text}</div>
+<div class="stat-sub text-secondary fw-bold">{sub_vaga_text}</div>
 </div>""", unsafe_allow_html=True)
                 
                 st.info("💡 **Deseja personalizar taxas de recurso e atrito do TAF?** Acesse a aba **'🔮 Simulador de Colocações & Impacto das Bancas'** no menu superior!")
@@ -1250,7 +1400,7 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
              .replace("Legislação Específica", "Leg. Específica")
             for d in DISCIPLINAS
         ]
-        cores = ['#16A34A' if p >= 80 else ('#D97706' if p >= 60 else '#DC2626') for p in pct_candidato]
+        cores = ['#198754' if p >= 80 else ('#ffc107' if p >= 60 else '#dc3545') for p in pct_candidato]
 
         fig_bar = go.Figure(go.Bar(
             x=pct_candidato,
@@ -1260,12 +1410,12 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
             text=[f"{p:.1f}% ({candidato_selecionado[d]}/{PONTOS_MAXIMOS[d]} pts)" for p, d in zip(pct_candidato, DISCIPLINAS)],
             textposition='inside',
             insidetextanchor='middle',
-            textfont=dict(color='white', size=11, family='Inter', weight=700)
+            textfont=dict(color='white', size=11, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif', weight=700)
         ))
         fig_bar.update_layout(
-            title=dict(text="Aproveitamento Percentual por Disciplina", font=dict(color='#0F172A', size=14)),
-            xaxis=dict(range=[0, 105], title="Aproveitamento (%)", gridcolor='#E2E8F0', tickfont=dict(color='#475569')),
-            yaxis=dict(autorange="reversed", tickfont=dict(color='#0F172A')),
+            title=dict(text="Aproveitamento Percentual por Disciplina", font=dict(color='#212529', size=14, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
+            xaxis=dict(range=[0, 105], title="Aproveitamento (%)", gridcolor='#dee2e6', tickfont=dict(color='#6c757d')),
+            yaxis=dict(autorange="reversed", tickfont=dict(color='#212529')),
             template="plotly_white",
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
@@ -1364,15 +1514,15 @@ Top {top_pct_fmt} de todos os {TOTAL_CANDIDATOS_FMT} candidatos
 # ==============================================================================
 with tab_simuladores:
     st.markdown("""<div class="sim-banner">
-<span class="sim-badge">🔮 SIMULADOR PREDITIVO PÓS-BANCAS DE COTAS & TAF</span>
-<h2 style="margin: 4px 0 8px 0; color: #0F172A; font-weight: 800; font-size: 1.7rem;">Simulador de Colocações com Dados Reais das Bancas</h2>
-<p style="margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.55;">
+<span class="sim-badge"><i class="bi bi-sliders me-1"></i> SIMULADOR PREDITIVO PÓS-BANCAS DE COTAS & TAF</span>
+<h2 class="hero-title mt-1 mb-2" style="font-size: 1.75rem;"><i class="bi bi-diagram-3-fill text-purple me-2"></i>Simulador de Colocações com Dados Reais das Bancas</h2>
+<p class="text-secondary mb-0" style="font-size: 0.95rem; line-height: 1.55;">
 Projete o impacto dos <strong>3.045 indeferimentos da Heteroidentificação</strong> e <strong>186 indeferimentos PCD</strong> publicados em 23 de outubro, a taxa de sucesso nos <strong>recursos (26 e 27/10)</strong> e a taxa de <strong>reprovação do TAF</strong> na conquista de vagas imediatas.
 </p>
 </div>""", unsafe_allow_html=True)
 
     st.markdown("""<div class="sim-notice-card">
-⚖️ <strong>Como os dados foram configurados:</strong><br>
+<i class="bi bi-info-circle-fill text-primary me-1"></i> <strong>Como os dados foram configurados:</strong><br>
 Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares das bancas publicados hoje (23/10)</strong>. Você pode simular quantos indeferidos devem conseguir reverter a decisão na fase recursal de 26-27 de outubro e qual será o atrito do TAF!
 </div>""", unsafe_allow_html=True)
 
@@ -1400,8 +1550,8 @@ Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares 
             help="Porcentagem de convocados para o TAF que reprovam nos testes físicos (barra, corrida, abdominal) ou não comparecem. Média em carreiras policiais: 18% a 28%."
         )
         st.markdown(f"""
-        <div style="background: #F1F5F9; border-radius: 8px; padding: 12px 14px; font-size: 0.85rem; color: #334155; margin-top: 10px; line-height: 1.45;">
-        📌 <strong>Parâmetros Atuais:</strong><br>
+        <div class="card bg-light border p-3 rounded-3 mt-2" style="font-size: 0.85rem; line-height: 1.45;">
+        <div class="fw-bold text-dark mb-1"><i class="bi bi-pin-angle-fill text-primary me-1"></i> Parâmetros Atuais:</div>
         • Reversão Cota Étnica: <strong>{taxa_rev_etn}%</strong> (~{int(3045 * taxa_rev_etn / 100)} recursos deferidos)<br>
         • Reversão Perícia PCD: <strong>{taxa_rev_pcd}%</strong> (~{int(186 * taxa_rev_pcd / 100)} recursos deferidos)<br>
         • Reprovação no TAF: <strong>{taxa_taf}%</strong> de atrito nos testes físicos<br>
@@ -1422,30 +1572,30 @@ Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares 
     sc1, sc2, sc3, sc4 = st.columns(4)
     with sc1:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Alcance Vagas Ampla (140 vagas)</div>
-<div class="stat-value" style="color: #0284C7;">Até o {res_sim['ultimo_ampla_orig']}º</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Original: 140º (+{res_sim['ganho_ampla']} posições de gordura pós-TAF!)</div>
+<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Alcance Vagas Ampla (140 vagas)</div>
+<div class="stat-value text-primary">Até o {res_sim['ultimo_ampla_orig']}º</div>
+<div class="stat-sub text-success fw-bold">↑ Original: 140º (+{res_sim['ganho_ampla']} posições pós-TAF!)</div>
 </div>""", unsafe_allow_html=True)
         
     with sc2:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Alcance Vagas Cota Étnica (40 vagas)</div>
-<div class="stat-value" style="color: #7C3AED;">Até o {res_sim['ultimo_etnico_orig']}º</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Original: 40º (+{res_sim['ganho_etnico']} cotistas beneficiados!)</div>
+<div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Alcance Vagas Cota Étnica (40 vagas)</div>
+<div class="stat-value" style="color: #6f42c1;">Até o {res_sim['ultimo_etnico_orig']}º</div>
+<div class="stat-sub text-success fw-bold">↑ Original: 40º (+{res_sim['ganho_etnico']} cotistas beneficiados!)</div>
 </div>""", unsafe_allow_html=True)
 
     with sc3:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Alcance Vagas PCD (20 vagas)</div>
-<div class="stat-value" style="color: #15803D;">Até o {res_sim['ultimo_pcd_orig']}º</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">↑ Original: 20º (+{res_sim['ganho_pcd']} PCDs beneficiados!)</div>
+<div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> Alcance Vagas PCD (20 vagas)</div>
+<div class="stat-value text-success">Até o {res_sim['ultimo_pcd_orig']}º</div>
+<div class="stat-sub text-success fw-bold">↑ Original: 20º (+{res_sim['ganho_pcd']} PCDs beneficiados!)</div>
 </div>""", unsafe_allow_html=True)
 
     with sc4:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Linha de Corte TAF (Cota Étnica)</div>
-<div class="stat-value" style="color: #0F172A;">{res_sim['corte_etnico_taf']} pts</div>
-<div class="stat-sub" style="color: #0284C7; font-weight: 700;">↓ Caiu de 115 para {res_sim['corte_etnico_taf']} pts pós-banca!</div>
+<div class="stat-label"><i class="bi bi-arrow-down-circle-fill text-primary me-1"></i> Linha de Corte TAF (Cota Étnica)</div>
+<div class="stat-value">{res_sim['corte_etnico_taf']} pts</div>
+<div class="stat-sub text-primary fw-bold">↓ Caiu de 115 para {res_sim['corte_etnico_taf']} pts pós-banca!</div>
 </div>""", unsafe_allow_html=True)
 
     st.write("")
@@ -1459,28 +1609,28 @@ Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares 
         name='Oficial (Sem atrito de banca/TAF)',
         x=modalidades_k,
         y=valores_orig,
-        marker_color='#94A3B8',
+        marker_color='#6c757d',
         text=[f"{v}º" for v in valores_orig],
         textposition='auto',
-        textfont=dict(weight=700)
+        textfont=dict(weight=700, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')
     ))
     fig_comp.add_trace(go.Bar(
         name=f'Simulação pós-Bancas Reais, Recursos ({taxa_rev_etn}%) e TAF ({taxa_taf}%)',
         x=modalidades_k,
         y=valores_sim,
-        marker_color=['#0284C7', '#7C3AED', '#16A34A'],
+        marker_color=['#0d6efd', '#6f42c1', '#198754'],
         text=[f"{v}º (+{v-orig})" for v, orig in zip(valores_sim, valores_orig)],
         textposition='auto',
-        textfont=dict(weight=700)
+        textfont=dict(weight=700, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')
     ))
     fig_comp.update_layout(
-        title=dict(text="Alcance Máximo de Convocação para as Vagas Imediatas (Oficial vs Simulado)", font=dict(color='#0F172A', size=14)),
+        title=dict(text="Alcance Máximo de Convocação para as Vagas Imediatas (Oficial vs Simulado)", font=dict(color='#212529', size=14, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
         barmode='group',
         template="plotly_white",
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
-        yaxis=dict(title="Última Colocação Alcançada", gridcolor='#E2E8F0'),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        yaxis=dict(title="Última Colocação Alcançada", gridcolor='#dee2e6'),
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
         margin=dict(l=10, r=20, t=50, b=30),
         height=350
     )
@@ -1625,27 +1775,27 @@ with tab_listas:
     col_l1, col_l2, col_l3, col_l4 = st.columns(4)
     with col_l1:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Total de Registros</div>
+<div class="stat-label"><i class="bi bi-list-columns-reverse text-primary me-1"></i> Total de Registros</div>
 <div class="stat-value">{total_view_fmt}</div>
 <div class="stat-sub">Candidatos nesta relação</div>
 </div>""", unsafe_allow_html=True)
     with col_l2:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Maior Nota da Lista</div>
-<div class="stat-value">{df_view['Nota Objetiva'].max()} pts</div>
+<div class="stat-label"><i class="bi bi-star-fill text-warning me-1"></i> Maior Nota da Lista</div>
+<div class="stat-value text-primary">{df_view['Nota Objetiva'].max()} pts</div>
 <div class="stat-sub">Pontuação máxima atingida</div>
 </div>""", unsafe_allow_html=True)
     with col_l3:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Média de Notas da Lista</div>
+<div class="stat-label"><i class="bi bi-calculator-fill text-primary me-1"></i> Média de Notas da Lista</div>
 <div class="stat-value">{df_view['Nota Objetiva'].mean():.1f} pts</div>
 <div class="stat-sub">Média dos classificados</div>
 </div>""", unsafe_allow_html=True)
     with col_l4:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Destaque Oficial</div>
-<div class="stat-value" style="font-size: 1.1rem;">{corte_taf_info.split("(")[0]}</div>
-<div class="stat-sub">{corte_taf_info}</div>
+<div class="stat-label"><i class="bi bi-trophy-fill text-warning me-1"></i> Destaque Oficial</div>
+<div class="stat-value text-success" style="font-size: 1.1rem;">{corte_taf_info.split("(")[0]}</div>
+<div class="stat-sub text-secondary fw-bold">{corte_taf_info}</div>
 </div>""", unsafe_allow_html=True)
     
     st.write("")
@@ -1694,15 +1844,15 @@ with tab_listas:
 with tab_regras:
     st.subheader("🎯 Entenda as Regras de Recursos, Convocação e Linhas de Corte")
     
-    st.markdown("""<div class="sim-notice-card" style="border-left-color: #16A34A; background: #F0FDF4;">
-<div style="font-size: 0.85rem; font-weight: 800; color: #15803D; text-transform: uppercase; margin-bottom: 4px;">
-    📝 GUIA PRÁTICO PARA A FASE DE RECURSOS (26 E 27 DE OUTUBRO DE 2026)
+    st.markdown("""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-3">
+<div class="d-flex align-items-center gap-2 mb-1 fw-bold text-success text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
+    <i class="bi bi-journal-text fs-5"></i> GUIA PRÁTICO PARA A FASE DE RECURSOS (26 E 27 DE OUTUBRO DE 2026)
 </div>
-<div style="font-size: 0.93rem; color: #1E293B; line-height: 1.6;">
+<div style="font-size: 0.93rem; color: #212529; line-height: 1.6;">
     Se sua autodeclaração ou perícia PCD foi <strong>INDEFERIDA</strong> no resultado preliminar de 23/10:<br>
-    <strong>1. Consulte a justificativa:</strong> Entre no site <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a> e acesse o link <em>"Boletim de Análise de Reserva de Vagas"</em> para ver a fundamentação da banca examinadora.<br>
+    <strong>1. Consulte a justificativa:</strong> Entre no site <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a> e acesse o link <em>"Boletim de Análise de Reserva de Vagas"</em> para ver a fundamentação da banca examinadora.<br>
     <strong>2. Período de envio do recurso:</strong> Da <strong>0h00 do dia 26/10/2026 até às 23h59 do dia 27/10/2026</strong> (horário de Brasília).<br>
-    <strong>3. Como protocolar:</strong> Exclusivamente em formulário próprio no site <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a>.<br>
+    <strong>3. Como protocolar:</strong> Exclusivamente em formulário próprio no site <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.<br>
     <strong>4. Lembre-se:</strong> O indeferimento não o desclassifica do concurso — você continua na Ampla Concorrência (Art. 4º Hetero / Art. 3º PCD).
 </div>
 </div>""", unsafe_allow_html=True)
@@ -1713,27 +1863,27 @@ with tab_regras:
     col_h1, col_h2, col_h3, col_h4 = st.columns(4)
     with col_h1:
         st.markdown("""<div class="stat-card">
-<div class="stat-label">Total Avaliado na Hetero</div>
-<div class="stat-value" style="color: #0F172A;">6.309</div>
-<div class="stat-sub" style="color: #475569; font-weight: 700;">100% dos cotistas étnicos</div>
+<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Total Avaliado na Hetero</div>
+<div class="stat-value">6.309</div>
+<div class="stat-sub text-secondary fw-bold">100% dos cotistas étnicos</div>
 </div>""", unsafe_allow_html=True)
     with col_h2:
         st.markdown("""<div class="stat-card">
-<div class="stat-label">Deferidos na Hetero (Aprovados)</div>
-<div class="stat-value" style="color: #15803D;">3.264</div>
-<div class="stat-sub" style="color: #15803D; font-weight: 700;">✅ 51,74% de confirmação</div>
+<div class="stat-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Deferidos na Hetero</div>
+<div class="stat-value text-success">3.264</div>
+<div class="stat-sub text-success fw-bold">✅ 51,74% de confirmação</div>
 </div>""", unsafe_allow_html=True)
     with col_h3:
         st.markdown("""<div class="stat-card">
-<div class="stat-label">Indeferidos na Hetero (Reprovados)</div>
-<div class="stat-value" style="color: #B45309;">3.045</div>
-<div class="stat-sub" style="color: #B45309; font-weight: 700;">⚠️ 48,26% de indeferimento</div>
+<div class="stat-label"><i class="bi bi-x-circle-fill text-warning me-1"></i> Indeferidos na Hetero</div>
+<div class="stat-value text-warning">3.045</div>
+<div class="stat-sub text-warning fw-bold">⚠️ 48,26% de indeferimento</div>
 </div>""", unsafe_allow_html=True)
     with col_h4:
         st.markdown("""<div class="stat-card">
-<div class="stat-label">Salvos pela Ampla (Art. 4º)</div>
-<div class="stat-value" style="color: #0284C7;">79</div>
-<div class="stat-sub" style="color: #0284C7; font-weight: 700;">Nota ≥ 119 pts no TAF via Ampla</div>
+<div class="stat-label"><i class="bi bi-shield-check text-primary me-1"></i> Salvos pela Ampla (Art. 4º)</div>
+<div class="stat-value text-primary">79</div>
+<div class="stat-sub text-primary fw-bold">Nota ≥ 119 pts no TAF via Ampla</div>
 </div>""", unsafe_allow_html=True)
 
     st.write("")
@@ -1807,43 +1957,43 @@ with tab_regras:
         x=def_vals,
         name='Deferidos (Confirmados)',
         orientation='h',
-        marker_color='#16A34A',
+        marker_color='#198754',
         text=[f"{v:.1f}%" for v in def_vals],
         textposition='inside',
         insidetextanchor='middle',
-        textfont=dict(color='white', size=11, family='Inter', weight=700)
+        textfont=dict(color='white', size=11, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif', weight=700)
     ))
     fig_hetero.add_trace(go.Bar(
         y=seg_names,
         x=ind_vals,
         name='Indeferidos (Reprovados na Banca)',
         orientation='h',
-        marker_color='#DC2626',
+        marker_color='#dc3545',
         text=[f"{v:.1f}%" for v in ind_vals],
         textposition='inside',
         insidetextanchor='middle',
-        textfont=dict(color='white', size=11, family='Inter', weight=700)
+        textfont=dict(color='white', size=11, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif', weight=700)
     ))
     fig_hetero.update_layout(
         barmode='stack',
-        title=dict(text="Proporção Visual: Confirmação vs. Reprovação nas Bancas", font=dict(color='#0F172A', size=13)),
-        xaxis=dict(range=[0, 100], title="Distribuição Percentual (%)", gridcolor='#E2E8F0', tickfont=dict(color='#475569')),
-        yaxis=dict(autorange="reversed", tickfont=dict(color='#0F172A')),
+        title=dict(text="Proporção Visual: Confirmação vs. Reprovação nas Bancas", font=dict(color='#212529', size=13, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
+        xaxis=dict(range=[0, 100], title="Distribuição Percentual (%)", gridcolor='#dee2e6', tickfont=dict(color='#6c757d')),
+        yaxis=dict(autorange="reversed", tickfont=dict(color='#212529')),
         template="plotly_white",
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
         margin=dict(l=10, r=10, t=35, b=25),
         height=240,
-        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1, font=dict(size=11))
+        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1, font=dict(size=11, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif'))
     )
     st.plotly_chart(fig_hetero, width="stretch")
     
     st.write("")
-    st.markdown("""<div class="sim-notice-card" style="border-left-color: #0284C7; background: #F8FAFC;">
-<div style="font-size: 0.85rem; font-weight: 800; color: #0284C7; text-transform: uppercase; margin-bottom: 6px;">
-    💡 PRINCIPAIS CONCLUSÕES E IMPACTOS DA HETEROIDENTIFICAÇÃO
+    st.markdown("""<div class="card bg-light border-start border-4 border-primary p-3 rounded-3 shadow-sm mb-3">
+<div class="d-flex align-items-center gap-2 mb-2 fw-bold text-primary text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
+    <i class="bi bi-lightbulb-fill text-warning fs-5"></i> PRINCIPAIS CONCLUSÕES E IMPACTOS DA HETEROIDENTIFICAÇÃO
 </div>
-<div style="font-size: 0.9rem; color: #334155; line-height: 1.6;">
+<div style="font-size: 0.9rem; color: #212529; line-height: 1.6;">
     • <strong>Atrito Elevado nas Cotas Étnicas:</strong> Quase metade dos cotistas (<strong>48,26%</strong>) foi indeferida na análise preliminar. Isso representa <strong>3.045 candidatos a menos</strong> na disputa da reserva.<br>
     • <strong>Efeito Positivo para Cotistas Deferidos:</strong> Como a fila da cota andou mais de 3.000 posições, os cotistas com laudo confirmado ganharam até centenas de posições na classificação.<br>
     • <strong>Candidatos de Cota com Alto Desempenho (Art. 4º):</strong> Exatamente <strong>79 cotistas indeferidos</strong> possuem nota ≥ 119 pontos (com pontuações que chegam até 136 pontos). Eles continuam <strong>100% convocados para o TAF</strong> pela Ampla Concorrência, sem qualquer prejuízo pelo indeferimento.<br>
@@ -1912,15 +2062,15 @@ with tab_cronograma:
     Acompanhe as principais datas e prazos atualizados do concurso de Policial Penal do RN:
     """)
     
-    st.markdown("""<div class="stat-card" style="border-left: 4px solid #16A34A; background: #F0FDF4; margin-bottom: 20px;">
-<div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
-    ⚡ FASE ATUAL CONCLUÍDA HOJE (23 DE OUTUBRO)
+    st.markdown("""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-4">
+<div class="d-flex align-items-center gap-2 mb-1 fw-bold text-success text-uppercase" style="font-size: 0.82rem; letter-spacing: 0.04em;">
+    <i class="bi bi-calendar-check-fill text-success fs-5"></i> FASE ATUAL CONCLUÍDA HOJE (23 DE OUTUBRO)
 </div>
-<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0;">
+<div class="fw-bold text-dark fs-5 my-1">
     Publicação do Resultado Preliminar da Heteroidentificação e da Perícia Médica PCD
 </div>
-<div style="font-size: 0.88rem; color: #334155; line-height: 1.5; font-weight: 500;">
-    Relações preliminares divulgadas em 23/10/2026 no site da banca Instituto Avalia (<a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a>).
+<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.5;">
+    Relações preliminares divulgadas em 23/10/2026 no site da banca Instituto Avalia (<a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>).
 </div>
 </div>""", unsafe_allow_html=True)
 
@@ -1992,22 +2142,22 @@ with tab_cronograma:
 
     for m in marcos_cronograma:
         card_class = f"timeline-card timeline-card-{m['tipo']}"
-        badge_color = "#15803D" if m['tipo'] == 'past' else ("#92400E" if m['tipo'] == 'active' else ("#0369A1" if m['tipo'] == 'next' else "#475569"))
-        badge_bg = "#DCFCE7" if m['tipo'] == 'past' else ("#FEF3C7" if m['tipo'] == 'active' else ("#E0F2FE" if m['tipo'] == 'next' else "#F1F5F9"))
+        badge_bg = "bg-success" if m['tipo'] == 'past' else ("bg-warning text-dark" if m['tipo'] == 'active' else ("bg-primary" if m['tipo'] == 'next' else "bg-secondary"))
+        icon_m = '<i class="bi bi-check-circle-fill me-1"></i>' if m['tipo'] == 'past' else ('<i class="bi bi-stars me-1"></i>' if m['tipo'] == 'active' else ('<i class="bi bi-exclamation-circle-fill me-1"></i>' if m['tipo'] == 'next' else '<i class="bi bi-clock me-1"></i>'))
         
         st.markdown(f"""<div class="{card_class}">
-<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
-<div style="font-size: 0.82rem; font-weight: 800; color: #0284C7; text-transform: uppercase; letter-spacing: 0.04em;">
-📅 {m['data']}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-1">
+<div class="fw-bold text-primary text-uppercase" style="font-size: 0.82rem; letter-spacing: 0.04em;">
+<i class="bi bi-calendar3 me-1"></i> {m['data']}
 </div>
-<span style="background: {badge_bg}; color: {badge_color}; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;">
-{m['status']}
+<span class="badge rounded-pill {badge_bg}" style="font-size: 0.75rem; text-transform: uppercase;">
+{icon_m}{m['status']}
 </span>
 </div>
-<div style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin: 2px 0 4px 0;">
+<div class="fw-bold text-dark my-1" style="font-size: 1.05rem;">
 {m['titulo']}
 </div>
-<div style="font-size: 0.88rem; color: #475569; line-height: 1.45; font-weight: 500;">
+<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.5;">
 {m['descricao']}
 </div>
 </div>""", unsafe_allow_html=True)
@@ -2016,34 +2166,34 @@ with tab_cronograma:
 # ABA 6: SOBRE O PORTAL, ORIGEM DOS DADOS E METODOLOGIA
 # ==============================================================================
 with tab_sobre:
-    st.markdown("""<div class="sim-banner" style="border-top-color: #0284C7;">
-<span class="badge-pill">ℹ️ TRANSPARÊNCIA, METODOLOGIA & FONTES</span>
-<h2 style="margin: 4px 0 8px 0; color: #0F172A; font-weight: 800; font-size: 1.7rem;">Sobre o Portal de Resultados do PPRN</h2>
-<p style="margin: 0; color: #475569; font-size: 0.95rem; line-height: 1.55;">
+    st.markdown("""<div class="sim-banner">
+<span class="badge-pill-blue"><i class="bi bi-info-circle-fill text-primary me-1"></i> TRANSPARÊNCIA, METODOLOGIA & FONTES</span>
+<h2 class="hero-title mt-1 mb-2" style="font-size: 1.75rem;"><i class="bi bi-patch-question-fill text-primary me-2"></i>Sobre o Portal de Resultados do PPRN</h2>
+<p class="text-secondary mb-0" style="font-size: 0.95rem; line-height: 1.55;">
 Conheça como esta aplicação foi desenvolvida, a proveniência dos dados, a metodologia aplicada nos desempates e simuladores, e a finalidade colaborativa do projeto.
 </p>
 </div>""", unsafe_allow_html=True)
 
-    st.markdown("""<div class="sim-notice-card" style="border-left-color: #D97706; background: #FFFDF5;">
-<div style="font-size: 0.85rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;">
-⚠️ AVISO LEGAL IMPORTANTE (DISCLAIMER DA BANCA)
+    st.markdown("""<div class="card bg-warning-subtle border-start border-4 border-warning p-3 rounded-3 shadow-sm mb-4">
+<div class="d-flex align-items-center gap-2 mb-1 fw-bold text-warning-emphasis text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
+    <i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i> AVISO LEGAL IMPORTANTE (DISCLAIMER DA BANCA)
 </div>
-<div style="font-size: 0.92rem; color: #1E293B; line-height: 1.55;">
+<div style="font-size: 0.92rem; color: #212529; line-height: 1.55;">
 Este portal é uma <strong>iniciativa independente</strong>, desenvolvida para auxiliar e orientar a comunidade de candidatos do Concurso de Policial Penal do Rio Grande do Norte (PPRN).<br>
 <strong>NÃO se trata de uma plataforma oficial do Instituto Avalia nem do Governo do Estado do RN (SEAD/SEAP).</strong><br>
-Todas as comunicações formais, convocações oficiais e atos com efeitos jurídicos devem ser obrigatoriamente consultados e confirmados no endereço oficial da banca examinadora: <a href="https://www.avalia.org.br" target="_blank" style="color: #0284C7; font-weight: 700;">avalia.org.br</a>.
+Todas as comunicações formais, convocações oficiais e atos com efeitos jurídicos devem ser obrigatoriamente consultados e confirmados no endereço oficial da banca examinadora: <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.
 </div>
 </div>""", unsafe_allow_html=True)
 
     col_sob1, col_sob2 = st.columns(2)
     
     with col_sob1:
-        st.markdown("""<div class="stat-card" style="margin-bottom: 16px;">
-<div class="stat-label">📁 Origem dos Dados</div>
-<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">100% Baseado em Documentos Públicos da Banca</div>
-<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+        st.markdown("""<div class="stat-card mb-3">
+<div class="stat-label"><i class="bi bi-folder-fill text-primary me-1"></i> Origem dos Dados</div>
+<div class="fw-bold text-dark fs-5 my-1">100% Baseado em Documentos Públicos da Banca</div>
+<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
 Todos os registros presentes neste painel foram extraídos diretamente dos editais e planilhas oficiais publicados pela banca <strong>Instituto Avalia</strong> em <strong>09 e 23 de outubro de 2026</strong>:
-<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<ul class="my-2 ps-3">
 <li>Edital de Publicação do Resultado Definitivo da Prova Objetiva;</li>
 <li>Edital de Resultado Preliminar da Perícia Médica PCD (23/10);</li>
 <li>Anexo I: Resultado Preliminar Heteroidentificação Preto e Pardo (23/10);</li>
@@ -2054,11 +2204,11 @@ Todos os registros presentes neste painel foram extraídos diretamente dos edita
 </div>""", unsafe_allow_html=True)
 
         st.markdown("""<div class="stat-card">
-<div class="stat-label">🤖 Inteligência Artificial Agêntica</div>
-<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">Engenharia Moderna com IA</div>
-<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+<div class="stat-label"><i class="bi bi-cpu-fill text-primary me-1"></i> Inteligência Artificial Agêntica</div>
+<div class="fw-bold text-dark fs-5 my-1">Engenharia Moderna com IA</div>
+<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
 O desenvolvimento deste portal e o processamento dos dados contaram com o suporte de <strong>Inteligência Artificial Agêntica (Agentic AI)</strong> para:
-<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<ul class="my-2 ps-3">
 <li>Cruzamento e auditoria instantânea dos 6.309 cotistas étnicos e 659 PCDs com a base geral;</li>
 <li>Implementação fiel dos 10 critérios oficiais de desempate do Edital (Item 21.2.1);</li>
 <li>Modelagem matemática do motor de simulações pós-bancas e TAF;</li>
@@ -2068,12 +2218,12 @@ O desenvolvimento deste portal e o processamento dos dados contaram com o suport
 </div>""", unsafe_allow_html=True)
 
     with col_sob2:
-        st.markdown("""<div class="stat-card" style="margin-bottom: 16px;">
-<div class="stat-label">🛡️ Por que os Dados são Confiáveis?</div>
-<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">Rigor Matemático e Auditoria Cruzada</div>
-<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+        st.markdown("""<div class="stat-card mb-3">
+<div class="stat-label"><i class="bi bi-shield-check text-success me-1"></i> Por que os Dados são Confiáveis?</div>
+<div class="fw-bold text-dark fs-5 my-1">Rigor Matemático e Auditoria Cruzada</div>
+<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
 A confiabilidade da aplicação fundamenta-se na fidelidade matemática aos documentos originais:
-<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<ul class="my-2 ps-3">
 <li><strong>Nenhum dado é inventado:</strong> notas e status preliminares (Deferido/Indeferido) são cópias exatas das relações oficiais;</li>
 <li><strong>Regra do Art. 4º (Hetero) e Art. 3º (PCD):</strong> respeito estrito à norma editalícia que garante a concorrência na Ampla aos indeferidos;</li>
 <li><strong>Classificação Concomitante (Item 7.3):</strong> os cotistas com nota para ampla são identificados conforme a legislação estadual e regras afirmativas.</li>
@@ -2082,11 +2232,11 @@ A confiabilidade da aplicação fundamenta-se na fidelidade matemática aos docu
 </div>""", unsafe_allow_html=True)
 
         st.markdown("""<div class="stat-card">
-<div class="stat-label">🔮 Natureza das Simulações</div>
-<div style="font-size: 1.1rem; font-weight: 800; color: #0F172A; margin: 4px 0 8px 0;">Especulação Estatística para Auxílio</div>
-<div style="font-size: 0.88rem; color: #475569; line-height: 1.55;">
+<div class="stat-label"><i class="bi bi-graph-up text-primary me-1"></i> Natureza das Simulações</div>
+<div class="fw-bold text-dark fs-5 my-1">Especulação Estatística para Auxílio</div>
+<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
 Os recursos presentes no <strong>Simulador de Colocações</strong> e nas <strong>Projeções do Boletim</strong> são <strong>modelos especulativos de projeção</strong>:
-<ul style="margin: 8px 0 4px 0; padding-left: 20px;">
+<ul class="my-2 ps-3">
 <li>Ajudam o candidato a entender o impacto da fase recursal de 26-27/10 e da reprovação típica do TAF;</li>
 <li>Não representam resultado homologado futuro, mas servem como balizador estratégico para planejamento com antecedência.</li>
 </ul>
@@ -2095,23 +2245,23 @@ Os recursos presentes no <strong>Simulador de Colocações</strong> e nas <stron
 
     st.write("")
     
-    st.markdown("""<div class="timeline-card" style="border-left: 5px solid #0284C7; background: #FFFFFF;">
-<div style="font-size: 0.85rem; font-weight: 800; color: #0284C7; text-transform: uppercase; margin-bottom: 4px;">
-💡 Mensagem aos Candidatos
+    st.markdown("""<div class="card border-start border-4 border-primary p-3 rounded-3 shadow-sm mb-4">
+<div class="d-flex align-items-center gap-2 mb-1 fw-bold text-primary text-uppercase" style="font-size: 0.85rem;">
+    <i class="bi bi-chat-heart-fill text-danger fs-5"></i> Mensagem aos Candidatos
 </div>
-<div style="font-size: 0.93rem; color: #334155; line-height: 1.6;">
+<div style="font-size: 0.93rem; color: #212529; line-height: 1.6;">
 Este portal nasceu com o propósito de oferecer clareza, transparência e conforto aos concurseiros que dedicaram meses de estudo para o certame de Policial Penal do RN. Acompanhar classificações em PDFs extensos de centenas de páginas é um processo exaustivo. Aqui, buscamos transformar dados públicos em informação acessível, rápida e compreensível.<br><br>
 Para dúvidas, correções ou sugestões de novas análises, entre em contato diretamente com o criador do projeto: 
-<a href="https://instagram.com/pedronildu" target="_blank" style="color: #0284C7; font-weight: 800; text-decoration: none;">📸 @pedronildu</a> no Instagram.
+<a href="https://instagram.com/pedronildu" target="_blank" class="fw-bold text-primary text-decoration-none"><i class="bi bi-instagram text-danger me-1"></i>@pedronildu</a> no Instagram.
 </div>
 </div>""", unsafe_allow_html=True)
 
 # ==============================================================================
-# RODAPÉ COM CRÉDITOS DO CRIADOR @PEDRONILDU
+# RODAPÉ COM CRÉDITOS DO CRIADOR @PEDRONILDU (BOOTSTRAP 5)
 # ==============================================================================
 st.markdown("""<div class="footer-container">
-<div>🛡️ <strong>Portal de Resultados PPRN</strong> • Dados oficiais atualizados com os Resultados Preliminares das Bancas de Heteroidentificação e Perícia PCD (23/10/2026).</div>
-<div style="margin-top: 6px; font-size: 0.9rem; color: #334155; font-weight: 500;">
-Desenvolvido com dedicação por <strong style="color: #0F172A;">Pedro Nildo</strong> • Instagram do Criador: <a href="https://instagram.com/pedronildu" target="_blank" style="color: #0284C7; font-weight: 800; text-decoration: none;">📸 @pedronildu</a>
+<div><i class="bi bi-shield-fill-check text-primary me-1"></i> <strong>Portal de Resultados PPRN</strong> • Dados oficiais atualizados com os Resultados Preliminares das Bancas de Heteroidentificação e Perícia PCD (23/10/2026).</div>
+<div class="mt-2 text-secondary" style="font-size: 0.9rem;">
+Desenvolvido com dedicação por <strong class="text-dark">Pedro Nildo</strong> • Instagram do Criador: <a href="https://instagram.com/pedronildu" target="_blank" class="fw-bold text-primary text-decoration-none"><i class="bi bi-instagram text-danger me-1"></i>@pedronildu</a>
 </div>
 </div>""", unsafe_allow_html=True)
