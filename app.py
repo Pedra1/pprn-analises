@@ -1007,8 +1007,15 @@ tab_busca, tab_simuladores, tab_listas, tab_regras, tab_cronograma, tab_sobre = 
 ])
 
 # ==============================================================================
+# ==============================================================================
 # ABA 1: CONSULTA INDIVIDUAL (BOLETIM COM RESULTADO DAS BANCAS DE 23/10)
 # ==============================================================================
+def definir_termo_busca(valor):
+    st.session_state["termo_busca_input"] = valor
+
+def limpar_termo_busca():
+    st.session_state["termo_busca_input"] = ""
+
 with tab_busca:
     st.subheader("🔍 Localize seu Desempenho e seu Resultado na Banca")
     st.write("Digite seu **Nome Completo** (ou parte dele) ou seu número de **Inscrição** para conferir seu boletim individual completo:")
@@ -1017,12 +1024,15 @@ with tab_busca:
     with col_search:
         termo_busca = st.text_input(
             "Buscar por Nome ou Inscrição",
-            placeholder="Exemplo: Pedro Nildo, Herbert Ryan, Liliane Pequeno ou 2320000136...",
-            label_visibility="collapsed"
+            placeholder="Digite seu nome completo ou número de inscrição...",
+            label_visibility="collapsed",
+            key="termo_busca_input"
         )
     with col_action:
-        st.write("")
-        st.caption("💡 Busca flexível (ignora maiúsculas e acentos)")
+        if termo_busca.strip():
+            st.button("✖️ Limpar Busca", width="stretch", on_click=limpar_termo_busca)
+        else:
+            st.caption("💡 Busca flexível (ignora maiúsculas e acentos)")
     
     candidato_selecionado = None
     
@@ -1052,8 +1062,47 @@ with tab_busca:
                 idx_geral = int(escolha.split("º")[0]) - 1
                 candidato_selecionado = df_base.iloc[idx_geral]
     else:
-        st.info("💡 **Faça sua busca acima:** Digite seu nome ou número de inscrição. Como exemplo demonstrativo inicial, exibindo o 1º colocado geral:")
-        candidato_selecionado = df_base.iloc[0]
+        # Estado Inicial: Nenhuma busca realizada ainda
+        st.markdown("""
+        <div class="card border shadow-sm p-4 text-center my-3 rounded-3" style="background: #ffffff;">
+            <div class="my-2">
+                <i class="bi bi-person-badge text-primary" style="font-size: 3.2rem;"></i>
+            </div>
+            <h3 class="fw-bold text-dark mb-2">Consulte seu Boletim Individual com os Resultados Oficiais (23/10)</h3>
+            <p class="text-secondary mx-auto mb-4" style="max-width: 640px; font-size: 0.95rem; line-height: 1.6;">
+                Digite seu <strong>Nome Completo</strong> ou número de <strong>Inscrição</strong> no campo de busca acima para carregar instantaneamente o seu boletim completo com nota objetiva, parecer da banca e projeções.
+            </p>
+            <div class="row g-3 text-start mx-auto" style="max-width: 820px;">
+                <div class="col-md-4">
+                    <div class="card bg-light border p-3 h-100 rounded-3">
+                        <div class="fw-bold text-dark mb-1"><i class="bi bi-shield-check text-success me-1"></i> Bancas de Cotas</div>
+                        <div class="text-secondary" style="font-size: 0.85rem; line-height: 1.45;">Parecer preliminar da Heteroidentificação e Perícia PCD publicado em 23/10.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light border p-3 h-100 rounded-3">
+                        <div class="fw-bold text-dark mb-1"><i class="bi bi-list-ol text-primary me-1"></i> Reclassificação Real</div>
+                        <div class="text-secondary" style="font-size: 0.85rem; line-height: 1.45;">Avanço na fila após a saída provisória de 3.231 candidatos indeferidos.</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light border p-3 h-100 rounded-3">
+                        <div class="fw-bold text-dark mb-1"><i class="bi bi-graph-up-arrow text-primary me-1"></i> Projeções TAF</div>
+                        <div class="text-secondary" style="font-size: 0.85rem; line-height: 1.45;">Situação calculada frente ao corte do TAF e vagas imediatas pós-recursos.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.caption("💡 **Deseja testar a consulta com um exemplo?** Selecione abaixo:")
+        ex1, ex2, ex3 = st.columns(3)
+        with ex1:
+            st.button("🥇 Exemplo: 1º Lugar Geral (Ampla)", width="stretch", on_click=definir_termo_busca, args=("2320012112",))
+        with ex2:
+            st.button("🧑🏿 Exemplo: Cota Étnica Deferida", width="stretch", on_click=definir_termo_busca, args=("2320016842",))
+        with ex3:
+            st.button("♿ Exemplo: Cota PCD Deferida", width="stretch", on_click=definir_termo_busca, args=("2320029040",))
 
     # Exibição do Perfil do Candidato
     if candidato_selecionado is not None:
