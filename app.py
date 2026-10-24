@@ -953,12 +953,9 @@ st.markdown("""<div class="hero-container">
     <span class="fw-bold text-primary text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;"><i class="bi bi-shield-shaded me-1"></i> GOVERNO DO ESTADO DO RIO GRANDE DO NORTE • SEAD / SEAP</span>
 </div>
 <h1 class="hero-title"><i class="bi bi-shield-fill-check text-primary me-2"></i>Portal de Resultados • Concurso Policial Penal RN</h1>
-<p class="hero-subtitle">
-Boletim do candidato com resultado oficial preliminar da <strong>Heteroidentificação Étnico-Racial</strong> e da <strong>Perícia Médica PCD</strong>, orientações recursais (26 e 27/10) e avanço na reclassificação das cotas.
+<p class="hero-subtitle mb-0">
+Boletim individual com resultados oficiais preliminares da <strong>Heteroidentificação Étnico-Racial</strong> e <strong>Perícia Médica PCD</strong>, reclassificação pós-banca e simuladores.
 </p>
-<div class="alert alert-warning border-start border-4 border-warning rounded-3 p-3 mt-3 mb-0" style="font-size: 0.88rem; line-height: 1.5;">
-    <i class="bi bi-exclamation-triangle-fill text-warning me-1"></i> <strong>Informação Importante aos Convocados:</strong> Candidatos indeferidos na cota <strong>não estão eliminados</strong> do concurso (Art. 4º Hetero / Art. 3º PCD) e continuam na <strong>Ampla Concorrência</strong>. Prazo para recursos: <strong>26 e 27 de outubro</strong> no site <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.
-</div>
 </div>""", unsafe_allow_html=True)
 
 # 4 Métricas Principais Bootstrap
@@ -1066,43 +1063,14 @@ with tab_busca:
         st.markdown("""
         <div class="card border shadow-sm p-4 text-center my-3 rounded-3" style="background: #ffffff;">
             <div class="my-2">
-                <i class="bi bi-person-badge text-primary" style="font-size: 3.2rem;"></i>
+                <i class="bi bi-person-badge text-primary" style="font-size: 3rem;"></i>
             </div>
-            <h3 class="fw-bold text-dark mb-2">Consulte seu Boletim Individual com os Resultados Oficiais (23/10)</h3>
-            <p class="text-secondary mx-auto mb-4" style="max-width: 640px; font-size: 0.95rem; line-height: 1.6;">
-                Digite seu <strong>Nome Completo</strong> ou número de <strong>Inscrição</strong> no campo de busca acima para carregar instantaneamente o seu boletim completo com nota objetiva, parecer da banca e projeções.
+            <h4 class="fw-bold text-dark mb-2">Consulte seu Boletim Individual com os Resultados Oficiais (23/10)</h4>
+            <p class="text-secondary mx-auto mb-0" style="max-width: 620px; font-size: 0.95rem; line-height: 1.6;">
+                Digite seu <strong>Nome Completo</strong> ou número de <strong>Inscrição</strong> no campo de busca acima para visualizar seu boletim oficial com nota objetiva, parecer da banca de cotas e projeção de convocação.
             </p>
-            <div class="row g-3 text-start mx-auto" style="max-width: 820px;">
-                <div class="col-md-4">
-                    <div class="card bg-light border p-3 h-100 rounded-3">
-                        <div class="fw-bold text-dark mb-1"><i class="bi bi-shield-check text-success me-1"></i> Bancas de Cotas</div>
-                        <div class="text-secondary" style="font-size: 0.85rem; line-height: 1.45;">Parecer preliminar da Heteroidentificação e Perícia PCD publicado em 23/10.</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-light border p-3 h-100 rounded-3">
-                        <div class="fw-bold text-dark mb-1"><i class="bi bi-list-ol text-primary me-1"></i> Reclassificação Real</div>
-                        <div class="text-secondary" style="font-size: 0.85rem; line-height: 1.45;">Avanço na fila após a saída provisória de 3.231 candidatos indeferidos.</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-light border p-3 h-100 rounded-3">
-                        <div class="fw-bold text-dark mb-1"><i class="bi bi-graph-up-arrow text-primary me-1"></i> Projeções TAF</div>
-                        <div class="text-secondary" style="font-size: 0.85rem; line-height: 1.45;">Situação calculada frente ao corte do TAF e vagas imediatas pós-recursos.</div>
-                    </div>
-                </div>
-            </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.caption("💡 **Deseja testar a consulta com um exemplo?** Selecione abaixo:")
-        ex1, ex2, ex3 = st.columns(3)
-        with ex1:
-            st.button("🥇 Exemplo: 1º Lugar Geral (Ampla)", width="stretch", on_click=definir_termo_busca, args=("2320012112",))
-        with ex2:
-            st.button("🧑🏿 Exemplo: Cota Étnica Deferida", width="stretch", on_click=definir_termo_busca, args=("2320016842",))
-        with ex3:
-            st.button("♿ Exemplo: Cota PCD Deferida", width="stretch", on_click=definir_termo_busca, args=("2320029040",))
 
     # Exibição do Perfil do Candidato
     if candidato_selecionado is not None:
@@ -1563,188 +1531,345 @@ with tab_busca:
 # ==============================================================================
 with tab_simuladores:
     st.markdown("""<div class="sim-banner">
-<span class="sim-badge"><i class="bi bi-sliders me-1"></i> SIMULADOR PREDITIVO PÓS-BANCAS DE COTAS & TAF</span>
-<h2 class="hero-title mt-1 mb-2" style="font-size: 1.75rem;"><i class="bi bi-diagram-3-fill text-purple me-2"></i>Simulador de Colocações com Dados Reais das Bancas</h2>
+<span class="sim-badge"><i class="bi bi-sliders me-1"></i> SIMULADORES ESTRATÉGICOS • PPRN</span>
+<h2 class="hero-title mt-1 mb-2" style="font-size: 1.75rem;"><i class="bi bi-diagram-3-fill text-primary me-2"></i>Simulador de Convocação & Cenários do Concurso</h2>
 <p class="text-secondary mb-0" style="font-size: 0.95rem; line-height: 1.55;">
-Projete o impacto dos <strong>3.045 indeferimentos da Heteroidentificação</strong> e <strong>186 indeferimentos PCD</strong> publicados em 23 de outubro, a taxa de sucesso nos <strong>recursos (26 e 27/10)</strong> e a taxa de <strong>reprovação do TAF</strong> na conquista de vagas imediatas.
+Projete suas chances reais com base no número total de nomeações ao longo dos 4 anos de validade ou simule o impacto dos recursos e atrito do TAF.
 </p>
 </div>""", unsafe_allow_html=True)
 
-    st.markdown("""<div class="sim-notice-card">
-<i class="bi bi-info-circle-fill text-primary me-1"></i> <strong>Como os dados foram configurados:</strong><br>
-Por padrão, este simulador utiliza os <strong>resultados oficiais preliminares das bancas publicados hoje (23/10)</strong>. Você pode simular quantos indeferidos devem conseguir reverter a decisão na fase recursal de 26-27 de outubro e qual será o atrito do TAF!
-</div>""", unsafe_allow_html=True)
-
-    st.markdown("#### ⚙️ Parâmetros de Simulação")
-    col_ctrl1, col_ctrl2 = st.columns(2)
-    
-    with col_ctrl1:
-        st.markdown("**📝 Fase de Recursos (26 e 27 de Outubro)**")
-        taxa_rev_etn = st.slider(
-            "Taxa Estimada de Reversão de Recursos na Heteroidentificação Étnica:",
-            min_value=0, max_value=25, value=5, step=1, format="%d%%",
-            help="Porcentagem dos 3.045 candidatos indeferidos na hetero que devem ter o recurso aceito pela comissão recursal. Média típica em bancas: 3% a 8%."
-        )
-        taxa_rev_pcd = st.slider(
-            "Taxa Estimada de Reversão de Recursos na Perícia Médica PCD:",
-            min_value=0, max_value=25, value=5, step=1, format="%d%%",
-            help="Porcentagem dos 186 candidatos PCDs indeferidos que devem reverter no recurso."
-        )
-        
-    with col_ctrl2:
-        st.markdown("**🏃‍♂️ Teste de Aptidão Física (TAF - Novembro/Dezembro)**")
-        taxa_taf = st.slider(
-            "Taxa Estimada de Reprovação / Abstenção no TAF:",
-            min_value=0, max_value=45, value=20, step=1, format="%d%%",
-            help="Porcentagem de convocados para o TAF que reprovam nos testes físicos (barra, corrida, abdominal) ou não comparecem. Média em carreiras policiais: 18% a 28%."
-        )
-        st.markdown(f"""
-        <div class="card bg-light border p-3 rounded-3 mt-2" style="font-size: 0.85rem; line-height: 1.45;">
-        <div class="fw-bold text-dark mb-1"><i class="bi bi-pin-angle-fill text-primary me-1"></i> Parâmetros Atuais:</div>
-        • Reversão Cota Étnica: <strong>{taxa_rev_etn}%</strong> (~{int(3045 * taxa_rev_etn / 100)} recursos deferidos)<br>
-        • Reversão Perícia PCD: <strong>{taxa_rev_pcd}%</strong> (~{int(186 * taxa_rev_pcd / 100)} recursos deferidos)<br>
-        • Reprovação no TAF: <strong>{taxa_taf}%</strong> de atrito nos testes físicos<br>
-        • Base: <strong>Resultados Oficiais das Bancas de 23 de Outubro</strong>
-        </div>
-        """, unsafe_allow_html=True)
-
-    df_simulada, res_sim, novos_ampla, novos_etnico, novos_pcd = executar_simulacao_pos_bancas(
-        modo="real_bancas",
-        taxa_reversao_etnico_pct=taxa_rev_etn,
-        taxa_reversao_pcd_pct=taxa_rev_pcd,
-        taxa_taf_pct=taxa_taf
-    )
-
-    st.write("---")
-    st.markdown("#### 📊 Impacto nas Vagas e Linhas de Corte")
-    
-    sc1, sc2, sc3, sc4 = st.columns(4)
-    with sc1:
-        st.markdown(f"""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Alcance Vagas Ampla (140 vagas)</div>
-<div class="stat-value text-primary">Até o {res_sim['ultimo_ampla_orig']}º</div>
-<div class="stat-sub text-success fw-bold">↑ Original: 140º (+{res_sim['ganho_ampla']} posições pós-TAF!)</div>
-</div>""", unsafe_allow_html=True)
-        
-    with sc2:
-        st.markdown(f"""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Alcance Vagas Cota Étnica (40 vagas)</div>
-<div class="stat-value" style="color: #6f42c1;">Até o {res_sim['ultimo_etnico_orig']}º</div>
-<div class="stat-sub text-success fw-bold">↑ Original: 40º (+{res_sim['ganho_etnico']} cotistas beneficiados!)</div>
-</div>""", unsafe_allow_html=True)
-
-    with sc3:
-        st.markdown(f"""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> Alcance Vagas PCD (20 vagas)</div>
-<div class="stat-value text-success">Até o {res_sim['ultimo_pcd_orig']}º</div>
-<div class="stat-sub text-success fw-bold">↑ Original: 20º (+{res_sim['ganho_pcd']} PCDs beneficiados!)</div>
-</div>""", unsafe_allow_html=True)
-
-    with sc4:
-        st.markdown(f"""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-arrow-down-circle-fill text-primary me-1"></i> Linha de Corte TAF (Cota Étnica)</div>
-<div class="stat-value">{res_sim['corte_etnico_taf']} pts</div>
-<div class="stat-sub text-primary fw-bold">↓ Caiu de 115 para {res_sim['corte_etnico_taf']} pts pós-banca!</div>
-</div>""", unsafe_allow_html=True)
-
-    st.write("")
-
-    fig_comp = go.Figure()
-    modalidades_k = ['Ampla Concorrência', 'Cota Étnico-Racial', 'Cota PCD']
-    valores_orig = [140, 40, 20]
-    valores_sim = [res_sim['ultimo_ampla_orig'], res_sim['ultimo_etnico_orig'], res_sim['ultimo_pcd_orig']]
-    
-    fig_comp.add_trace(go.Bar(
-        name='Oficial (Sem atrito de banca/TAF)',
-        x=modalidades_k,
-        y=valores_orig,
-        marker_color='#6c757d',
-        text=[f"{v}º" for v in valores_orig],
-        textposition='auto',
-        textfont=dict(weight=700, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')
-    ))
-    fig_comp.add_trace(go.Bar(
-        name=f'Simulação pós-Bancas Reais, Recursos ({taxa_rev_etn}%) e TAF ({taxa_taf}%)',
-        x=modalidades_k,
-        y=valores_sim,
-        marker_color=['#0d6efd', '#6f42c1', '#198754'],
-        text=[f"{v}º (+{v-orig})" for v, orig in zip(valores_sim, valores_orig)],
-        textposition='auto',
-        textfont=dict(weight=700, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')
-    ))
-    fig_comp.update_layout(
-        title=dict(text="Alcance Máximo de Convocação para as Vagas Imediatas (Oficial vs Simulado)", font=dict(color='#212529', size=14, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
-        barmode='group',
-        template="plotly_white",
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        yaxis=dict(title="Última Colocação Alcançada", gridcolor='#dee2e6'),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
-        margin=dict(l=10, r=20, t=50, b=30),
-        height=350
-    )
-    st.plotly_chart(fig_comp, width="stretch")
-
-    # Detalhamento
-    st.markdown("#### 📋 Detalhamento dos Candidatos no Cenário Simulado")
-    tab_sub1, tab_sub2, tab_sub3, tab_sub4 = st.tabs([
-        f"🏆 Entram nas Vagas da Geral ({len(novos_ampla)} beneficiados)",
-        f"🧑🏿 Entram nas Vagas da Cota Étnica ({len(novos_etnico)} beneficiados)",
-        f"♿ Entram nas Vagas PCD ({len(novos_pcd)} beneficiados)",
-        "🔍 Consultar Candidato na Simulação"
+    sim_subtab1, sim_subtab2 = st.tabs([
+        "🎯 Quantas Pessoas a Banca vai Chamar? (Validade de 4 Anos)",
+        "🏃‍♂️ Impacto dos Recursos & Reprovação no TAF"
     ])
     
-    with tab_sub1:
-        st.write(f"Candidatos que estavam no **Cadastro de Reserva da Geral** (> 140º) e agora alcançam uma das **140 Vagas Imediatas**:")
-        if len(novos_ampla) > 0:
-            cols_show_ampla = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
-            st.dataframe(novos_ampla[cols_show_ampla], width="stretch", hide_index=True)
-        else:
-            st.info("Nenhum candidato além do 140º com a configuração atual.")
+    with sim_subtab1:
+        st.markdown("#### 🎯 Projeção de Nomeações ao Longo da Validade (2+2 anos)")
+        st.caption("O edital prevê inicialmente **200 vagas imediatas**, mas historicamente concursos de segurança pública convocam turmas adicionais do Cadastro de Reserva.")
 
-    with tab_sub2:
-        st.write(f"Cotistas étnicos que estavam no **Cadastro de Reserva da Cota** (> 40º) e agora alcançam uma das **40 Vagas Imediatas Reservadas**:")
-        if len(novos_etnico) > 0:
-            cols_show_etnico = ['Pos_Lista_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
-            st.dataframe(novos_etnico[cols_show_etnico], width="stretch", hide_index=True)
-        else:
-            st.info("Nenhum cotista além do 40º com a configuração atual.")
+        col_sim_c1, col_sim_c2 = st.columns([1, 1])
+        with col_sim_c1:
+            total_convocados = st.slider(
+                "Quantas pessoas você estima que o Estado/Banca vai chamar ao total nos 4 anos?",
+                min_value=200, max_value=1200, value=400, step=25,
+                help="Total acumulado de nomeações de Policiais Penais no período de validade do certame."
+            )
+        with col_sim_c2:
+            taxa_atrito = st.slider(
+                "Taxa Estimada de Desistências / Reprovações nas Fases (TAF, Psico, Médico, CFP e aprovações em outros certames):",
+                min_value=0, max_value=40, value=15, step=5, format="%d%%",
+                help="Percentual de candidatos que não chegam à posse devido a desistências ou inaptidões. Use 0% para um cálculo conservador direto da lista."
+            )
 
-    with tab_sub3:
-        st.write(f"Candidatos PCD que estavam além da 20ª colocação e agora alcançam uma das **20 Vagas Imediatas PCD**:")
-        if len(novos_pcd) > 0:
-            cols_show_pcd = ['Pos_Lista_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva']
-            st.dataframe(novos_pcd[cols_show_pcd], width="stretch", hide_index=True)
-        else:
-            st.info("Nenhum candidato PCD além do 20º com a configuração atual.")
-
-    with tab_sub4:
-        st.write("Verifique a projeção de qualquer concorrente:")
-        col_bs1, col_bs2 = st.columns([2, 1])
-        with col_bs1:
-            nome_busca_sim = st.text_input("Buscar por Nome ou Inscrição na Lista Simulada:", placeholder="Digite o nome ou número de inscrição...", key="input_busca_sim")
+        fator_atrito = 1.0 - (taxa_atrito / 100.0)
         
-        if nome_busca_sim.strip():
-            norm_bs = normalizar_texto(nome_busca_sim)
-            if norm_bs.isdigit():
-                filtro_sim = df_simulada[df_simulada['Inscrição_Str'].str.startswith(norm_bs)]
+        vagas_ac = int(round(total_convocados * 0.70))
+        vagas_etn = int(round(total_convocados * 0.20))
+        vagas_pcd = int(round(total_convocados * 0.10))
+        
+        alcance_ac = int(round(vagas_ac / fator_atrito)) if fator_atrito > 0 else vagas_ac
+        alcance_etn = int(round(vagas_etn / fator_atrito)) if fator_atrito > 0 else vagas_etn
+        alcance_pcd = int(round(vagas_pcd / fator_atrito)) if fator_atrito > 0 else vagas_pcd
+
+        ca1, ca2, ca3, ca4 = st.columns(4)
+        with ca1:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Total de Chamados</div>
+<div class="stat-value">{total_convocados}</div>
+<div class="stat-sub">Vagas distribuídas nos 4 anos</div>
+</div>""", unsafe_allow_html=True)
+        with ca2:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-award-fill text-primary me-1"></i> Ampla Concorrência (70%)</div>
+<div class="stat-value text-primary">{vagas_ac} vagas</div>
+<div class="stat-sub text-success fw-bold">Alcança até o {alcance_ac}º Geral</div>
+</div>""", unsafe_allow_html=True)
+        with ca3:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Cota Étnica (20%)</div>
+<div class="stat-value" style="color: #6f42c1;">{vagas_etn} vagas</div>
+<div class="stat-sub text-success fw-bold">Alcança até o {alcance_etn}º da Cota</div>
+</div>""", unsafe_allow_html=True)
+        with ca4:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> Cota PCD (10%)</div>
+<div class="stat-value text-success">{vagas_pcd} vagas</div>
+<div class="stat-sub text-success fw-bold">Alcança até o {alcance_pcd}º PCD</div>
+</div>""", unsafe_allow_html=True)
+
+        st.write("")
+        
+        st.markdown("#### 🔎 E você, está dentro desse cenário?")
+        st.write(f"Digite seu **Nome** ou **Inscrição** para checar se você seria convocado(a) com **{total_convocados} chamados**:")
+        
+        termo_sim_pessoal = st.text_input("Consultar candidato na simulação:", placeholder="Digite o nome ou número de inscrição...", key="input_sim_pessoal")
+        
+        cand_sim_pessoal = None
+        if termo_sim_pessoal.strip():
+            norm_p = normalizar_texto(termo_sim_pessoal)
+            if norm_p in mapa_inscricoes:
+                cand_sim_pessoal = df_base.iloc[mapa_inscricoes[norm_p]]
+            elif norm_p.isdigit():
+                m_res = df_base[df_base['Inscrição_Str'].str.startswith(norm_p)]
+                if len(m_res) > 0:
+                    cand_sim_pessoal = m_res.iloc[0]
             else:
-                filtro_sim = df_simulada[df_simulada['Nome_Busca'].str.contains(norm_bs, regex=False, na=False)]
-            if len(filtro_sim) == 0:
-                st.warning("Nenhum candidato encontrado com esse termo.")
+                m_res = df_base[df_base['Nome_Busca'].str.contains(norm_p, regex=False, na=False)]
+                if len(m_res) > 0:
+                    cand_sim_pessoal = m_res.iloc[0]
+                    
+        if cand_sim_pessoal is not None:
+            p_nome = cand_sim_pessoal['Nome']
+            p_insc = cand_sim_pessoal['Inscrição']
+            p_pos_geral = int(cand_sim_pessoal['Posição_Geral'])
+            p_res_etn = str(cand_sim_pessoal.get('Resultado_Hetero', ''))
+            p_res_pcd = str(cand_sim_pessoal.get('Resultado_PCD', ''))
+            
+            if cand_sim_pessoal['Cota_Etnico_Racial'] and p_res_etn == 'DEFERIDO' and pd.notnull(cand_sim_pessoal['Nova_Pos_Lista_Etnico']):
+                p_modalidade = "Cota Étnico-Racial"
+                p_pos = int(cand_sim_pessoal['Nova_Pos_Lista_Etnico'])
+                p_alcance = alcance_etn
+                p_vagas_pct = 0.20
+                tipo_fila = "na Cota Étnica"
+            elif cand_sim_pessoal['Cota_PCD'] and p_res_pcd == 'DEFERIDO' and pd.notnull(cand_sim_pessoal['Nova_Pos_Lista_PCD']):
+                p_modalidade = "Cota PCD"
+                p_pos = int(cand_sim_pessoal['Nova_Pos_Lista_PCD'])
+                p_alcance = alcance_pcd
+                p_vagas_pct = 0.10
+                tipo_fila = "na Cota PCD"
             else:
-                c_cand_sim = filtro_sim.iloc[0]
+                p_modalidade = "Ampla Concorrência"
+                p_pos = p_pos_geral
+                p_alcance = alcance_ac
+                p_vagas_pct = 0.70
+                tipo_fila = "na Ampla (Geral)"
+                
+            esta_dentro = p_pos <= p_alcance
+            total_necessario = int(round((p_pos * fator_atrito) / p_vagas_pct))
+            
+            if esta_dentro:
+                folga = p_alcance - p_pos
                 st.markdown(f"""
-                <div class="candidate-card" style="margin-top: 10px;">
-                <h3 style="margin: 0 0 6px 0; color: #0F172A;">{c_cand_sim['Nome']}</h3>
-                <div style="font-size: 0.9rem; color: #475569; margin-bottom: 12px;">Inscrição: <strong>{c_cand_sim['Inscrição']}</strong> | Modalidade: <strong>{c_cand_sim['Modalidade_Concorrencia']}</strong> | Nota: <strong>{c_cand_sim['Nota Objetiva']} pts</strong></div>
-                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                    <span class="sim-gain-pill">Posição Geral: {c_cand_sim['Posição_Geral']}º</span>
-                    <span class="sim-gain-pill">Status TAF Simulado: {c_cand_sim['Status_TAF_Sim']}</span>
-                    <span class="sim-gain-pill">Vagas: {c_cand_sim['Vaga_Imediata_Sim']}</span>
-                </div>
+                <div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-3">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <span class="badge bg-success rounded-pill px-3 py-2 fs-6">🟢 SIM! VOCÊ ESTÁ DENTRO DAS {total_convocados} VAGAS!</span>
+                        <span class="text-secondary fw-bold" style="font-size: 0.88rem;">{p_nome} ({p_insc})</span>
+                    </div>
+                    <div class="fw-bold text-dark fs-5 mt-2">
+                        Com {total_convocados} nomeações, você seria CONVOCADO(A) para posse!
+                    </div>
+                    <div class="text-secondary mt-1" style="font-size: 0.92rem; line-height: 1.55;">
+                        Sua posição é <strong>{p_pos}º {tipo_fila}</strong> e a lista estimada para {total_convocados} chamados alcança até o <strong>{p_alcance}º lugar</strong>.<br>
+                        <strong class="text-success">Você tem uma margem de folga de {folga} posições!</strong>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
+            else:
+                diff_pos = p_pos - p_alcance
+                st.markdown(f"""
+                <div class="card bg-warning-subtle border-start border-4 border-warning p-3 rounded-3 shadow-sm mb-3">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fs-6">🟡 FORA DA FAIXA DE {total_convocados} CHAMADOS</span>
+                        <span class="text-secondary fw-bold" style="font-size: 0.88rem;">{p_nome} ({p_insc})</span>
+                    </div>
+                    <div class="fw-bold text-dark fs-5 mt-2">
+                        Para alcançar sua colocação ({p_pos}º {tipo_fila}), seriam necessárias ~{total_necessario} convocações totais.
+                    </div>
+                    <div class="text-secondary mt-1" style="font-size: 0.92rem; line-height: 1.55;">
+                        Com {total_convocados} nomeações, a lista alcança até o <strong>{p_alcance}º lugar</strong> (faltam <strong>{diff_pos} posições</strong> para a sua vez).<br>
+                        Se o Estado chamar turmas extras até <strong>{total_necessario} convocados</strong> ao longo dos 4 anos de validade, você será nomeado(a)!
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+        st.markdown("##### 📊 Tabela de Cenários de Convocação nos 4 Anos:")
+        cenarios = [200, 300, 400, 500, 600, 800, 1000]
+        cenarios_dados = []
+        for c in cenarios:
+            v_ac = int(round(c * 0.70))
+            v_et = int(round(c * 0.20))
+            v_pc = int(round(c * 0.10))
+            alc_ac = int(round(v_ac / fator_atrito)) if fator_atrito > 0 else v_ac
+            alc_et = int(round(v_et / fator_atrito)) if fator_atrito > 0 else v_et
+            alc_pc = int(round(v_pc / fator_atrito)) if fator_atrito > 0 else v_pc
+            cenarios_dados.append({
+                "Total Chamados": f"{c} candidatos",
+                "Ampla Concorrência (70%)": f"{v_ac} vagas (até {alc_ac}º Geral)",
+                "Cota Étnica (20%)": f"{v_et} vagas (até {alc_et}º Cota)",
+                "Cota PCD (10%)": f"{v_pc} vagas (até {alc_pc}º PCD)",
+                "Contexto Típico": "Vagas originais do Edital" if c == 200 else ("2 turmas (dobra)" if c == 400 else ("3 turmas" if c == 600 else "Aproveitamento amplo CR"))
+            })
+        st.dataframe(pd.DataFrame(cenarios_dados), width="stretch", hide_index=True)
+
+    with sim_subtab2:
+        st.markdown("#### ⚙️ Parâmetros de Simulação de Recursos & TAF")
+        st.caption("Projete o impacto dos **3.045 indeferimentos da Heteroidentificação** e **186 PCDs** nas vagas imediatas:")
+        
+        col_ctrl1, col_ctrl2 = st.columns(2)
+        with col_ctrl1:
+            taxa_rev_etn = st.slider(
+                "Taxa Estimada de Reversão de Recursos na Heteroidentificação Étnica:",
+                min_value=0, max_value=25, value=5, step=1, format="%d%%",
+                help="Porcentagem dos candidatos indeferidos que revertem na fase recursal."
+            )
+            taxa_rev_pcd = st.slider(
+                "Taxa Estimada de Reversão de Recursos na Perícia Médica PCD:",
+                min_value=0, max_value=25, value=5, step=1, format="%d%%",
+                help="Porcentagem dos PCDs indeferidos que revertem no recurso."
+            )
+            
+        with col_ctrl2:
+            taxa_taf = st.slider(
+                "Taxa Estimada de Reprovação / Abstenção no TAF:",
+                min_value=0, max_value=45, value=20, step=1, format="%d%%",
+                help="Atrito médio nos testes físicos (barra, corrida, abdominal)."
+            )
+            st.markdown(f"""
+            <div class="card bg-light border p-3 rounded-3 mt-1" style="font-size: 0.85rem; line-height: 1.45;">
+            <div class="fw-bold text-dark mb-1"><i class="bi bi-pin-angle-fill text-primary me-1"></i> Resumo dos Parâmetros:</div>
+            • Recursos Aceitos Cota Étnica: <strong>{taxa_rev_etn}%</strong> (~{int(3045 * taxa_rev_etn / 100)})<br>
+            • Recursos Aceitos Perícia PCD: <strong>{taxa_rev_pcd}%</strong> (~{int(186 * taxa_rev_pcd / 100)})<br>
+            • Reprovação no TAF: <strong>{taxa_taf}%</strong> de atrito
+            </div>
+            """, unsafe_allow_html=True)
+
+        df_simulada, res_sim, novos_ampla, novos_etnico, novos_pcd = executar_simulacao_pos_bancas(
+            modo="real_bancas",
+            taxa_reversao_etnico_pct=taxa_rev_etn,
+            taxa_reversao_pcd_pct=taxa_rev_pcd,
+            taxa_taf_pct=taxa_taf
+        )
+
+        st.write("---")
+        st.markdown("#### 📊 Impacto nas Vagas Imediatas e Linhas de Corte")
+        
+        sc1, sc2, sc3, sc4 = st.columns(4)
+        with sc1:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Alcance Ampla (140 vagas)</div>
+<div class="stat-value text-primary">Até o {res_sim['ultimo_ampla_orig']}º</div>
+<div class="stat-sub text-success fw-bold">+{res_sim['ganho_ampla']} posições ganhas pós-TAF</div>
+</div>""", unsafe_allow_html=True)
+            
+        with sc2:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Alcance Cota Étnica (40 vagas)</div>
+<div class="stat-value" style="color: #6f42c1;">Até o {res_sim['ultimo_etnico_orig']}º</div>
+<div class="stat-sub text-success fw-bold">+{res_sim['ganho_etnico']} cotistas beneficiados</div>
+</div>""", unsafe_allow_html=True)
+
+        with sc3:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> Alcance PCD (20 vagas)</div>
+<div class="stat-value text-success">Até o {res_sim['ultimo_pcd_orig']}º</div>
+<div class="stat-sub text-success fw-bold">+{res_sim['ganho_pcd']} PCDs beneficiados</div>
+</div>""", unsafe_allow_html=True)
+
+        with sc4:
+            st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-arrow-down-circle-fill text-primary me-1"></i> Linha de Corte TAF (Cota)</div>
+<div class="stat-value">{res_sim['corte_etnico_taf']} pts</div>
+<div class="stat-sub text-primary fw-bold">Caiu de 115 para {res_sim['corte_etnico_taf']} pts</div>
+</div>""", unsafe_allow_html=True)
+
+        st.write("")
+
+        fig_comp = go.Figure()
+        modalidades_k = ['Ampla Concorrência', 'Cota Étnico-Racial', 'Cota PCD']
+        valores_orig = [140, 40, 20]
+        valores_sim = [res_sim['ultimo_ampla_orig'], res_sim['ultimo_etnico_orig'], res_sim['ultimo_pcd_orig']]
+        
+        fig_comp.add_trace(go.Bar(
+            name='Oficial (Sem atrito de banca/TAF)',
+            x=modalidades_k,
+            y=valores_orig,
+            marker_color='#6c757d',
+            text=[f"{v}º" for v in valores_orig],
+            textposition='auto',
+            textfont=dict(weight=700, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')
+        ))
+        fig_comp.add_trace(go.Bar(
+            name=f'Simulação pós-Bancas e TAF ({taxa_taf}%)',
+            x=modalidades_k,
+            y=valores_sim,
+            marker_color=['#0d6efd', '#6f42c1', '#198754'],
+            text=[f"{v}º (+{v-orig})" for v, orig in zip(valores_sim, valores_orig)],
+            textposition='auto',
+            textfont=dict(weight=700, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')
+        ))
+        fig_comp.update_layout(
+            title=dict(text="Alcance Máximo de Convocação para as Vagas Imediatas (Oficial vs Simulado)", font=dict(color='#212529', size=14, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
+            barmode='group',
+            template="plotly_white",
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+            yaxis=dict(title="Última Colocação Alcançada", gridcolor='#dee2e6'),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
+            margin=dict(l=10, r=20, t=50, b=30),
+            height=340
+        )
+        st.plotly_chart(fig_comp, width="stretch")
+
+        # Detalhamento
+        st.markdown("#### 📋 Detalhamento dos Candidatos no Cenário Simulado")
+        tab_sub1, tab_sub2, tab_sub3, tab_sub4 = st.tabs([
+            f"🏆 Entram nas Vagas da Geral ({len(novos_ampla)})",
+            f"🧑🏿 Entram nas Vagas da Cota ({len(novos_etnico)})",
+            f"♿ Entram nas Vagas PCD ({len(novos_pcd)})",
+            "🔍 Consultar Candidato na Simulação"
+        ])
+        
+        with tab_sub1:
+            st.write(f"Candidatos que estavam no **Cadastro de Reserva da Geral** (> 140º) e agora alcançam uma das **140 Vagas Imediatas**:")
+            if len(novos_ampla) > 0:
+                cols_show_ampla = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
+                st.dataframe(novos_ampla[cols_show_ampla], width="stretch", hide_index=True)
+            else:
+                st.info("Nenhum candidato além do 140º com a configuração atual.")
+
+        with tab_sub2:
+            st.write(f"Cotistas étnicos que estavam no **Cadastro de Reserva da Cota** (> 40º) e agora alcançam uma das **40 Vagas Imediatas Reservadas**:")
+            if len(novos_etnico) > 0:
+                cols_show_etnico = ['Pos_Lista_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
+                st.dataframe(novos_etnico[cols_show_etnico], width="stretch", hide_index=True)
+            else:
+                st.info("Nenhum cotista além do 40º com a configuração atual.")
+
+        with tab_sub3:
+            st.write(f"Candidatos PCD que estavam além da 20ª colocação e agora alcançam uma das **20 Vagas Imediatas PCD**:")
+            if len(novos_pcd) > 0:
+                cols_show_pcd = ['Pos_Lista_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva']
+                st.dataframe(novos_pcd[cols_show_pcd], width="stretch", hide_index=True)
+            else:
+                st.info("Nenhum candidato PCD além do 20º com a configuração atual.")
+
+        with tab_sub4:
+            st.write("Verifique a projeção de qualquer concorrente:")
+            col_bs1, col_bs2 = st.columns([2, 1])
+            with col_bs1:
+                nome_busca_sim = st.text_input("Buscar por Nome ou Inscrição na Lista Simulada:", placeholder="Digite o nome ou número de inscrição...", key="input_busca_sim")
+            
+            if nome_busca_sim.strip():
+                norm_bs = normalizar_texto(nome_busca_sim)
+                if norm_bs.isdigit():
+                    filtro_sim = df_simulada[df_simulada['Inscrição_Str'].str.startswith(norm_bs)]
+                else:
+                    filtro_sim = df_simulada[df_simulada['Nome_Busca'].str.contains(norm_bs, regex=False, na=False)]
+                if len(filtro_sim) == 0:
+                    st.warning("Nenhum candidato encontrado com esse termo.")
+                else:
+                    c_cand_sim = filtro_sim.iloc[0]
+                    st.markdown(f"""
+                    <div class="candidate-card" style="margin-top: 10px;">
+                    <h3 style="margin: 0 0 6px 0; color: #0F172A;">{c_cand_sim['Nome']}</h3>
+                    <div style="font-size: 0.9rem; color: #475569; margin-bottom: 12px;">Inscrição: <strong>{c_cand_sim['Inscrição']}</strong> | Modalidade: <strong>{c_cand_sim['Modalidade_Concorrencia']}</strong> | Nota: <strong>{c_cand_sim['Nota Objetiva']} pts</strong></div>
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                        <span class="sim-gain-pill">Posição Geral: {c_cand_sim['Posição_Geral']}º</span>
+                        <span class="sim-gain-pill">Status TAF Simulado: {c_cand_sim['Status_TAF_Sim']}</span>
+                        <span class="sim-gain-pill">Vagas: {c_cand_sim['Vaga_Imediata_Sim']}</span>
+                    </div>
+                    </div>
+                    """, unsafe_allow_html=True)
 
 # ==============================================================================
 # ABA 3: AS LISTAS OFICIAIS & RESULTADOS DAS BANCAS (DOWNLOADS)
@@ -2106,110 +2231,94 @@ with tab_regras:
 # ABA 5: CRONOGRAMA OFICIAL DO CONCURSO (TIMELINE FLAT)
 # ==============================================================================
 with tab_cronograma:
-    st.subheader("📅 Cronograma Oficial do Concurso (Edital nº 002/2026)")
-    st.write("""
-    Acompanhe as principais datas e prazos atualizados do concurso de Policial Penal do RN:
-    """)
-    
-    st.markdown("""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-4">
-<div class="d-flex align-items-center gap-2 mb-1 fw-bold text-success text-uppercase" style="font-size: 0.82rem; letter-spacing: 0.04em;">
-    <i class="bi bi-calendar-check-fill text-success fs-5"></i> FASE ATUAL CONCLUÍDA HOJE (23 DE OUTUBRO)
-</div>
-<div class="fw-bold text-dark fs-5 my-1">
-    Publicação do Resultado Preliminar da Heteroidentificação e da Perícia Médica PCD
-</div>
-<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.5;">
-    Relações preliminares divulgadas em 23/10/2026 no site da banca Instituto Avalia (<a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>).
-</div>
-</div>""", unsafe_allow_html=True)
+    st.subheader("📅 Cronograma Oficial de Execução do Concurso")
+    st.caption("Tabela 2.1 – Policial Penal • Anexo III do Edital nº 002/2026 (Governo do Estado do RN • SEAD/SEAP)")
 
-    marcos_cronograma = [
-        {
-            "data": "18 de Junho de 2026",
-            "titulo": "Publicação do Edital de Abertura nº 002/2026",
-            "descricao": "Publicação oficial do concurso com 260 vagas totais (200 para Policial Penal) e regras gerais.",
-            "status": "Concluído",
-            "tipo": "past"
-        },
-        {
-            "data": "13 de Setembro de 2026",
-            "titulo": "Aplicação da Prova Objetiva",
-            "descricao": "Realização das provas objetivas no turno matutino para o cargo de Policial Penal do RN.",
-            "status": "Concluído",
-            "tipo": "past"
-        },
-        {
-            "data": "09 de Outubro de 2026",
-            "titulo": "Resultado Definitivo da Prova Objetiva & Convocação de Cotas",
-            "descricao": "Divulgação da relação de 18.945 habilitados (≥ 73 pts) e convocação presencial de cotistas e PCDs.",
-            "status": "Concluído",
-            "tipo": "past"
-        },
-        {
-            "data": "17 e 18 de Outubro de 2026",
-            "titulo": "Realização das Bancas Presenciais de Cotas e Perícia PCD",
-            "descricao": "Comparecimento presencial dos candidatos convocados em Natal/RN para heteroidentificação e perícia.",
-            "status": "Concluído",
-            "tipo": "past"
-        },
-        {
-            "data": "23 de Outubro de 2026 (Hoje)",
-            "titulo": "Publicação do Resultado Preliminar da Heteroidentificação e Perícia PCD",
-            "descricao": "Divulgação dos Anexos I, II e Único com os candidatos deferidos e indeferidos nas bancas de cotas.",
-            "status": "Marco de Hoje",
-            "tipo": "active"
-        },
-        {
-            "data": "26 e 27 de Outubro de 2026",
-            "titulo": "Prazo para Interposição de Recursos contra o Resultado das Bancas",
-            "descricao": "Abertura do formulário de recurso online no portal avalia.org.br (da 0h00 de 26/10 até às 23h59 de 27/10).",
-            "status": "🚨 Próxima Etapa Crítica",
-            "tipo": "next"
-        },
-        {
-            "data": "04 de Novembro de 2026 (Data Provável)",
-            "titulo": "Resultado Definitivo das Cotas & Convocação Oficial para o TAF",
-            "descricao": "Julgamento dos recursos, homologação final das cotas e publicação da lista oficial de convocados para o TAF.",
-            "status": "Próximo Marco Oficial",
-            "tipo": "future"
-        },
-        {
-            "data": "Novembro / Dezembro de 2026",
-            "titulo": "Aplicação do Teste de Aptidão Física (TAF)",
-            "descricao": "Realização dos testes de condicionamento físico (barra fixa, corrida, abdominal) em Natal/RN.",
-            "status": "Etapa Subsequente",
-            "tipo": "future"
-        },
-        {
-            "data": "Fases Seguintes",
-            "titulo": "Avaliação Psicológica, Exames Médicos, Investigação Social e CFP",
-            "descricao": "Demais etapas eliminatórias até a homologação final e matrícula no Curso de Formação Profissional (CFP).",
-            "status": "Etapas Finais",
-            "tipo": "future"
-        }
+    cronograma_oficial_dados = [
+        {"Etapa / Fase": "ISENÇÃO DA TAXA DE INSCRIÇÃO", "Evento / Atividade": "Período para solicitação de isenção da Taxa de Inscrição", "Período / Data": "22/06 até às 23h59min do dia 24/06/2026"},
+        {"Etapa / Fase": "ISENÇÃO DA TAXA DE INSCRIÇÃO", "Evento / Atividade": "Prazo para envio da documentação referente a isenção da Taxa de Inscrição", "Período / Data": "22/06 até às 23h59min do dia 25/06/2026"},
+        {"Etapa / Fase": "ISENÇÃO DA TAXA DE INSCRIÇÃO", "Evento / Atividade": "Divulgação do deferimento das solicitações de isenção da Taxa de Inscrição", "Período / Data": "03/07/2026"},
+        {"Etapa / Fase": "ISENÇÃO DA TAXA DE INSCRIÇÃO", "Evento / Atividade": "Período para recurso contra o indeferimento da solicitação de isenção", "Período / Data": "06/07 a 07/07/2026"},
+        {"Etapa / Fase": "ISENÇÃO DA TAXA DE INSCRIÇÃO", "Evento / Atividade": "Divulgação do deferimento da solicitação de isenção pós-recursos", "Período / Data": "14/07/2026"},
+        {"Etapa / Fase": "SOLICITAÇÃO DE INSCRIÇÃO", "Evento / Atividade": "Período para solicitação de Inscrição", "Período / Data": "22/06 até às 23h59min do dia 05/08/2026"},
+        {"Etapa / Fase": "SOLICITAÇÃO DE INSCRIÇÃO", "Evento / Atividade": "Período para envio de laudo médico (apenas nos casos de solicitação de condições especiais)", "Período / Data": "22/06 até às 23h59min do dia 07/08/2026"},
+        {"Etapa / Fase": "SOLICITAÇÃO DE INSCRIÇÃO", "Evento / Atividade": "Período para emissão do boleto bancário e pagamento da Taxa de Inscrição", "Período / Data": "22/06 até às 23h59min do dia 07/08/2026"},
+        {"Etapa / Fase": "SOLICITAÇÃO DE INSCRIÇÃO", "Evento / Atividade": "Divulgação do deferimento das inscrições", "Período / Data": "12/08/2026"},
+        {"Etapa / Fase": "SOLICITAÇÃO DE INSCRIÇÃO", "Evento / Atividade": "Período para recurso contra o indeferimento da inscrição", "Período / Data": "13/08 a 14/08/2026"},
+        {"Etapa / Fase": "SOLICITAÇÃO DE INSCRIÇÃO", "Evento / Atividade": "Divulgação do deferimento da inscrição pós-recurso", "Período / Data": "20/08/2026"},
+        {"Etapa / Fase": "PROVA OBJETIVA", "Evento / Atividade": "Divulgação do horário e local de realização da prova", "Período / Data": "04/09/2026"},
+        {"Etapa / Fase": "PROVA OBJETIVA", "Evento / Atividade": "APLICAÇÃO DA PROVA OBJETIVA", "Período / Data": "13/09/2026"},
+        {"Etapa / Fase": "PROVA OBJETIVA", "Evento / Atividade": "Divulgação do Gabarito Preliminar e do(s) Caderno(s) de questões", "Período / Data": "14/09/2026"},
+        {"Etapa / Fase": "PROVA OBJETIVA", "Evento / Atividade": "Período para recurso contra o Gabarito Preliminar", "Período / Data": "15/09 a 16/09/2026"},
+        {"Etapa / Fase": "PROVA OBJETIVA", "Evento / Atividade": "Divulgação do edital de pareceres dos recursos contra o Gabarito Preliminar, do Gabarito pós-recursos, das folhas de respostas e do resultado preliminar da Prova Objetiva", "Período / Data": "30/09/2026"},
+        {"Etapa / Fase": "PROVA OBJETIVA", "Evento / Atividade": "Período para recurso contra o resultado preliminar da Prova Objetiva", "Período / Data": "01/10 a 02/10/2026"},
+        {"Etapa / Fase": "PROVA OBJETIVA", "Evento / Atividade": "Divulgação do resultado da Prova Objetiva pós-recursos", "Período / Data": "09/10/2026"},
+        {"Etapa / Fase": "PERÍCIA MÉDICA (PcD)", "Evento / Atividade": "Convocação dos candidatos inscritos às vagas PcD para a perícia médica", "Período / Data": "09/10/2026"},
+        {"Etapa / Fase": "PERÍCIA MÉDICA (PcD)", "Evento / Atividade": "APLICAÇÃO DA PERÍCIA MÉDICA PRESENCIAL PARA PcD", "Período / Data": "18/10/2026"},
+        {"Etapa / Fase": "PERÍCIA MÉDICA (PcD)", "Evento / Atividade": "Divulgação do resultado preliminar da perícia médica", "Período / Data": "23/10/2026"},
+        {"Etapa / Fase": "PERÍCIA MÉDICA (PcD)", "Evento / Atividade": "Período para recurso contra o resultado da perícia médica", "Período / Data": "26/10 a 27/10/2026"},
+        {"Etapa / Fase": "PERÍCIA MÉDICA (PcD)", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da perícia médica e do resultado da perícia médica pós-recurso", "Período / Data": "04/11/2026"},
+        {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "Convocação dos candidatos inscritos às vagas étnico-raciais para o procedimento de heteroidentificação e análise documental", "Período / Data": "09/10/2026"},
+        {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "APLICAÇÃO DA HETEROIDENTIFICAÇÃO PRESENCIAL E ANÁLISE DOCUMENTAL", "Período / Data": "17/10 e 18/10/2026"},
+        {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "Divulgação do resultado preliminar da heteroidentificação e análise documental", "Período / Data": "23/10/2026"},
+        {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "Período para recurso contra o resultado provisório da heteroidentificação e análise documental", "Período / Data": "26/10 a 27/10/2026"},
+        {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da heteroidentificação e análise documental e resultado definitivo da heteroidentificação", "Período / Data": "04/11/2026"},
+        {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Convocação para o teste de aptidão física", "Período / Data": "04/11/2026"},
+        {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "APLICAÇÃO DO TESTE DE APTIDÃO FÍSICA", "Período / Data": "14/11 e 15/11/2026"},
+        {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do resultado preliminar do teste de aptidão física", "Período / Data": "23/11/2026"},
+        {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Período para recurso contra o resultado provisório do teste de aptidão física", "Período / Data": "24/11 a 25/11/2026"},
+        {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado do teste de aptidão física e resultado definitivo", "Período / Data": "03/12/2026"},
+        {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Convocação para a avaliação psicológica", "Período / Data": "03/12/2026"},
+        {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "APLICAÇÃO DA AVALIAÇÃO PSICOLÓGICA", "Período / Data": "20/12/2026"},
+        {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Divulgação do resultado preliminar da avaliação psicológica", "Período / Data": "05/01/2027"},
+        {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Entrevista devolutiva", "Período / Data": "10/01/2027"},
+        {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Período para recurso contra o resultado preliminar da avaliação psicológica", "Período / Data": "11/01 a 12/01/2027"},
+        {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da avaliação psicológica e resultado definitivo", "Período / Data": "19/01/2027"},
+        {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Convocação para a entrega do exame toxicológico", "Período / Data": "03/12/2026"},
+        {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "ENTREGA DO EXAME TOXICOLÓGICO (no mesmo dia de realização da avaliação psicológica)", "Período / Data": "20/12/2026"},
+        {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Divulgação do resultado preliminar do exame toxicológico", "Período / Data": "19/01/2027"},
+        {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Período para recurso contra o resultado provisório do exame toxicológico", "Período / Data": "20/01 a 21/01/2027"},
+        {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado do exame toxicológico e resultado definitivo", "Período / Data": "28/01/2027"},
+        {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Convocação para a investigação social", "Período / Data": "28/01/2027"},
+        {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "PREENCHIMENTO DO FORMULÁRIO DE INFORMAÇÕES PARA INVESTIGAÇÃO SOCIAL", "Período / Data": "28/01 a 17/02/2027"},
+        {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Divulgação do resultado preliminar da investigação social", "Período / Data": "26/02/2027"},
+        {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Período para recurso contra o resultado provisório da investigação social", "Período / Data": "01/03 a 02/03/2027"},
+        {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da investigação social e resultado definitivo", "Período / Data": "10/03/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "Convocação dos candidatos habilitados para matrícula no curso de formação", "Período / Data": "10/03/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "PERÍODO PARA MATRÍCULA", "Período / Data": "10/03 a 12/03/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "Aula inaugural do curso de formação", "Período / Data": "22/03/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "Período de realização do curso de formação", "Período / Data": "22/03 a 22/06/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "AVALIAÇÃO DO CURSO DE FORMAÇÃO", "Período / Data": "04/07/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "Divulgação do resultado preliminar do curso de formação", "Período / Data": "16/07/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "Período para recurso contra o resultado do curso de formação", "Período / Data": "19/07 a 20/07/2027"},
+        {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "Divulgação do resultado do curso de formação pós-recurso", "Período / Data": "27/07/2027"},
+        {"Etapa / Fase": "RESULTADO FINAL E HOMOLOGAÇÃO", "Evento / Atividade": "Divulgação do resultado preliminar e classificação dos candidatos", "Período / Data": "27/07/2027"},
+        {"Etapa / Fase": "RESULTADO FINAL E HOMOLOGAÇÃO", "Evento / Atividade": "Período para recurso contra o resultado e classificação", "Período / Data": "28/07 a 29/07/2027"},
+        {"Etapa / Fase": "RESULTADO FINAL E HOMOLOGAÇÃO", "Evento / Atividade": "Divulgação do resultado final e classificação pós-recurso", "Período / Data": "05/08/2027"},
+        {"Etapa / Fase": "RESULTADO FINAL E HOMOLOGAÇÃO", "Evento / Atividade": "DIVULGAÇÃO DA HOMOLOGAÇÃO DO RESULTADO FINAL E CLASSIFICAÇÃO", "Período / Data": "05/08/2027"}
     ]
 
-    for m in marcos_cronograma:
-        card_class = f"timeline-card timeline-card-{m['tipo']}"
-        badge_bg = "bg-success" if m['tipo'] == 'past' else ("bg-warning text-dark" if m['tipo'] == 'active' else ("bg-primary" if m['tipo'] == 'next' else "bg-secondary"))
-        icon_m = '<i class="bi bi-check-circle-fill me-1"></i>' if m['tipo'] == 'past' else ('<i class="bi bi-stars me-1"></i>' if m['tipo'] == 'active' else ('<i class="bi bi-exclamation-circle-fill me-1"></i>' if m['tipo'] == 'next' else '<i class="bi bi-clock me-1"></i>'))
+    df_crono = pd.DataFrame(cronograma_oficial_dados)
+    
+    col_cr1, col_cr2 = st.columns([2, 1])
+    with col_cr1:
+        busca_crono = st.text_input("Filtrar etapas ou datas:", placeholder="Digite para filtrar etapas do edital...", key="busca_crono_edital")
+    with col_cr2:
+        filtro_etapa = st.selectbox("Filtrar por Fase:", ["Todas as Fases"] + list(df_crono["Etapa / Fase"].unique()), key="filtro_fase_crono")
         
-        st.markdown(f"""<div class="{card_class}">
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-1">
-<div class="fw-bold text-primary text-uppercase" style="font-size: 0.82rem; letter-spacing: 0.04em;">
-<i class="bi bi-calendar3 me-1"></i> {m['data']}
-</div>
-<span class="badge rounded-pill {badge_bg}" style="font-size: 0.75rem; text-transform: uppercase;">
-{icon_m}{m['status']}
-</span>
-</div>
-<div class="fw-bold text-dark my-1" style="font-size: 1.05rem;">
-{m['titulo']}
-</div>
-<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.5;">
-{m['descricao']}
-</div>
-</div>""", unsafe_allow_html=True)
+    df_crono_show = df_crono.copy()
+    if filtro_etapa != "Todas as Fases":
+        df_crono_show = df_crono_show[df_crono_show["Etapa / Fase"] == filtro_etapa]
+        
+    if busca_crono.strip():
+        norm_cr = normalizar_texto(busca_crono)
+        df_crono_show = df_crono_show[
+            df_crono_show["Evento / Atividade"].apply(normalizar_texto).str.contains(norm_cr, na=False) |
+            df_crono_show["Etapa / Fase"].apply(normalizar_texto).str.contains(norm_cr, na=False) |
+            df_crono_show["Período / Data"].str.contains(busca_crono, case=False, na=False)
+        ]
+        
+    st.dataframe(df_crono_show, width="stretch", hide_index=True, height=520)
 
 # ==============================================================================
 # ABA 6: SOBRE O PORTAL, ORIGEM DOS DADOS E METODOLOGIA
@@ -2238,70 +2347,37 @@ Todas as comunicações formais, convocações oficiais e atos com efeitos jurí
     
     with col_sob1:
         st.markdown("""<div class="stat-card mb-3">
-<div class="stat-label"><i class="bi bi-folder-fill text-primary me-1"></i> Origem dos Dados</div>
-<div class="fw-bold text-dark fs-5 my-1">100% Baseado em Documentos Públicos da Banca</div>
+<div class="stat-label"><i class="bi bi-folder-fill text-primary me-1"></i> Origem dos Dados Oficiais</div>
+<div class="fw-bold text-dark fs-5 my-1">Documentos Públicos da Banca Avalia</div>
 <div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
-Todos os registros presentes neste painel foram extraídos diretamente dos editais e planilhas oficiais publicados pela banca <strong>Instituto Avalia</strong> em <strong>09 e 23 de outubro de 2026</strong>:
+Todos os registros presentes neste painel foram extraídos dos editais oficiais publicados em <strong>09 e 23 de outubro de 2026</strong>:
 <ul class="my-2 ps-3">
-<li>Edital de Publicação do Resultado Definitivo da Prova Objetiva;</li>
-<li>Edital de Resultado Preliminar da Perícia Médica PCD (23/10);</li>
-<li>Anexo I: Resultado Preliminar Heteroidentificação Preto e Pardo (23/10);</li>
-<li>Anexo II: Resultado Preliminar Análise Documental Indígena e Quilombola (23/10);</li>
-<li>Anexo Único: Resultado Preliminar Perícia Médica PCD (23/10).</li>
-</ul>
-</div>
-</div>""", unsafe_allow_html=True)
-
-        st.markdown("""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-cpu-fill text-primary me-1"></i> Inteligência Artificial Agêntica</div>
-<div class="fw-bold text-dark fs-5 my-1">Engenharia Moderna com IA</div>
-<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
-O desenvolvimento deste portal e o processamento dos dados contaram com o suporte de <strong>Inteligência Artificial Agêntica (Agentic AI)</strong> para:
-<ul class="my-2 ps-3">
-<li>Cruzamento e auditoria instantânea dos 6.309 cotistas étnicos e 659 PCDs com a base geral;</li>
-<li>Implementação fiel dos 10 critérios oficiais de desempate do Edital (Item 21.2.1);</li>
-<li>Modelagem matemática do motor de simulações pós-bancas e TAF;</li>
-<li>Design visual institucional e arquitetura de carregamento em alta performance.</li>
+<li>Resultado Definitivo da Prova Objetiva (18.945 aprovados);</li>
+<li>Anexo I: Heteroidentificação Preto e Pardo (3.221 Deferidos / 3.022 Indeferidos);</li>
+<li>Anexo II: Análise Documental Indígena e Quilombola (55 Deferidos / 32 Indeferidos);</li>
+<li>Anexo Único: Perícia Médica PCD (473 Deferidos / 186 Indeferidos).</li>
 </ul>
 </div>
 </div>""", unsafe_allow_html=True)
 
     with col_sob2:
         st.markdown("""<div class="stat-card mb-3">
-<div class="stat-label"><i class="bi bi-shield-check text-success me-1"></i> Por que os Dados são Confiáveis?</div>
-<div class="fw-bold text-dark fs-5 my-1">Rigor Matemático e Auditoria Cruzada</div>
+<div class="stat-label"><i class="bi bi-shield-check text-success me-1"></i> Metodologia & Critérios</div>
+<div class="fw-bold text-dark fs-5 my-1">Fidelidade às Normas do Edital</div>
 <div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
-A confiabilidade da aplicação fundamenta-se na fidelidade matemática aos documentos originais:
-<ul class="my-2 ps-3">
-<li><strong>Nenhum dado é inventado:</strong> notas e status preliminares (Deferido/Indeferido) são cópias exatas das relações oficiais;</li>
-<li><strong>Regra do Art. 4º (Hetero) e Art. 3º (PCD):</strong> respeito estrito à norma editalícia que garante a concorrência na Ampla aos indeferidos;</li>
-<li><strong>Classificação Concomitante (Item 7.3):</strong> os cotistas com nota para ampla são identificados conforme a legislação estadual e regras afirmativas.</li>
-</ul>
+• <strong>Preservação na Ampla (Art. 4º Hetero / Art. 3º PCD):</strong> candidatos indeferidos continuam normalmente na disputa geral;<br>
+• <strong>Critérios de Desempate:</strong> ordem rigorosa do Item 21.2.1 do edital;<br>
+• <strong>Simuladores:</strong> modelos preditivos baseados em médias históricas de carreiras policiais para auxílio ao candidato.
 </div>
 </div>""", unsafe_allow_html=True)
 
-        st.markdown("""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-graph-up text-primary me-1"></i> Natureza das Simulações</div>
-<div class="fw-bold text-dark fs-5 my-1">Especulação Estatística para Auxílio</div>
-<div class="text-secondary" style="font-size: 0.88rem; line-height: 1.55;">
-Os recursos presentes no <strong>Simulador de Colocações</strong> e nas <strong>Projeções do Boletim</strong> são <strong>modelos especulativos de projeção</strong>:
-<ul class="my-2 ps-3">
-<li>Ajudam o candidato a entender o impacto da fase recursal de 26-27/10 e da reprovação típica do TAF;</li>
-<li>Não representam resultado homologado futuro, mas servem como balizador estratégico para planejamento com antecedência.</li>
-</ul>
-</div>
-</div>""", unsafe_allow_html=True)
-
-    st.write("")
-    
     st.markdown("""<div class="card border-start border-4 border-primary p-3 rounded-3 shadow-sm mb-4">
-<div class="d-flex align-items-center gap-2 mb-1 fw-bold text-primary text-uppercase" style="font-size: 0.85rem;">
-    <i class="bi bi-chat-heart-fill text-danger fs-5"></i> Mensagem aos Candidatos
-</div>
-<div style="font-size: 0.93rem; color: #212529; line-height: 1.6;">
-Este portal nasceu com o propósito de oferecer clareza, transparência e conforto aos concurseiros que dedicaram meses de estudo para o certame de Policial Penal do RN. Acompanhar classificações em PDFs extensos de centenas de páginas é um processo exaustivo. Aqui, buscamos transformar dados públicos em informação acessível, rápida e compreensível.<br><br>
-Para dúvidas, correções ou sugestões de novas análises, entre em contato diretamente com o criador do projeto: 
-<a href="https://instagram.com/pedronildu" target="_blank" class="fw-bold text-primary text-decoration-none"><i class="bi bi-instagram text-danger me-1"></i>@pedronildu</a> no Instagram.
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <div class="fw-bold text-primary text-uppercase" style="font-size: 0.82rem;"><i class="bi bi-chat-heart-fill text-danger me-1"></i> Mensagem do Criador</div>
+        <div class="text-secondary mt-1" style="font-size: 0.9rem;">Desenvolvido de forma colaborativa para trazer clareza aos candidatos de Policial Penal do RN. Dúvidas ou sugestões?</div>
+    </div>
+    <a href="https://instagram.com/pedronildu" target="_blank" class="btn btn-outline-primary btn-sm"><i class="bi bi-instagram text-danger me-1"></i>@pedronildu</a>
 </div>
 </div>""", unsafe_allow_html=True)
 
