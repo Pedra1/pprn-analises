@@ -141,4 +141,4 @@ def executar_simulacao_pos_bancas(
         'qtd_novos_vagas_pcd': len(novos_vagas_pcd),
     }
 
-    return df_sim, resumo, novos_vagas_ampla, novos_etnico, novos_pcd
+    return df_sim, resumo, novos_vagas_ampla, novos_vagas_etnico, novos_vagas_pcd
