@@ -28,6 +28,7 @@ carregar_estilos()
 # 3. Importação dos Módulos da Aplicação
 from src.components.meta_tags import render_meta_tags
 from src.components.header import render_header
+from src.components.dialogs import modal_aviso_legal
 from src.components.footer import render_footer
 from src.data_loader import carregar_dados, get_mapa_inscricoes
 from src.tabs.tab_boletim import render_tab_boletim
@@ -49,10 +50,14 @@ if df_base is None:
 
 mapa_inscricoes = get_mapa_inscricoes(df_base)
 
-# 6. Cabeçalho Hero e Métricas Oficiais
+# 6. Aviso Inicial / Disclaimer da Banca (Aberto para o candidato na primeira visita)
+if "disclaimer_visto" not in st.session_state:
+    modal_aviso_legal()
+
+# 7. Cabeçalho Hero e Métricas Oficiais
 render_header()
 
-# 7. Navegação Principal em Abas Enxutas e Otimizadas para Mobile (1.3)
+# 8. Navegação Principal em Abas Enxutas e Otimizadas para Mobile (1.3)
 tab_busca, tab_simuladores, tab_listas, tab_regras, tab_cronograma, tab_sobre = st.tabs([
     "🔍 Meu Boletim",
     "🔮 Simuladores",

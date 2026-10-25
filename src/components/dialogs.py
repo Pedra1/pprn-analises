@@ -41,7 +41,7 @@ def modal_aviso_legal():
     <div class="alert alert-info border-start border-4 border-info shadow-sm rounded-3 p-3 mb-3 d-flex align-items-start gap-2" style="font-size: 0.88rem; color: #055160; line-height: 1.5;">
         <i class="bi bi-info-circle-fill text-info fs-5 flex-shrink-0 mt-1"></i>
         <div>
-            <strong>Iniciativa Independente:</strong> Este portal é colaborativo e sem vínculo oficial com o Instituto Avalia ou SEAD/RN. Atos administrativos oficiais competem exclusivamente à banca examinadora em <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.
+            <strong>Iniciativa Independente:</strong> Este portal é colaborativo e sem vínculo oficial com o Instituto Avalia ou órgãos governamentais. Atos administrativos oficiais competem exclusivamente à banca examinadora em <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.
         </div>
     </div>
     </div>
