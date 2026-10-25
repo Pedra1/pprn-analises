@@ -170,9 +170,10 @@ def render_tab_regras():
 
     st.write("")
     st.markdown("#### 🏃‍♂️ Linhas de Corte do TAF Atualizadas com as Bancas (23 de Outubro)")
-    st.markdown("""
-    Com o indeferimento preliminar de <strong>3.045 cotistas na Heteroidentificação</strong> e <strong>186 na Perícia PCD</strong>, a fila das cotas andou significativamente, gerando novos cortes para o TAF:
-    """)
+    st.write(
+        "Com o indeferimento preliminar de **3.045 cotistas na Heteroidentificação** e **186 na Perícia PCD**, "
+        "a fila das cotas andou significativamente, gerando novos cortes para o TAF:"
+    )
 
     quadro_taf = [
         {
@@ -197,7 +198,18 @@ def render_tab_regras():
             "Composição do Grupo": "100% dos candidatos PCDs com laudo deferido preliminarmente na perícia médica"
         }
     ]
-    st.dataframe(pd.DataFrame(quadro_taf), width="stretch", hide_index=True)
+    st.dataframe(
+        pd.DataFrame(quadro_taf),
+        width="stretch",
+        hide_index=True,
+        column_config={
+            "Modalidade": st.column_config.TextColumn("Modalidade", width="medium"),
+            "Regra do Edital": st.column_config.TextColumn("Regra do Edital", width="medium"),
+            "Nota de Corte": st.column_config.TextColumn("Nota de Corte", width="small"),
+            "Total Convocados": st.column_config.TextColumn("Total Convocados", width="medium"),
+            "Composição do Grupo": st.column_config.TextColumn("Composição do Grupo", width="large"),
+        }
+    )
 
     st.write("")
     st.markdown("#### ❓ Perguntas Frequentes sobre os Resultados das Bancas")
