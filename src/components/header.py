@@ -22,9 +22,8 @@ from src.config import (
 def render_header():
     """Renderiza o Hero Banner institucional e os 4 cartões com métricas oficiais."""
     st.markdown("""<div class="hero-container">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+    <div class="mb-2">
         <span class="badge-pill-amber"><i class="bi bi-lightning-charge-fill text-warning me-1"></i> ATUALIZAÇÃO 23 DE OUTUBRO DE 2026 • RESULTADO PRELIMINAR DAS BANCAS</span>
-        <span class="fw-bold text-primary text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;"><i class="bi bi-shield-shaded me-1"></i> GOVERNO DO ESTADO DO RIO GRANDE DO NORTE • SEAD / SEAP</span>
     </div>
     <h1 class="hero-title"><i class="bi bi-shield-fill-check text-primary me-2"></i>Portal de Resultados • Concurso Policial Penal RN</h1>
     <p class="hero-subtitle mb-0">
