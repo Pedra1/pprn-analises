@@ -117,13 +117,16 @@ def executar_simulacao_pos_bancas(
     df_sim.loc[idx_vagas_etnico, 'Vaga_Imediata_Sim'] = '🏆 Vaga Imediata (Cota Étnico-Racial)'
     df_sim.loc[idx_vagas_pcd, 'Vaga_Imediata_Sim'] = '🏆 Vaga Imediata (Cota PCD)'
 
+    col_pos_etn = 'Nova_Pos_Lista_Etnico_Definitivo' if 'Nova_Pos_Lista_Etnico_Definitivo' in df_sim.columns else 'Pos_Lista_Etnico'
+    col_pos_pcd = 'Nova_Pos_Lista_PCD_Definitivo' if 'Nova_Pos_Lista_PCD_Definitivo' in df_sim.columns else 'Pos_Lista_PCD'
+
     ultimo_ampla_orig = int(vagas_ampla.iloc[-1]['Posição_Geral']) if len(vagas_ampla) > 0 else 140
-    ultimo_etnico_orig = int(vagas_etnico.iloc[-1]['Pos_Lista_Etnico']) if len(vagas_etnico) > 0 else 40
-    ultimo_pcd_orig = int(vagas_pcd.iloc[-1]['Pos_Lista_PCD']) if len(vagas_pcd) > 0 else 20
+    ultimo_etnico_orig = int(vagas_etnico.iloc[-1][col_pos_etn]) if len(vagas_etnico) > 0 and pd.notnull(vagas_etnico.iloc[-1][col_pos_etn]) else (int(vagas_etnico.iloc[-1]['Pos_Lista_Etnico']) if len(vagas_etnico) > 0 else 40)
+    ultimo_pcd_orig = int(vagas_pcd.iloc[-1][col_pos_pcd]) if len(vagas_pcd) > 0 and pd.notnull(vagas_pcd.iloc[-1][col_pos_pcd]) else (int(vagas_pcd.iloc[-1]['Pos_Lista_PCD']) if len(vagas_pcd) > 0 else 20)
 
     novos_vagas_ampla = vagas_ampla[vagas_ampla['Posição_Geral'] > 140]
-    novos_vagas_etnico = vagas_etnico[vagas_etnico['Pos_Lista_Etnico'] > 40]
-    novos_vagas_pcd = vagas_pcd[vagas_pcd['Pos_Lista_PCD'] > 20]
+    novos_vagas_etnico = vagas_etnico[vagas_etnico[col_pos_etn] > 40] if col_pos_etn in vagas_etnico.columns else vagas_etnico[vagas_etnico['Pos_Lista_Etnico'] > 40]
+    novos_vagas_pcd = vagas_pcd[vagas_pcd[col_pos_pcd] > 20] if col_pos_pcd in vagas_pcd.columns else vagas_pcd[vagas_pcd['Pos_Lista_PCD'] > 20]
 
     resumo = {
         'total_inaptos_etnico': total_inaptos_etnico,

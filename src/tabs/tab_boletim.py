@@ -391,17 +391,17 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
 <div class="stat-value" style="color: {color_sim};">{val_sim}</div>
 <div class="stat-sub text-success fw-bold">{sub_sim}</div>
 </div>""", unsafe_allow_html=True)
-                elif is_pcd and res_pcd == 'DEFERIDO' and pd.notnull(pos_pcd_sim):
+                elif is_pcd and res_pcd_def == 'DEFERIDO' and pd.notnull(pos_pcd_sim):
                     st.markdown(f"""<div class="stat-card">
 <div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> Posição Estimada PCD</div>
 <div class="stat-value text-success">{int(pos_pcd_sim)}º</div>
 <div class="stat-sub text-success fw-bold">Classificação pós-perícia definitiva</div>
 </div>""", unsafe_allow_html=True)
-                elif is_etnico and res_hetero == 'DEFERIDO' and pd.notnull(pos_etn_sim):
+                elif is_etnico and res_hetero_def == 'DEFERIDO' and pd.notnull(pos_etn_sim):
                     st.markdown(f"""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Estimada na Cota Étnica</div>
+<div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Posição Estimada na Cota Étnica</div>
 <div class="stat-value" style="color: #6f42c1;">{int(pos_etn_sim)}º</div>
-<div class="stat-sub text-success fw-bold">Classificação pós-recursos estimada</div>
+<div class="stat-sub text-success fw-bold">Classificação pós-recursos oficial</div>
 </div>""", unsafe_allow_html=True)
                 else:
                     st.markdown(f"""<div class="stat-card">

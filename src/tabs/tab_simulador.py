@@ -101,21 +101,37 @@ def render_tab_simulador(df_base, mapa_inscricoes):
 
         if cand_sim_pessoal is not None:
             p_pos_geral = int(cand_sim_pessoal['Posição_Geral'])
-            p_res_etn = str(cand_sim_pessoal.get('Resultado_Hetero', ''))
-            p_res_pcd = str(cand_sim_pessoal.get('Resultado_PCD', ''))
+            p_res_etn = str(cand_sim_pessoal.get('Resultado_Hetero_Definitivo', cand_sim_pessoal.get('Resultado_Hetero', '')))
+            p_res_pcd = str(cand_sim_pessoal.get('Resultado_PCD_Definitivo', cand_sim_pessoal.get('Resultado_PCD', '')))
 
-            if cand_sim_pessoal['Cota_Etnico_Racial'] and p_res_etn == 'DEFERIDO' and pd.notnull(cand_sim_pessoal['Nova_Pos_Lista_Etnico']):
-                p_modalidade = "Cota Étnico-Racial"
-                p_pos = int(cand_sim_pessoal['Nova_Pos_Lista_Etnico'])
+            pos_etn_def = cand_sim_pessoal.get('Nova_Pos_Lista_Etnico_Definitivo')
+            if pd.isna(pos_etn_def):
+                pos_etn_def = cand_sim_pessoal.get('Nova_Pos_Lista_Etnico')
+
+            pos_pcd_def = cand_sim_pessoal.get('Nova_Pos_Lista_PCD_Definitivo')
+            if pd.isna(pos_pcd_def):
+                pos_pcd_def = cand_sim_pessoal.get('Nova_Pos_Lista_PCD')
+
+            pos_orig_etn = cand_sim_pessoal.get('Pos_Lista_Etnico')
+            pos_orig_pcd = cand_sim_pessoal.get('Pos_Lista_PCD')
+
+            pos_taf_val = cand_sim_pessoal.get('Posicao_Convocacao_TAF')
+            txt_taf = f" • Classificação Oficial TAF: <strong>{int(pos_taf_val)}º Lugar</strong> (Anexo IV)" if pd.notna(pos_taf_val) else ""
+
+            if cand_sim_pessoal['Cota_Etnico_Racial'] and p_res_etn == 'DEFERIDO' and pd.notnull(pos_etn_def):
+                p_modalidade = "Cota Étnico-Racial (Oficial 04/11)"
+                p_pos = int(pos_etn_def)
                 p_alcance = alcance_etn
                 p_vagas_pct = 0.20
-                tipo_fila = "na Cota Étnica"
-            elif cand_sim_pessoal['Cota_PCD'] and p_res_pcd == 'DEFERIDO' and pd.notnull(cand_sim_pessoal['Nova_Pos_Lista_PCD']):
-                p_modalidade = "Cota PCD"
-                p_pos = int(cand_sim_pessoal['Nova_Pos_Lista_PCD'])
+                orig_txt = f" (Posição inicial: {int(pos_orig_etn)}º)" if pd.notna(pos_orig_etn) else ""
+                tipo_fila = f"na Cota Étnica Oficial{orig_txt}"
+            elif cand_sim_pessoal['Cota_PCD'] and p_res_pcd == 'DEFERIDO' and pd.notnull(pos_pcd_def):
+                p_modalidade = "Cota PCD (Oficial 04/11)"
+                p_pos = int(pos_pcd_def)
                 p_alcance = alcance_pcd
                 p_vagas_pct = 0.10
-                tipo_fila = "na Cota PCD"
+                orig_txt = f" (Posição inicial: {int(pos_orig_pcd)}º)" if pd.notna(pos_orig_pcd) else ""
+                tipo_fila = f"na Cota PCD Oficial{orig_txt}"
             else:
                 p_modalidade = "Ampla Concorrência"
                 p_pos = p_pos_geral
@@ -127,30 +143,27 @@ def render_tab_simulador(df_base, mapa_inscricoes):
             total_necessario = int(round((p_pos * fator_atrito) / p_vagas_pct))
 
             if esta_dentro:
-                st.markdown(f"""
-                <div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm my-2">
-                    <div class="fw-bold text-success fs-5">
-                        <i class="bi bi-check-circle-fill me-1"></i> PARABÉNS! VOCÊ SERIA CONVOCADO(A) NESTE CENÁRIO!
-                    </div>
-                    <div class="text-dark mt-1" style="font-size: 0.92rem; line-height: 1.55;">
-                        Candidato: <strong>{cand_sim_pessoal['Nome']}</strong> • Modalidade: <strong>{p_modalidade}</strong><br>
-                        Sua posição: <strong>{p_pos}º {tipo_fila}</strong> | Alcance máximo estimado: <strong>até o {p_alcance}º colocado</strong>.
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm my-2">
+<div class="fw-bold text-success fs-5">
+<i class="bi bi-check-circle-fill me-1"></i> PARABÉNS! VOCÊ SERIA CONVOCADO(A) NESTE CENÁRIO!
+</div>
+<div class="text-dark mt-1" style="font-size: 0.92rem; line-height: 1.55;">
+Candidato: <strong>{cand_sim_pessoal['Nome']}</strong> • Modalidade: <strong>{p_modalidade}</strong>{txt_taf}<br>
+Sua posição oficial: <strong>{p_pos}º {tipo_fila}</strong> (Geral: {p_pos_geral}º) | Alcance máximo estimado: <strong>até o {p_alcance}º colocado</strong>.
+</div>
+</div>""", unsafe_allow_html=True)
             else:
                 diff_pos = p_pos - p_alcance
-                st.markdown(f"""
-                <div class="card bg-warning-subtle border-start border-4 border-warning p-3 rounded-3 shadow-sm my-2">
-                    <div class="fw-bold text-warning-emphasis fs-5">
-                        <i class="bi bi-clock-history me-1"></i> Fora por {diff_pos} posições neste cenário de {total_convocados} chamados
-                    </div>
-                    <div class="text-dark mt-1" style="font-size: 0.92rem; line-height: 1.55;">
-                        Candidato: <strong>{cand_sim_pessoal['Nome']}</strong> • Sua posição: <strong>{p_pos}º {tipo_fila}</strong> (Alcance atual: até o {p_alcance}º).<br>
-                        Se o Estado chamar turmas extras até <strong>{total_necessario} convocados</strong> ao longo dos 4 anos de validade, você será nomeado(a)!
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f"""<div class="card bg-warning-subtle border-start border-4 border-warning p-3 rounded-3 shadow-sm my-2">
+<div class="fw-bold text-warning-emphasis fs-5">
+<i class="bi bi-clock-history me-1"></i> Fora por {diff_pos} posições neste cenário de {total_convocados} chamados
+</div>
+<div class="text-dark mt-1" style="font-size: 0.92rem; line-height: 1.55;">
+Candidato: <strong>{cand_sim_pessoal['Nome']}</strong> • Modalidade: <strong>{p_modalidade}</strong>{txt_taf}<br>
+Sua posição oficial: <strong>{p_pos}º {tipo_fila}</strong> (Geral: {p_pos_geral}º | Alcance atual: até o {p_alcance}º).<br>
+Se o Estado chamar turmas extras até <strong>{total_necessario} convocados</strong> ao longo dos 4 anos de validade, você será nomeado(a)!
+</div>
+</div>""", unsafe_allow_html=True)
 
         st.markdown("##### 📊 Tabela de Cenários de Convocação nos 4 Anos:")
         cenarios = [200, 300, 400, 500, 600, 800, 1000]
@@ -301,16 +314,38 @@ def render_tab_simulador(df_base, mapa_inscricoes):
         with tab_sub2:
             st.write(f"Cotistas étnicos que estavam no **Cadastro de Reserva da Cota** (> 40º) e agora alcançam uma das **40 Vagas Imediatas Reservadas**:")
             if len(novos_etnico) > 0:
-                cols_show_etnico = ['Pos_Lista_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
-                st.dataframe(novos_etnico[cols_show_etnico], width="stretch", hide_index=True)
+                col_cota_show = 'Nova_Pos_Lista_Etnico_Definitivo' if 'Nova_Pos_Lista_Etnico_Definitivo' in novos_etnico.columns else 'Pos_Lista_Etnico'
+                cols_show_etnico = [col_cota_show, 'Pos_Lista_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica']
+                cols_validas_etnico = [c for c in cols_show_etnico if c in novos_etnico.columns]
+                st.dataframe(
+                    novos_etnico[cols_validas_etnico],
+                    width="stretch",
+                    hide_index=True,
+                    column_config={
+                        "Nova_Pos_Lista_Etnico_Definitivo": st.column_config.NumberColumn("Pos. Oficial Cota (04/11)", format="%dº"),
+                        "Pos_Lista_Etnico": st.column_config.NumberColumn("Pos. Inicial", format="%dº"),
+                        "Posição_Geral": st.column_config.NumberColumn("Pos. Geral", format="%dº"),
+                    }
+                )
             else:
                 st.info("Nenhum cotista além do 40º com a configuração atual.")
 
         with tab_sub3:
             st.write(f"Candidatos PCD que estavam além da 20ª colocação e agora alcançam uma das **20 Vagas Imediatas PCD**:")
             if len(novos_pcd) > 0:
-                cols_show_pcd = ['Pos_Lista_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva']
-                st.dataframe(novos_pcd[cols_show_pcd], width="stretch", hide_index=True)
+                col_pcd_show = 'Nova_Pos_Lista_PCD_Definitivo' if 'Nova_Pos_Lista_PCD_Definitivo' in novos_pcd.columns else 'Pos_Lista_PCD'
+                cols_show_pcd = [col_pcd_show, 'Pos_Lista_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva']
+                cols_validas_pcd = [c for c in cols_show_pcd if c in novos_pcd.columns]
+                st.dataframe(
+                    novos_pcd[cols_validas_pcd],
+                    width="stretch",
+                    hide_index=True,
+                    column_config={
+                        "Nova_Pos_Lista_PCD_Definitivo": st.column_config.NumberColumn("Pos. Oficial PCD (04/11)", format="%dº"),
+                        "Pos_Lista_PCD": st.column_config.NumberColumn("Pos. Inicial", format="%dº"),
+                        "Posição_Geral": st.column_config.NumberColumn("Pos. Geral", format="%dº"),
+                    }
+                )
             else:
                 st.info("Nenhum candidato PCD além do 20º com a configuração atual.")
 
@@ -330,14 +365,25 @@ def render_tab_simulador(df_base, mapa_inscricoes):
                     st.warning("Nenhum candidato encontrado com esse termo.")
                 else:
                     c_cand_sim = filtro_sim.iloc[0]
-                    st.markdown(f"""
-                    <div class="candidate-card" style="margin-top: 10px;">
-                    <h3 style="margin: 0 0 6px 0; color: #0F172A;">{c_cand_sim['Nome']}</h3>
-                    <div style="font-size: 0.9rem; color: #475569; margin-bottom: 12px;">Inscrição: <strong>{c_cand_sim['Inscrição']}</strong> | Modalidade: <strong>{c_cand_sim['Modalidade_Concorrencia']}</strong> | Nota: <strong>{c_cand_sim['Nota Objetiva']} pts</strong></div>
-                    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                        <span class="sim-gain-pill">Posição Geral: {c_cand_sim['Posição_Geral']}º</span>
-                        <span class="sim-gain-pill">Status TAF Simulado: {c_cand_sim['Status_TAF_Sim']}</span>
-                        <span class="sim-gain-pill">Vagas: {c_cand_sim['Vaga_Imediata_Sim']}</span>
-                    </div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    pos_cota_pills = ""
+                    if c_cand_sim.get('Cota_Etnico_Racial') and pd.notna(c_cand_sim.get('Nova_Pos_Lista_Etnico_Definitivo')):
+                        pos_cota_pills += f'<span class="sim-gain-pill">Posição Oficial Cota: {int(c_cand_sim["Nova_Pos_Lista_Etnico_Definitivo"])}º Lugar</span>'
+                    if c_cand_sim.get('Cota_PCD') and pd.notna(c_cand_sim.get('Nova_Pos_Lista_PCD_Definitivo')):
+                        pos_cota_pills += f'<span class="sim-gain-pill">Posição Oficial PCD: {int(c_cand_sim["Nova_Pos_Lista_PCD_Definitivo"])}º Lugar</span>'
+                    if pd.notna(c_cand_sim.get('Posicao_Convocacao_TAF')):
+                        pos_cota_pills += f'<span class="sim-gain-pill">Classificação TAF (Anexo IV): {int(c_cand_sim["Posicao_Convocacao_TAF"])}º Lugar</span>'
+                    if pd.notna(c_cand_sim.get('Pos_Final_Geral_Aptos')):
+                        pos_cota_pills += f'<span class="sim-gain-pill">Posição Geral Pós-TAF: {int(c_cand_sim["Pos_Final_Geral_Aptos"])}º Simulado</span>'
+
+                    st.markdown(f"""<div class="candidate-card" style="margin-top: 10px;">
+<h3 style="margin: 0 0 6px 0; color: #0F172A;">{c_cand_sim['Nome']}</h3>
+<div style="font-size: 0.9rem; color: #475569; margin-bottom: 12px;">
+Inscrição: <strong>{c_cand_sim['Inscrição']}</strong> | Modalidade: <strong>{c_cand_sim['Modalidade_Concorrencia']}</strong> | Nota: <strong>{c_cand_sim['Nota Objetiva']} pts</strong> | Status Oficial: <strong>{c_cand_sim.get('Status_Oficial_TAF', '')}</strong>
+</div>
+<div style="display: flex; gap: 8px; flex-wrap: wrap;">
+<span class="sim-gain-pill">Posição Geral Objetiva: {c_cand_sim['Posição_Geral']}º</span>
+{pos_cota_pills}
+<span class="sim-gain-pill">Status TAF Simulado: {c_cand_sim['Status_TAF_Sim']}</span>
+<span class="sim-gain-pill">Vagas: {c_cand_sim['Vaga_Imediata_Sim']}</span>
+</div>
+</div>""", unsafe_allow_html=True)
