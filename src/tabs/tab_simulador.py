@@ -172,34 +172,34 @@ def render_tab_simulador(df_base, mapa_inscricoes):
         st.dataframe(pd.DataFrame(cenarios_dados), width="stretch", hide_index=True)
 
     with sim_subtab2:
-        st.markdown("#### ⚙️ Parâmetros de Simulação de Recursos & TAF")
-        st.caption("Projete o impacto dos **3.045 indeferimentos da Heteroidentificação** e **186 PCDs** nas vagas imediatas:")
+        st.markdown("#### ⚙️ Parâmetros de Simulação pós-Bancas Definitivas & TAF")
+        st.caption("Projete o impacto da **reprovação/abstenção no TAF (14 e 15 de novembro)** e eventuais reversões nas vagas imediatas:")
 
         col_ctrl1, col_ctrl2 = st.columns(2)
         with col_ctrl1:
             taxa_rev_etn = st.slider(
-                "Taxa Estimada de Reversão de Recursos na Heteroidentificação Étnica:",
-                min_value=0, max_value=25, value=5, step=1, format="%d%%",
-                help="Porcentagem dos candidatos indeferidos que revertem na fase recursal."
+                "Taxa Estimada de Reversão Extra na Cota Étnico-Racial:",
+                min_value=0, max_value=25, value=0, step=1, format="%d%%",
+                help="Porcentagem de candidatos cotistas indeferidos que revertem sua condição."
             )
             taxa_rev_pcd = st.slider(
-                "Taxa Estimada de Reversão de Recursos na Perícia Médica PCD:",
-                min_value=0, max_value=25, value=5, step=1, format="%d%%",
-                help="Porcentagem dos PCDs indeferidos que revertem no recurso."
+                "Taxa Estimada de Reversão Extra na Perícia PCD:",
+                min_value=0, max_value=25, value=0, step=1, format="%d%%",
+                help="Porcentagem de PCDs indeferidos que revertem sua condição."
             )
 
         with col_ctrl2:
             taxa_taf = st.slider(
-                "Taxa Estimada de Reprovação / Abstenção no TAF:",
+                "Taxa Estimada de Reprovação / Abstenção no TAF (14-15/Nov):",
                 min_value=0, max_value=45, value=20, step=1, format="%d%%",
-                help="Atrito médio nos testes físicos (barra, corrida, abdominal)."
+                help="Atrito médio nos testes físicos (barra fixa, corrida, abdominal flexão)."
             )
             st.markdown(f"""
             <div class="card bg-light border p-3 rounded-3 mt-1" style="font-size: 0.85rem; line-height: 1.45;">
-            <div class="fw-bold text-dark mb-1"><i class="bi bi-pin-angle-fill text-primary me-1"></i> Resumo dos Parâmetros:</div>
-            • Recursos Aceitos Cota Étnica: <strong>{taxa_rev_etn}%</strong> (~{int(3045 * taxa_rev_etn / 100)})<br>
-            • Recursos Aceitos Perícia PCD: <strong>{taxa_rev_pcd}%</strong> (~{int(186 * taxa_rev_pcd / 100)})<br>
-            • Reprovação no TAF: <strong>{taxa_taf}%</strong> de atrito
+            <div class="fw-bold text-dark mb-1"><i class="bi bi-pin-angle-fill text-primary me-1"></i> Resumo dos Parâmetros Oficiais (04/11):</div>
+            • Cotistas Étnico-Raciais Deferidos: <strong>3.586</strong> (pós-recursos)<br>
+            • Cotistas PCD Deferidos: <strong>534</strong> (100% deferidos)<br>
+            • Atrito Previsto no TAF: <strong>{taxa_taf}%</strong> de inaptidão/abstenção
             </div>
             """, unsafe_allow_html=True)
 

@@ -1,128 +1,142 @@
 """
-Aba 4: Regras do Edital, Recursos e Linhas de Corte do TAF.
+Aba 4: Regras do Edital, Resultados Definitivos e Linhas de Corte do TAF.
+Atualizado com as publicações oficiais de 04 de novembro de 2026.
 """
 
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+from src.config import (
+    TOTAL_ETNICO_APTOS,
+    TOTAL_ETNICO_INAPTOS,
+    PCT_ETNICO_APTOS,
+    PCT_ETNICO_INAPTOS,
+    TOTAL_PCD_APTOS,
+    TOTAL_PCD_INAPTOS,
+    PCT_PCD_APTOS,
+    PCT_PCD_INAPTOS,
+    TOTAL_CONVOCADOS_TAF_OFICIAL,
+    TOTAL_CONVOCADOS_AMPLA_OFICIAL,
+    TOTAL_CONVOCADOS_ETNICO_OFICIAL,
+    TOTAL_CONVOCADOS_PCD_OFICIAL,
+    CORTE_TAF_AMPLA,
+    CORTE_TAF_ETNICO,
+    CORTE_TAF_PCD,
+    RECURSOS_ETNICO_PROVIDOS,
+    RECURSOS_PCD_PROVIDOS
+)
 
 
 def render_tab_regras():
-    """Renderiza a aba de regras do edital, recursos administrativos e cortes do TAF."""
-    st.subheader("🎯 Entenda as Regras de Recursos, Convocação e Linhas de Corte")
+    """Renderiza a aba de regras do edital, resultados definitivos e cortes do TAF."""
+    st.subheader("🎯 Regras Oficiais do Edital, Resultados Definitivos e Cortes do TAF (04/11/2026)")
 
-    st.markdown("""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-3">
-    <div class="d-flex align-items-center gap-2 mb-1 fw-bold text-success text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
-        <i class="bi bi-journal-text fs-5"></i> GUIA PRÁTICO PARA A FASE DE RECURSOS (26 E 27 DE OUTUBRO DE 2026)
+    st.markdown(f"""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-3">
+    <div class="d-flex align-items-center gap-2 mb-1 fw-bold text-success-emphasis text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
+        <i class="bi bi-patch-check-fill text-success fs-5"></i> RESULTADOS DEFINITIVOS DAS BANCAS DE COTAS & CONVOCAÇÃO DO TAF (04/11/2026)
     </div>
-    <div style="font-size: 0.93rem; color: #212529; line-height: 1.6;">
-        Se sua autodeclaração ou perícia PCD foi <strong>INDEFERIDA</strong> no resultado preliminar de 23/10:<br>
-        <strong>1. Consulte a justificativa:</strong> Entre no site <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a> e acesse o link <em>"Boletim de Análise de Reserva de Vagas"</em> para ver a fundamentação da banca examinadora.<br>
-        <strong>2. Período de envio do recurso:</strong> Da <strong>0h00 do dia 26/10/2026 até às 23h59 do dia 27/10/2026</strong> (horário de Brasília).<br>
-        <strong>3. Como protocolar:</strong> Exclusivamente em formulário próprio no site <a href="https://www.avalia.org.br" target="_blank" class="fw-bold text-primary">avalia.org.br</a>.<br>
-        <strong>4. Lembre-se:</strong> O indeferimento não o desclassifica do concurso — você continua na Ampla Concorrência (Art. 4º Hetero / Art. 3º PCD).
+    <div style="font-size: 0.93rem; color: #0f5132; line-height: 1.6;">
+        A banca <strong>Instituto Avalia</strong> divulgou os pareceres dos recursos e homologou o <strong>resultado definitivo</strong> das bancas de cotas em <strong>04 de novembro de 2026</strong>:<br>
+        • <strong>Recursos Deferidos:</strong> Foram acolhidos <strong>{RECURSOS_ETNICO_PROVIDOS} recursos</strong> na Cota Étnico-Racial e <strong>{RECURSOS_PCD_PROVIDOS} recursos</strong> na Perícia PCD, totalizando <strong>383 candidatos reclassificados</strong>.<br>
+        • <strong>Convocação Oficial para o TAF:</strong> Foram convocados oficialmente <strong>{TOTAL_CONVOCADOS_TAF_OFICIAL:,} candidatos</strong> (Anexos I e IV do Edital nº 002/2026).<br>
+        • <strong>Próxima Fase do Concurso:</strong> Realização presencial do <strong>Teste de Aptidão Física (TAF)</strong> nos dias <strong>14 e 15 de novembro de 2026</strong>.
     </div>
-    </div>""", unsafe_allow_html=True)
+    </div>""".replace(",", "."), unsafe_allow_html=True)
 
-    st.markdown("#### 📊 Estatísticas Oficiais da Heteroidentificação & Bancas de 23 de Outubro")
-    st.caption("Dados consolidados com base nos Anexos I, II e Único publicados oficialmente pela banca Instituto Avalia:")
+    st.markdown("#### 📊 Estatísticas Definitivas da Heteroidentificação & Perícia PCD (Pós-Recursos)")
+    st.caption("Dados oficiais consolidados a partir dos Anexos I, II e Único publicados em 04 de novembro de 2026:")
 
     col_h1, col_h2, col_h3, col_h4 = st.columns(4)
     with col_h1:
         st.markdown("""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Total Avaliado na Hetero</div>
+<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Total Cotistas Étnicos</div>
 <div class="stat-value">6.309</div>
-<div class="stat-sub text-secondary fw-bold">100% dos cotistas étnicos</div>
+<div class="stat-sub text-secondary fw-bold">100% dos inscritos na reserva</div>
 </div>""", unsafe_allow_html=True)
     with col_h2:
-        st.markdown("""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Deferidos na Hetero</div>
-<div class="stat-value text-success">3.264</div>
-<div class="stat-sub text-success fw-bold">✅ 51,74% de confirmação</div>
-</div>""", unsafe_allow_html=True)
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-check-circle-fill text-success me-1"></i> Deferidos Definitivos</div>
+<div class="stat-value text-success">{TOTAL_ETNICO_APTOS:,}</div>
+<div class="stat-sub text-success fw-bold">+{RECURSOS_ETNICO_PROVIDOS} recursos acolhidos ({PCT_ETNICO_APTOS:.1f}%)</div>
+</div>""".replace(",", "."), unsafe_allow_html=True)
     with col_h3:
-        st.markdown("""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-x-circle-fill text-warning me-1"></i> Indeferidos na Hetero</div>
-<div class="stat-value text-warning">3.045</div>
-<div class="stat-sub text-warning fw-bold">⚠️ 48,26% de indeferimento</div>
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-universal-access text-success me-1"></i> PCDs Deferidos Definitivo</div>
+<div class="stat-value text-success">{TOTAL_PCD_APTOS}</div>
+<div class="stat-sub text-success fw-bold">+{RECURSOS_PCD_PROVIDOS} recursos acolhidos ({PCT_PCD_APTOS:.1f}%)</div>
 </div>""", unsafe_allow_html=True)
     with col_h4:
-        st.markdown("""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-shield-check text-primary me-1"></i> Salvos pela Ampla (Art. 4º)</div>
-<div class="stat-value text-primary">79</div>
-<div class="stat-sub text-primary fw-bold">Nota ≥ 119 pts no TAF via Ampla</div>
-</div>""", unsafe_allow_html=True)
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-award-fill text-warning me-1"></i> Total Habilitados no TAF</div>
+<div class="stat-value text-warning">{TOTAL_CONVOCADOS_TAF_OFICIAL:,}</div>
+<div class="stat-sub text-secondary fw-bold">Convocação oficial homologada</div>
+</div>""".replace(",", "."), unsafe_allow_html=True)
 
     st.write("")
 
-    # Tabela Analítica Segmentada
-    st.markdown("**📋 Demonstrativo Analítico por Modalidade de Reserva de Vagas:**")
+    # Tabela Analítica Definitiva por Modalidade
+    st.markdown("**📋 Demonstrativo Analítico Definitivo Pós-Recursos (04/11/2026):**")
     tabela_hetero_dados = [
         {
             "Segmento de Reserva": "🧑🏿 Pretos e Pardos (Anexo I)",
             "Total Avaliados": "6.243",
-            "Deferidos": "3.221",
-            "Taxa Deferimento": "51,59%",
-            "Indeferidos (Reprovações)": "3.022",
-            "Taxa Reprovação": "48,41%",
-            "Média Nota (Deferidos)": "97,4 pts",
-            "Média Nota (Indeferidos)": "91,6 pts"
+            "Deferidos Definitivo": "3.538",
+            "Recursos Acolhidos": "+317",
+            "Taxa Deferimento": "56,67%",
+            "Indeferidos Definitivo": "2.705",
+            "Taxa Indeferimento": "43,33%"
         },
         {
             "Segmento de Reserva": "🏹 Indígenas (Anexo II)",
             "Total Avaliados": "58",
-            "Deferidos": "37",
-            "Taxa Deferimento": "63,79%",
-            "Indeferidos (Reprovações)": "21",
-            "Taxa Reprovação": "36,21%",
-            "Média Nota (Deferidos)": "92,6 pts",
-            "Média Nota (Indeferidos)": "90,7 pts"
+            "Deferidos Definitivo": "38",
+            "Recursos Acolhidos": "+1",
+            "Taxa Deferimento": "65,52%",
+            "Indeferidos Definitivo": "20",
+            "Taxa Indeferimento": "34,48%"
         },
         {
             "Segmento de Reserva": "🏺 Quilombolas (Anexo II)",
             "Total Avaliados": "29",
-            "Deferidos": "18",
-            "Taxa Deferimento": "62,07%",
-            "Indeferidos (Reprovações)": "11",
-            "Taxa Reprovação": "37,93%",
-            "Média Nota (Deferidos)": "92,5 pts",
-            "Média Nota (Indeferidos)": "82,7 pts"
+            "Deferidos Definitivo": "16",
+            "Recursos Acolhidos": "+4",
+            "Taxa Deferimento": "55,17%",
+            "Indeferidos Definitivo": "13",
+            "Taxa Indeferimento": "44,83%"
         },
         {
             "Segmento de Reserva": "📊 TOTAL COTA ÉTNICO-RACIAL",
             "Total Avaliados": "6.309",
-            "Deferidos": "3.264",
-            "Taxa Deferimento": "51,74%",
-            "Indeferidos (Reprovações)": "3.045",
-            "Taxa Reprovação": "48,26%",
-            "Média Nota (Deferidos)": "97,3 pts",
-            "Média Nota (Indeferidos)": "91,6 pts"
+            "Deferidos Definitivo": f"{TOTAL_ETNICO_APTOS:,}".replace(",", "."),
+            "Recursos Acolhidos": f"+{RECURSOS_ETNICO_PROVIDOS}",
+            "Taxa Deferimento": f"{PCT_ETNICO_APTOS:.2f}%",
+            "Indeferidos Definitivo": f"{TOTAL_ETNICO_INAPTOS:,}".replace(",", "."),
+            "Taxa Indeferimento": f"{PCT_ETNICO_INAPTOS:.2f}%"
         },
         {
             "Segmento de Reserva": "♿ Perícia Médica PCD (Anexo Único)",
             "Total Avaliados": "659",
-            "Deferidos": "473",
-            "Taxa Deferimento": "71,78%",
-            "Indeferidos (Reprovações)": "186",
-            "Taxa Reprovação": "28,22%",
-            "Média Nota (Deferidos)": "94,9 pts",
-            "Média Nota (Indeferidos)": "90,0 pts"
+            "Deferidos Definitivo": f"{TOTAL_PCD_APTOS}",
+            "Recursos Acolhidos": f"+{RECURSOS_PCD_PROVIDOS}",
+            "Taxa Deferimento": f"{PCT_PCD_APTOS:.2f}%",
+            "Indeferidos Definitivo": f"{TOTAL_PCD_INAPTOS}",
+            "Taxa Indeferimento": f"{PCT_PCD_INAPTOS:.2f}%"
         }
     ]
     st.dataframe(pd.DataFrame(tabela_hetero_dados), width="stretch", hide_index=True)
 
     st.write("")
 
-    # Gráfico Visual de Deferimento vs Indeferimento
+    # Gráfico Visual Definitivo de Deferimento vs Indeferimento
     seg_names = ['Pretos/Pardos', 'Indígenas', 'Quilombolas', 'Total Étnico', 'Perícia PCD']
-    def_vals = [51.59, 63.79, 62.07, 51.74, 71.78]
-    ind_vals = [48.41, 36.21, 37.93, 48.26, 28.22]
+    def_vals = [56.67, 65.52, 55.17, PCT_ETNICO_APTOS, PCT_PCD_APTOS]
+    ind_vals = [43.33, 34.48, 44.83, PCT_ETNICO_INAPTOS, PCT_PCD_INAPTOS]
 
     fig_hetero = go.Figure()
     fig_hetero.add_trace(go.Bar(
         y=seg_names,
         x=def_vals,
-        name='Deferidos (Confirmados)',
+        name='Deferidos Definitivos (Homologados)',
         orientation='h',
         marker_color='#198754',
         text=[f"{v:.1f}%" for v in def_vals],
@@ -133,7 +147,7 @@ def render_tab_regras():
     fig_hetero.add_trace(go.Bar(
         y=seg_names,
         x=ind_vals,
-        name='Indeferidos (Reprovados na Banca)',
+        name='Indeferidos Definitivos (Concorrem Ampla)',
         orientation='h',
         marker_color='#dc3545',
         text=[f"{v:.1f}%" for v in ind_vals],
@@ -143,7 +157,7 @@ def render_tab_regras():
     ))
     fig_hetero.update_layout(
         barmode='stack',
-        title=dict(text="Proporção Visual: Confirmação vs. Reprovação nas Bancas", font=dict(color='#212529', size=13, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
+        title=dict(text="Proporção Definitiva Pós-Recursos: Confirmação vs. Indeferimento nas Bancas (04/11/2026)", font=dict(color='#212529', size=13, family='system-ui, -apple-system, Segoe UI, Roboto, sans-serif')),
         xaxis=dict(range=[0, 100], title="Distribuição Percentual (%)", gridcolor='#dee2e6', tickfont=dict(color='#6c757d')),
         yaxis=dict(autorange="reversed", tickfont=dict(color='#212529')),
         template="plotly_white",
@@ -158,44 +172,44 @@ def render_tab_regras():
     st.write("")
     st.markdown("""<div class="card bg-light border-start border-4 border-primary p-3 rounded-3 shadow-sm mb-3">
     <div class="d-flex align-items-center gap-2 mb-2 fw-bold text-primary text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
-        <i class="bi bi-lightbulb-fill text-warning fs-5"></i> PRINCIPAIS CONCLUSÕES E IMPACTOS DA HETEROIDENTIFICAÇÃO
+        <i class="bi bi-lightbulb-fill text-warning fs-5"></i> PRINCIPAIS CONCLUSÕES DOS RESULTADOS DEFINITIVOS (04/11/2026)
     </div>
     <div style="font-size: 0.9rem; color: #212529; line-height: 1.6;">
-        • <strong>Atrito Elevado nas Cotas Étnicas:</strong> Quase metade dos cotistas (<strong>48,26%</strong>) foi indeferida na análise preliminar. Isso representa <strong>3.045 candidatos a menos</strong> na disputa da reserva.<br>
-        • <strong>Efeito Positivo para Cotistas Deferidos:</strong> Como a fila da cota andou mais de 3.000 posições, os cotistas com laudo confirmado ganharam até centenas de posições na classificação.<br>
-        • <strong>Candidatos de Cota com Alto Desempenho (Art. 4º):</strong> Exatamente <strong>79 cotistas indeferidos</strong> possuem nota ≥ 119 pontos (com pontuações que chegam até 136 pontos). Eles continuam <strong>100% convocados para o TAF</strong> pela Ampla Concorrência, sem qualquer prejuízo pelo indeferimento.<br>
-        • <strong>Perícia PCD com Maior Índice de Homologação:</strong> A perícia médica teve <strong>71,78% de laudos deferidos</strong> (473 candidatos aptos de um total de 659 avaliados).
+        • <strong>Reversão Expressiva via Recursos:</strong> A comissão da banca deferiu <strong>322 recursos étnicos</strong> e <strong>61 recursos na perícia PCD</strong>, reconduzindo 383 candidatos aptos à disputa das cotas.<br>
+        • <strong>Impacto Direto na Nota de Corte Étnica:</strong> Com a entrada dos 322 cotistas deferidos pós-recursos, a concorrência na reserva se intensificou e a linha de corte do TAF subiu de 113 para <strong>114 pontos</strong>.<br>
+        • <strong>Ampla Concorrência Inalterada:</strong> A linha de corte da Ampla Concorrência cravou em exatos <strong>119 pontos</strong> (1.074 convocados - Top 960 + empates).<br>
+        • <strong>100% dos Laudos PCDs Convocados:</strong> Todos os <strong>534 candidatos PCD deferidos</strong> foram convocados para o TAF (conforme Item 13.1.2 do edital).
     </div>
     </div>""", unsafe_allow_html=True)
 
     st.write("")
-    st.markdown("#### 🏃‍♂️ Linhas de Corte do TAF Atualizadas com as Bancas (23 de Outubro)")
+    st.markdown("#### 🏃‍♂️ Quadro Oficial de Convocação para o TAF (04 de Novembro de 2026)")
     st.write(
-        "Com o indeferimento preliminar de **3.045 cotistas na Heteroidentificação** e **186 na Perícia PCD**, "
-        "a fila das cotas andou significativamente, gerando novos cortes para o TAF:"
+        "Conforme o Edital de Convocação e Anexo IV publicados oficialmente pela banca examinadora, "
+        "o quantitativo final homologado de convocados para o TAF é de **1.884 candidatos**:"
     )
 
     quadro_taf = [
         {
             "Modalidade": "Ampla Concorrência (AC)",
             "Regra do Edital": "Até o 960º colocado geral + empatados",
-            "Nota de Corte": "119 pontos",
-            "Total Convocados": "1.095 candidatos",
-            "Composição do Grupo": "783 Não Cotistas + 216 Cotistas Étnicos Confirmados + 17 PCDs + 79 Indeferidos que alcançaram a Ampla"
+            "Nota de Corte": f"{CORTE_TAF_AMPLA} pontos",
+            "Total Convocados": f"{TOTAL_CONVOCADOS_AMPLA_OFICIAL:,} candidatos".replace(",", "."),
+            "Composição do Grupo": "Classificados na Ampla (Não cotistas + Cotistas com nota de Ampla + Indeferidos que alcançaram o corte de 119 pts)"
         },
         {
-            "Modalidade": "Reserva Étnico-Racial",
+            "Modalidade": "Reserva Étnico-Racial (ÉT-R)",
             "Regra do Edital": "Até o 240º cotista apto fora da ampla + empatados",
-            "Nota de Corte": "113 pontos (caiu 2 pontos!)",
-            "Total Convocados": "376 cotistas adicionais via reserva",
-            "Composição do Grupo": "Cotistas com notas entre 113 e 118 pontos convocados pela reserva de vagas"
+            "Nota de Corte": f"{CORTE_TAF_ETNICO} pontos",
+            "Total Convocados": f"{TOTAL_CONVOCADOS_ETNICO_OFICIAL:,} candidatos".replace(",", "."),
+            "Composição do Grupo": "Cotistas deferidos definitivamente com notas entre 114 e 118 pontos na reserva"
         },
         {
-            "Modalidade": "Reserva PCD",
-            "Regra do Edital": "Sem linha de corte (Item 13.1.2)",
-            "Nota de Corte": "73 pontos (nota mínima)",
-            "Total Convocados": "473 candidatos com laudo deferido",
-            "Composição do Grupo": "100% dos candidatos PCDs com laudo deferido preliminarmente na perícia médica"
+            "Modalidade": "Reserva PCD (PCD)",
+            "Regra do Edital": "Sem linha de corte numérico (Item 13.1.2)",
+            "Nota de Corte": f"{CORTE_TAF_PCD} pontos (nota mínima)",
+            "Total Convocados": f"{TOTAL_CONVOCADOS_PCD_OFICIAL:,} candidatos".replace(",", "."),
+            "Composição do Grupo": "100% dos candidatos PCD com laudo deferido definitivamente na perícia médica"
         }
     ]
     st.dataframe(
@@ -212,22 +226,19 @@ def render_tab_regras():
     )
 
     st.write("")
-    st.markdown("#### ❓ Perguntas Frequentes sobre os Resultados das Bancas")
+    st.markdown("#### ❓ Perguntas Frequentes sobre a Publicação de 04 de Novembro")
 
-    with st.expander("Fui indeferido na heteroidentificação. Fui eliminado do concurso?"):
+    with st.expander("Fui indeferido definitivamente na heteroidentificação. Fui eliminado do concurso?"):
         st.markdown("""
-        **NÃO!** Conforme o **Art. 4º do Edital de Convocação**, o candidato que tiver a autodeclaração indeferida perde o direito às vagas reservadas da cota, **passando a concorrer apenas pela Ampla Concorrência**. Se a sua nota na prova objetiva for suficiente para o corte da Ampla (≥ 119 pontos), você será convocado normalmente para o TAF!
-        Além disso, você tem o direito legal de interpor recurso nos dias **26 e 27 de outubro** no site `avalia.org.br`.
+        **NÃO!** Conforme o **Art. 4º do Edital de Convocação**, o candidato que teve a autodeclaração indeferida perde apenas o direito à reserva de vagas de cotas, **continuando a concorrer normalmente pela Ampla Concorrência**. Se a sua nota na prova objetiva for igual ou superior à linha de corte da Ampla (≥ 119 pontos), você está convocado para o TAF!
         """)
 
-    with st.expander("Por que a linha de corte da cota étnica para o TAF caiu para 113 pontos?"):
+    with st.expander("Por que a linha de corte da cota étnica fechou em 114 pontos no TAF oficial?"):
         st.markdown("""
-        No resultado definitivo de 09/10, o corte estimado da cota era 115 pontos porque havia mais de 6.300 cotistas na lista.
-        Com a publicação do resultado preliminar de 23/10, **3.045 candidatos autodeclarados foram indeferidos** pela comissão de heteroidentificação.
-        Ao retirar temporariamente os indeferidos da lista reservada de cotas, a fila andou e os 240 primeiros cotistas aptos fora da ampla atingiram a pontuação de **113 pontos**, beneficiando centenas de candidatos que agora alcançam a convocação do TAF!
+        Na publicação preliminar de 23/10, o corte estimado da cota era 113 pontos. Contudo, na publicação definitiva de 04/11, **a banca acolheu 322 recursos administrativos** de candidatos que reverteram o indeferimento. Com mais 322 cotistas deferidos disputando as 240 vagas de reserva fora da ampla, a linha de corte subiu naturalmente 1 ponto, fixando-se oficialmente em **114 pontos**.
         """)
 
-    with st.expander("Quando sai o resultado definitivo das cotas e a convocação do TAF?"):
+    with st.expander("Quais são as datas de realização do TAF?"):
         st.markdown("""
-        Conforme o cronograma oficial da banca, a data provável para a publicação do **Resultado Definitivo da Heteroidentificação e Perícia PCD (pós-recursos)** e a publicação da convocação oficial para o TAF é **04 de Novembro de 2026**.
+        Conforme o edital oficial de convocação de 04 de novembro de 2026, o Teste de Aptidão Física (TAF) será aplicado nos dias **14 e 15 de novembro de 2026**. O resultado preliminar do TAF tem previsão de publicação em **23 de novembro de 2026**.
         """)

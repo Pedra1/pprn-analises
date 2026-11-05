@@ -32,7 +32,7 @@ def modal_aviso_legal():
     ### 📋 Regras de Processamento dos Dados
     Para garantir a máxima fidelidade às regras dos editais do concurso:
     - **Cotistas com nota de Ampla Concorrência:** Os candidatos cotistas que atingiram nota suficiente para ingressar na Ampla Concorrência já são computados prioritariamente nas vagas da Ampla, desocupando a vaga reservada para que o próximo cotista da fila seja beneficiado.
-    - **Candidatos indeferidos nas bancas de cotas:** Aqueles que tiveram a solicitação indeferida preliminarmente na Heteroidentificação ou na Perícia PCD foram automaticamente realocados para disputar exclusivamente pela Ampla Concorrência, sem prejuízo ou eliminação do concurso, conforme previsto no Art. 4º (Hetero) e Art. 3º (PCD) dos editais de convocação.
+    - **Candidatos indeferidos nas bancas de cotas:** Aqueles que tiveram a solicitação indeferida definitivamente na Heteroidentificação ou na Perícia PCD foram automaticamente mantidos disputando exclusivamente pela Ampla Concorrência, sem prejuízo ou eliminação do concurso, conforme previsto no Art. 4º (Hetero) e Art. 3º (PCD) dos editais de convocação. Inclusive, 79 cotistas indeferidos alcançaram a linha de corte da Ampla (≥ 119 pts) e estão oficialmente convocados para o TAF.
 
     ---
 

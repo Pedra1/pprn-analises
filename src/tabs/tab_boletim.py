@@ -114,7 +114,7 @@ def render_tab_boletim(df_base, mapa_inscricoes):
             <div class="my-2">
                 <i class="bi bi-person-badge text-primary" style="font-size: 3rem;"></i>
             </div>
-            <h4 class="fw-bold text-dark mb-2">Consulte seu Boletim Individual com os Resultados Oficiais (23/10)</h4>
+            <h4 class="fw-bold text-dark mb-2">Consulte seu Boletim Individual • Convocação Oficial do TAF (04/11/2026)</h4>
             <p class="text-secondary mx-auto mb-0" style="max-width: 620px; font-size: 0.95rem; line-height: 1.6;">
                 Digite seu <strong>Nome Completo</strong> ou número de <strong>Inscrição</strong> no campo de busca acima para visualizar seu boletim oficial com nota objetiva, parecer da banca de cotas e projeção de convocação.
             </p>
@@ -255,7 +255,7 @@ def render_tab_boletim(df_base, mapa_inscricoes):
 
         # Convocação Oficial para o TAF (04/11/2026)
         is_convocado_taf_oficial = bool(candidato_selecionado.get('Convocado_TAF_Oficial', False))
-        status_taf_oficial = str(candidato_selecionado.get('Status_Oficial_TAF', candidato_selecionado.get('Previsao_TAF_Preliminar', '')))
+        status_taf_oficial = str(candidato_selecionado.get('Status_Oficial_TAF', 'Não Convocado'))
         mod_convocacao = str(candidato_selecionado.get('Modalidade_Convocacao_TAF', 'Não Convocado'))
         pos_taf_val = candidato_selecionado.get('Posicao_Convocacao_TAF')
         pos_taf_txt = f" • Classificação Oficial TAF: <strong>{int(pos_taf_val)}º Lugar</strong> (Anexo IV)" if pd.notna(pos_taf_val) else ""
@@ -310,23 +310,27 @@ def render_tab_boletim(df_base, mapa_inscricoes):
 <div class="stat-sub text-primary fw-bold">↑ De {TOTAL_CANDIDATOS_FMT} candidatos</div>
 </div>""", unsafe_allow_html=True)
         with c2:
-            if is_pcd and res_pcd == 'DEFERIDO' and is_etnico and res_hetero == 'DEFERIDO':
-                if nota_total < 113:
-                    lbl_cota = "<i class='bi bi-universal-access text-success me-1'></i> Posição Preliminar PCD (Convocado)"
-                    val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º"
-                    sub_cota = f"♿ {int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º PCD • 🧑🏿 {int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º na Cota Étnica"
+            if is_pcd and res_pcd_def == 'DEFERIDO' and is_etnico and res_hetero_def == 'DEFERIDO':
+                pos_pcd_def_val = candidato_selecionado.get('Nova_Pos_Lista_PCD_Definitivo', candidato_selecionado.get('Nova_Pos_Lista_PCD'))
+                pos_etn_def_val = candidato_selecionado.get('Nova_Pos_Lista_Etnico_Definitivo', candidato_selecionado.get('Nova_Pos_Lista_Etnico'))
+                if nota_total < 114:
+                    lbl_cota = "<i class='bi bi-universal-access text-success me-1'></i> Posição Oficial PCD (Convocado)"
+                    val_cota = f"{int(pos_pcd_def_val)}º" if pd.notna(pos_pcd_def_val) else "-"
+                    sub_cota = f"♿ {val_cota} PCD • 🧑🏿 {int(pos_etn_def_val)}º na Cota Étnica" if pd.notna(pos_etn_def_val) else ""
                 else:
-                    lbl_cota = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Preliminar nas Cotas"
-                    val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º"
-                    sub_cota = f"🧑🏿 {int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º Étnico • ♿ {int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º PCD"
-            elif is_pcd and res_pcd == 'DEFERIDO' and pd.notnull(candidato_selecionado['Nova_Pos_Lista_PCD']):
-                lbl_cota = "<i class='bi bi-universal-access text-success me-1'></i> Posição Preliminar PCD"
-                val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_PCD'])}º"
-                sub_cota = f"↑ De {TOTAL_PCD_APTOS} PCDs deferidos"
-            elif is_etnico and res_hetero == 'DEFERIDO' and pd.notnull(candidato_selecionado['Nova_Pos_Lista_Etnico']):
-                lbl_cota = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Preliminar na Cota"
-                val_cota = f"{int(candidato_selecionado['Nova_Pos_Lista_Etnico'])}º"
-                sub_cota = f"↑ De {TOTAL_ETNICO_APTOS:,} cotistas deferidos"
+                    lbl_cota = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Oficial nas Cotas"
+                    val_cota = f"{int(pos_etn_def_val)}º" if pd.notna(pos_etn_def_val) else "-"
+                    sub_cota = f"🧑🏿 {val_cota} Étnico • ♿ {int(pos_pcd_def_val)}º PCD" if pd.notna(pos_pcd_def_val) else ""
+            elif is_pcd and res_pcd_def == 'DEFERIDO':
+                pos_pcd_def_val = candidato_selecionado.get('Nova_Pos_Lista_PCD_Definitivo', candidato_selecionado.get('Nova_Pos_Lista_PCD'))
+                lbl_cota = "<i class='bi bi-universal-access text-success me-1'></i> Posição Oficial PCD"
+                val_cota = f"{int(pos_pcd_def_val)}º" if pd.notna(pos_pcd_def_val) else "-"
+                sub_cota = f"↑ De {TOTAL_PCD_APTOS} PCDs homologados"
+            elif is_etnico and res_hetero_def == 'DEFERIDO':
+                pos_etn_def_val = candidato_selecionado.get('Nova_Pos_Lista_Etnico_Definitivo', candidato_selecionado.get('Nova_Pos_Lista_Etnico'))
+                lbl_cota = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Oficial na Cota"
+                val_cota = f"{int(pos_etn_def_val)}º" if pd.notna(pos_etn_def_val) else "-"
+                sub_cota = f"↑ De {TOTAL_ETNICO_APTOS:,} cotistas homologados"
             elif is_etnico or is_pcd:
                 lbl_cota = "<i class='bi bi-exclamation-circle-fill text-warning me-1'></i> Cota Indeferida (Concorre Ampla)"
                 val_cota = f"{pos_geral}º"
@@ -347,31 +351,34 @@ def render_tab_boletim(df_base, mapa_inscricoes):
 <div class="stat-sub text-success fw-bold">↑ {aproveitamento_total:.1f}% de aproveitamento (Máx {NOTA_MAXIMA_PROVA})</div>
 </div>""", unsafe_allow_html=True)
         with c4:
-            vaga_prel = str(candidato_selecionado['Previsao_Vagas_Preliminar'])
-            if "Vaga Imediata" in vaga_prel:
-                val_vagas = "Vagas Imediatas 🏆"
+            is_conv_oficial = bool(candidato_selecionado.get('Convocado_TAF_Oficial', False))
+            mod_conv_val = str(candidato_selecionado.get('Modalidade_Convocacao_TAF', 'Não Convocado'))
+            if is_conv_oficial:
+                val_vagas = "Convocado TAF 🏃"
                 color_vagas = "#198754"
+                sub_vagas = f"🎉 {mod_conv_val}"
             else:
-                val_vagas = "Cadastro Reserva 📋"
-                color_vagas = "#212529"
+                val_vagas = "Não Convocado ⚪"
+                color_vagas = "#6c757d"
+                sub_vagas = "Fora da linha de corte oficial"
             st.markdown(f"""<div class="stat-card">
-<div class="stat-label"><i class="bi bi-trophy text-warning me-1"></i> Situação de Vagas Preliminar</div>
+<div class="stat-label"><i class="bi bi-trophy text-warning me-1"></i> Situação Oficial TAF</div>
 <div class="stat-value" style="color: {color_vagas}; font-size: 1.35rem;">{val_vagas}</div>
-<div class="stat-sub text-secondary fw-bold">{vaga_prel}</div>
+<div class="stat-sub text-secondary fw-bold">{sub_vagas}</div>
 </div>""", unsafe_allow_html=True)
 
         st.write("")
 
         # Projeção Preditiva pós-recursos e TAF (pré-computada)
-        with st.expander("🔮 Sua Projeção Preditiva pós-Recursos e TAF (Simulador)", expanded=True):
-            st.caption("Cenário de projeção considerando **5% de recursos deferidos** em 26-27/10 e **20% de reprovação no TAF** (médias históricas de carreiras policiais):")
+        with st.expander("🔮 Simulação de Desempenho nas Próximas Fases (TAF e Psicológico)", expanded=True):
+            st.caption("Cenário de projeção considerando as listas oficiais homologadas em 04/11 e atrito médio de 20% no TAF:")
 
             col_sim1, col_sim2, col_sim3 = st.columns(3)
             with col_sim1:
                 pos_etn_sim = candidato_selecionado.get('Pos_Etnico_Sim_Padrao')
                 pos_pcd_sim = candidato_selecionado.get('Pos_PCD_Sim_Padrao')
-                if is_pcd and res_pcd == 'DEFERIDO' and is_etnico and res_hetero == 'DEFERIDO':
-                    if nota_total < 113:
+                if is_pcd and res_pcd_def == 'DEFERIDO' and is_etnico and res_hetero_def == 'DEFERIDO':
+                    if nota_total < 114:
                         lbl_sim = "<i class='bi bi-universal-access text-success me-1'></i> Posição Estimada PCD (Convocado)"
                         val_sim = f"{int(pos_pcd_sim)}º" if pd.notnull(pos_pcd_sim) else "-"
                         sub_sim = f"PCD: {val_sim} • Étnico: {int(pos_etn_sim)}º" if pd.notnull(pos_etn_sim) else ""
@@ -490,10 +497,12 @@ def render_tab_boletim(df_base, mapa_inscricoes):
 
         # Vizinhos de Classificação
         with st.expander("👥 Candidatos Próximos na Classificação Geral (+/- 5 concorrentes ao redor)"):
-            st.caption("Veja os candidatos imediatamente antes e depois da sua posição e o status de cada um nas bancas preliminares:")
+            st.caption("Veja os candidatos imediatamente antes e depois da sua posição e a situação oficial homologada de cada um:")
             start_idx = max(0, pos_geral - 6)
             end_idx = min(TOTAL_CANDIDATOS, pos_geral + 5)
-            vizinhos = df_base.iloc[start_idx:end_idx][['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Status_Cota_Preliminar', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Previsao_TAF_Preliminar']]
+            col_cota = 'Status_Cota_Definitivo' if 'Status_Cota_Definitivo' in df_base.columns else 'Status_Cota_Preliminar'
+            col_taf = 'Status_Oficial_TAF' if 'Status_Oficial_TAF' in df_base.columns else 'Previsao_TAF_Preliminar'
+            vizinhos = df_base.iloc[start_idx:end_idx][['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', col_cota, 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', col_taf]]
 
             def destacar_linha(row):
                 if row['Posição_Geral'] == pos_geral:
@@ -522,8 +531,9 @@ def render_tab_boletim(df_base, mapa_inscricoes):
                 else:
                     filtro_outro = df_base[df_base['Nome_Busca'].str.contains(norm_outro, regex=False, na=False)]
                 if len(filtro_outro) > 0:
+                    status_col_outro = 'Status_Oficial_TAF' if 'Status_Oficial_TAF' in df_base.columns else ('Status_Cota_Definitivo' if 'Status_Cota_Definitivo' in df_base.columns else 'Status_Cota_Preliminar')
                     opcoes_outro = [
-                        f"{row['Posição_Geral']}º - {row['Nome']} (Nota: {row['Nota Objetiva']} pts | {row['Status_Cota_Preliminar']})"
+                        f"{row['Posição_Geral']}º - {row['Nome']} (Nota: {row['Nota Objetiva']} pts | {row.get(status_col_outro, '')})"
                         for _, row in filtro_outro.head(25).iterrows()
                     ]
                     with col_comp_sel:

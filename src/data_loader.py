@@ -58,12 +58,12 @@ def carregar_bytes_excel(caminho):
 
     nome_base = os.path.basename(caminho)
 
-    # 2. Procurar em subpastas organizadas de dados
+    # 2. Procurar em subpastas organizadas de dados (priorizando a publicação oficial mais recente)
     subpastas_candidatas = [
+        "Atualizacao 04 de novembro",
         "Atualizacao 23 de outubro",
         "Atualizacao 09 de outubro",
         "Atualizacao 30 de setembro",
-        "Atualizacao 04 de novembro",
         "dados",
         "data",
     ]

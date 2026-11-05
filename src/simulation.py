@@ -24,18 +24,21 @@ def executar_simulacao_pos_bancas(
         rng_rev_etnico = np.random.RandomState(42)
         rng_rev_pcd = np.random.RandomState(123)
 
-        idx_indef_etnico = df_sim[df_sim['Cota_Etnico_Racial'] & (~df_sim['Cota_Etnico_Apta_Preliminar'])].index
+        base_col_etnico = 'Cota_Etnico_Apta_Definitivo' if 'Cota_Etnico_Apta_Definitivo' in df_sim.columns else 'Cota_Etnico_Apta_Preliminar'
+        base_col_pcd = 'Cota_PCD_Apta_Definitivo' if 'Cota_PCD_Apta_Definitivo' in df_sim.columns else 'Cota_PCD_Apta_Preliminar'
+
+        idx_indef_etnico = df_sim[df_sim['Cota_Etnico_Racial'] & (~df_sim[base_col_etnico])].index
         scores_rev_etnico = pd.Series(rng_rev_etnico.rand(len(idx_indef_etnico)), index=idx_indef_etnico)
         revertidos_etnico = idx_indef_etnico[scores_rev_etnico < (taxa_reversao_etnico_pct / 100.0)]
 
-        idx_indef_pcd = df_sim[df_sim['Cota_PCD'] & (~df_sim['Cota_PCD_Apta_Preliminar'])].index
+        idx_indef_pcd = df_sim[df_sim['Cota_PCD'] & (~df_sim[base_col_pcd])].index
         scores_rev_pcd = pd.Series(rng_rev_pcd.rand(len(idx_indef_pcd)), index=idx_indef_pcd)
         revertidos_pcd = idx_indef_pcd[scores_rev_pcd < (taxa_reversao_pcd_pct / 100.0)]
 
-        df_sim['Cota_Etnico_Sim'] = df_sim['Cota_Etnico_Apta_Preliminar'].copy()
+        df_sim['Cota_Etnico_Sim'] = df_sim[base_col_etnico].copy()
         df_sim.loc[revertidos_etnico, 'Cota_Etnico_Sim'] = True
 
-        df_sim['Cota_PCD_Sim'] = df_sim['Cota_PCD_Apta_Preliminar'].copy()
+        df_sim['Cota_PCD_Sim'] = df_sim[base_col_pcd].copy()
         df_sim.loc[revertidos_pcd, 'Cota_PCD_Sim'] = True
 
         total_inaptos_etnico = len(df_sim[df_sim['Cota_Etnico_Racial'] & (~df_sim['Cota_Etnico_Sim'])])
