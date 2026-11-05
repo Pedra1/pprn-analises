@@ -40,3 +40,4 @@ for mod in ["AC", "ÉT-R", "PCD"]:
         print(f"  Maior nota: {sub['Nota'].max()}")
         print(f"  Menor nota (Linha de Corte Oficial): {sub['Nota'].min()}")
         print(f"  Qtd na nota de corte: {sum(sub['Nota'] == sub['Nota'].min())}")
+

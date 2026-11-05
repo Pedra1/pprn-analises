@@ -77,3 +77,4 @@ for insc, novo_res in pcd_dict.items():
 print(f"\nRecursos providos pela banca (reversões pós-recurso):")
 print(f"Étnico-Racial: {revertidos_etnico} recursos providos (de INDEFERIDO para DEFERIDO)!")
 print(f"Perícia PCD: {revertidos_pcd} recursos providos (de INDEFERIDO para DEFERIDO)!")
+
