@@ -1,0 +1,29 @@
+================================================================================
+PASTA DE RECEBIMENTO: PUBLICAÇÕES OFICIAIS DE 04 DE NOVEMBRO DE 2026
+CONCURSO POLICIAL PENAL RN (PPRN 2026) • INSTITUTO AVALIA
+================================================================================
+
+Esta pasta foi configurada para receber os novos arquivos e listas oficiais 
+divulgados pela banca examinadora em 04 de novembro de 2026:
+
+1. ARQUIVOS SUPORTADOS:
+   --------------------
+   - Convocação Oficial para o Teste de Aptidão Física (TAF) [.xlsx, .xls, .csv, .pdf]
+   - Resultado Definitivo Pós-Recurso da Heteroidentificação [.xlsx, .xls, .csv]
+   - Resultado Definitivo Pós-Recurso da Perícia PCD [.xlsx, .xls, .csv]
+
+2. COMO FUNCIONA O PROCESSAMENTO:
+   ------------------------------
+   - Assim que você depositar os arquivos oficiais nesta pasta, o módulo de 
+     acurácia do portal (`src/acuracia.py`) detectará os arquivos e calculará:
+     a) Acurácia global das previsões do site (% de acertos de convocações).
+     b) Confirmação das notas de corte (Ampla: 119 pts, PPP: 113 pts, PCD: 73 pts).
+     c) Análise de divergências decorrentes de recursos providos pela banca.
+   - Os dados atualizados serão exibidos automaticamente no Rodapé, no Disclaimer 
+     Inicial e na Aba de Metodologia & Transparência do site.
+
+3. DÚVIDAS OU SUPORTE:
+   --------------------
+   - Desenvolvido por Pedro Nildo (@pedronildu)
+================================================================================
+

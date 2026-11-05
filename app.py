@@ -84,7 +84,7 @@ with tab_cronograma:
     render_tab_cronograma()
 
 with tab_sobre:
-    render_tab_sobre()
+    render_tab_sobre(df_base)
 
 # 9. Rodapé Institucional
 render_footer()

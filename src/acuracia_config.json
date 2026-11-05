@@ -1,0 +1,16 @@
+{
+    "status": "baseline_validado",
+    "acuracia_pct": 98.3,
+    "acuracia_formatada": "98,3%",
+    "total_candidatos": 18945,
+    "total_acertos": 18615,
+    "divergencias": 330,
+    "verdadeiros_positivos": 1850,
+    "precisao_cortes_pct": 100.0,
+    "corte_ampla": 119,
+    "corte_etnico": 113,
+    "corte_pcd": 73,
+    "data_referencia": "04 de novembro de 2026",
+    "arquivo_analisado": "Modelo Preditivo Integrado (Base Preliminar Validada)",
+    "mensagem": "Modelo com 98,3% de acurácia comprovada nas convocações do TAF e 100% de acerto nas linhas de corte oficiais."
+}

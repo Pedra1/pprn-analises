@@ -47,8 +47,38 @@ def get_mapa_inscricoes(_df):
 
 @st.cache_data(show_spinner=False)
 def carregar_bytes_excel(caminho):
-    """Carrega arquivos binários Excel para download sob demanda."""
+    """Carrega arquivos binários Excel para download sob demanda, procurando na raiz e em subpastas."""
+    if not caminho:
+        return None
+        
+    # 1. Tentar caminho direto
     if os.path.exists(caminho):
         with open(caminho, "rb") as f:
             return f.read()
+
+    nome_base = os.path.basename(caminho)
+
+    # 2. Procurar em subpastas organizadas de dados
+    subpastas_candidatas = [
+        "Atualizacao 23 de outubro",
+        "Atualizacao 09 de outubro",
+        "Atualizacao 30 de setembro",
+        "Atualizacao 04 de novembro",
+        "dados",
+        "data",
+    ]
+    for pasta in subpastas_candidatas:
+        p = os.path.join(pasta, nome_base)
+        if os.path.exists(p):
+            with open(p, "rb") as f:
+                return f.read()
+
+    # 3. Busca recursiva (ignorando backup, git, pycache)
+    for root, dirs, files in os.walk("."):
+        if any(ign in root for ign in ["backup", ".git", "__pycache__", ".devcontainer"]):
+            continue
+        if nome_base in files:
+            with open(os.path.join(root, nome_base), "rb") as f:
+                return f.read()
+
     return None
