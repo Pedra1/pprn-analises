@@ -11,19 +11,27 @@ def render_footer(metricas_acuracia=None):
     if metricas_acuracia is None:
         metricas_acuracia = obter_acuracia_site()
 
+    status = metricas_acuracia.get("status", "")
     acuracia_fmt = metricas_acuracia.get("acuracia_formatada", "98,3%")
-    data_ref = metricas_acuracia.get("data_referencia", "04/11/2026")
+    data_ref = metricas_acuracia.get("data_referencia", "")
+
+    if status == "oficial_calculado":
+        badge_html = f"""<span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill" style="font-size: 0.85rem;">
+            <i class="bi bi-check-circle-fill me-1"></i> Acurácia Oficial 04/11: <strong>{acuracia_fmt}</strong>
+        </span>"""
+    else:
+        badge_html = """<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded-pill" style="font-size: 0.85rem;">
+            <i class="bi bi-hourglass-split me-1"></i> Acurácia Prévia: <strong>98,3%</strong> • Aguardando Listas de 04/11
+        </span>"""
 
     st.markdown(f"""<div class="footer-container">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2 pb-2 border-bottom">
         <div>
             <i class="bi bi-shield-fill-check text-primary me-1"></i> 
-            <strong>Portal de Resultados PPRN</strong> • Dados oficiais atualizados e sincronizados com a banca.
+            <strong>Portal de Resultados PPRN</strong> • Dados oficiais e motor preditivo independente.
         </div>
         <div>
-            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill" style="font-size: 0.85rem;">
-                <i class="bi bi-check-circle-fill me-1"></i> Acurácia do Site: <strong>{acuracia_fmt}</strong> ({data_ref})
-            </span>
+            {badge_html}
         </div>
     </div>
     <div class="text-secondary" style="font-size: 0.9rem;">

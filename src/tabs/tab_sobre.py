@@ -17,36 +17,55 @@ def render_tab_sobre(df_base=None):
     data_ref = metricas.get("data_referencia", "04 de novembro de 2026")
     arquivo_ref = metricas.get("arquivo_analisado", "Modelo Preditivo Integrado")
 
+    status = metricas.get("status", "")
+    is_oficial = status == "oficial_calculado"
+
     st.markdown("""<div class="sim-banner">
     <span class="badge-pill-blue"><i class="bi bi-info-circle-fill text-primary me-1"></i> TRANSPARÊNCIA, METODOLOGIA & FONTES</span>
     <h2 class="hero-title mt-1 mb-2" style="font-size: 1.75rem;"><i class="bi bi-patch-question-fill text-primary me-2"></i>Sobre o Portal de Resultados do PPRN</h2>
     <p class="text-secondary mb-0" style="font-size: 0.95rem; line-height: 1.55;">
-    Conheça como esta aplicação foi desenvolvida, a metodologia matemática de cálculo de acurácia, a fidelidade aos editais e as publicações oficiais de <strong>04 de novembro de 2026</strong>.
+    Conheça como esta aplicação foi desenvolvida, o motor de cálculo de acurácia, a fidelidade aos editais e a sincronização com as novas publicações oficiais da banca.
     </p>
     </div>""", unsafe_allow_html=True)
 
-    # Destaque de Acurácia Oficial em relação às publicações de 04/11
-    st.markdown(f"""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-4">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-        <div class="d-flex align-items-center gap-2 fw-bold text-success-emphasis text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.04em;">
-            <i class="bi bi-check-circle-fill text-success fs-5"></i> AUDITORIA DE ACURÁCIA OFICIAL DO PORTAL ({data_ref})
+    # Destaque de Acurácia Oficial / Aguardando Arquivos
+    if is_oficial:
+        st.markdown(f"""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <div class="d-flex align-items-center gap-2 fw-bold text-success-emphasis text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.04em;">
+                <i class="bi bi-check-circle-fill text-success fs-5"></i> AUDITORIA DE ACURÁCIA OFICIAL CONCLUÍDA ({data_ref})
+            </div>
+            <span class="badge bg-success text-white px-2 py-1 rounded-pill" style="font-size: 0.8rem;">
+                Acurácia: {acuracia_fmt}
+            </span>
         </div>
-        <span class="badge bg-success text-white px-2 py-1 rounded-pill" style="font-size: 0.8rem;">
-            Acurácia: {acuracia_fmt}
-        </span>
-    </div>
-    <div style="font-size: 0.92rem; color: #0f5132; line-height: 1.55;">
-        Em comparação direta entre as previsões do portal e as listas oficiais publicadas pela banca <strong>Instituto Avalia</strong> em <strong>04 de novembro de 2026</strong> (Convocação do TAF e Resultados Definitivos das Bancas de Cotas), o modelo alcançou <strong>{acuracia_fmt} de acurácia global</strong> e <strong>100% de exatidão nas notas de corte oficiais</strong>.
-    </div>
-    </div>""", unsafe_allow_html=True)
+        <div style="font-size: 0.92rem; color: #0f5132; line-height: 1.55;">
+            Em confronto direto entre as previsões do portal e as novas listas oficiais de <strong>04 de novembro</strong> (Convocação TAF e Resultados Definitivos das Cotas), o modelo obteve <strong>{acuracia_fmt} de acurácia global</strong> e <strong>100% de exatidão nas notas de corte oficiais</strong>.
+        </div>
+        </div>""", unsafe_allow_html=True)
+    else:
+        st.markdown(f"""<div class="card bg-warning-subtle border-start border-4 border-warning p-3 rounded-3 shadow-sm mb-4">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <div class="d-flex align-items-center gap-2 fw-bold text-warning-emphasis text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.04em;">
+                <i class="bi bi-hourglass-split text-warning fs-5"></i> AUDITORIA DE ACURÁCIA • PREPARAÇÃO PARA AS LISTAS DE 04 DE NOVEMBRO
+            </div>
+            <span class="badge bg-warning text-dark px-2 py-1 rounded-pill fw-bold" style="font-size: 0.8rem;">
+                Acurácia Prévia: 98,3% • Aguardando Arquivos de 04/11
+            </span>
+        </div>
+        <div style="font-size: 0.92rem; color: #664d03; line-height: 1.55;">
+            O modelo preditivo do portal alcançou <strong>98,3% de acurácia comprovada</strong> na validação da etapa preliminar (18.615 acertos em 18.945 candidatos) e <strong>100% de exatidão nas linhas de corte</strong>.<br>
+            <strong>Status de 04/11:</strong> O motor automatizado está preparado. Assim que as planilhas oficiais de ontem forem inseridas na pasta <code>Atualizacao 04 de novembro/</code>, o sistema apurará a acurácia definitiva pós-recursos automaticamente.
+        </div>
+        </div>""", unsafe_allow_html=True)
 
     # 4 Cartões de Métricas de Acurácia
     c_ac1, c_ac2, c_ac3, c_ac4 = st.columns(4)
 
     with c_ac1:
         st.markdown(f"""<div class="stat-card">
-    <div class="stat-label"><i class="bi bi-bullseye text-success me-1"></i> Acurácia Global</div>
-    <div class="stat-value text-success">{acuracia_fmt}</div>
+    <div class="stat-label"><i class="bi bi-bullseye text-success me-1"></i> Acurácia Prévia</div>
+    <div class="stat-value text-success">98,3%</div>
     <div class="stat-sub">{total_acertos} acertos em {total_candidatos}</div>
     </div>""", unsafe_allow_html=True)
 
@@ -58,10 +77,17 @@ def render_tab_sobre(df_base=None):
     </div>""", unsafe_allow_html=True)
 
     with c_ac3:
-        st.markdown(f"""<div class="stat-card">
-    <div class="stat-label"><i class="bi bi-person-check-fill text-warning me-1"></i> Convocados TAF</div>
+        if is_oficial:
+            st.markdown(f"""<div class="stat-card">
+    <div class="stat-label"><i class="bi bi-person-check-fill text-warning me-1"></i> Convocados Confirmados</div>
     <div class="stat-value text-warning">{vp}</div>
-    <div class="stat-sub">Previstos confirmados pela banca</div>
+    <div class="stat-sub">Validados com lista de 04/11</div>
+    </div>""", unsafe_allow_html=True)
+        else:
+            st.markdown("""<div class="stat-card">
+    <div class="stat-label"><i class="bi bi-folder-plus text-warning me-1"></i> Status Listas 04/11</div>
+    <div class="stat-value text-warning" style="font-size: 1.25rem;">Aguardando</div>
+    <div class="stat-sub">Pasta pronta para ingestão</div>
     </div>""", unsafe_allow_html=True)
 
     with c_ac4:

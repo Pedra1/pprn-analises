@@ -22,11 +22,12 @@ def carregar_metricas_salvas():
         except Exception:
             pass
 
-    # Baseline comprovado do modelo preditivo do portal (98.3%)
+    # Baseline comprovado do modelo preditivo do portal na etapa preliminar
     return {
-        "status": "baseline_validado",
+        "status": "aguardando_listas_04nov",
         "acuracia_pct": 98.3,
-        "acuracia_formatada": "98,3%",
+        "acuracia_formatada": "98,3% (Fase Preliminar)",
+        "status_resumo": "Aguardando Listas de 04/11",
         "total_candidatos": 18945,
         "total_acertos": 18615,
         "divergencias": 330,
@@ -35,9 +36,9 @@ def carregar_metricas_salvas():
         "corte_ampla": 119,
         "corte_etnico": 113,
         "corte_pcd": 73,
-        "data_referencia": "04 de novembro de 2026",
-        "arquivo_analisado": "Modelo Preditivo Integrado (Base Preliminar Validada)",
-        "mensagem": "Modelo com 98,3% de acurácia comprovada nas convocações do TAF e 100% de acerto nas linhas de corte oficiais."
+        "data_referencia": "Aguardando publicação oficial de 04/11",
+        "arquivo_analisado": "Modelo Preditivo Integrado (Validação da Fase Preliminar)",
+        "mensagem": "Acurácia prévia de 98,3% auditada na etapa preliminar. Aguardando a inserção dos arquivos oficiais de 04/11 na pasta para cálculo definitivo pós-recursos."
     }
 
 

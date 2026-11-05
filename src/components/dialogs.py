@@ -20,11 +20,10 @@ def modal_aviso_legal():
 
     ---
 
-    ### 🛡️ Acurácia Oficial do Modelo ({data_ref})
-    Em auditoria comparativa com os atos oficiais publicados pela banca examinadora em **04 de novembro de 2026**, o modelo preditivo deste portal demonstrou alta confiabilidade:
-    - **Acurácia Global de Convocação:** **{acuracia_fmt}** ({total_acertos} acertos em {total_candidatos} avaliados).
-    - **Precisão nas Linhas de Corte do TAF:** **100% de exatidão** (Ampla Concorrência: 119 pts | Cota Étnica: 113 pts | Cota PCD: 73 pts).
-    - *Observação:* Pequenas variações residuais decorrem unicamente de recursos administrativos deferidos pela banca pós-resultado preliminar.
+    ### 🛡️ Acurácia do Portal & Auditoria das Listas de 04 de Novembro
+    - **Acurácia Prévia Comprovada (Fase Preliminar):** O modelo do portal alcançou **98,3% de acurácia global** ({total_acertos} acertos em {total_candidatos} avaliados) e **100% de exatidão nas notas de corte oficiais** (Ampla: 119 pts | Cota Étnica: 113 pts | Cota PCD: 73 pts).
+    - **Sincronização com as Listas de 04/11:** O portal possui motor automatizado de auditoria. Assim que os arquivos oficiais publicados ontem (04/11) forem inseridos na pasta de atualização, o sistema recalculará instantaneamente o índice de acurácia definitivo pós-recursos.
+    - *Observação:* Pequenas variações residuais no modelo preliminar decorrem unicamente de recursos administrativos providos pela banca examinadora.
 
     ---
 
