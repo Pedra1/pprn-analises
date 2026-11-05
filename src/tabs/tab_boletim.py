@@ -168,37 +168,36 @@ def render_tab_boletim(df_base, mapa_inscricoes):
             if res_hetero_def == 'DEFERIDO':
                 nova_pos_etn = int(candidato_selecionado['Nova_Pos_Lista_Etnico_Definitivo']) if pd.notna(candidato_selecionado.get('Nova_Pos_Lista_Etnico_Definitivo')) else int(candidato_selecionado['Nova_Pos_Lista_Etnico'])
                 pos_orig_etn = int(candidato_selecionado['Pos_Lista_Etnico'])
-                rec_aviso = "🎉 <strong>RECURSO ADMINISTRATIVO DEFERIDO!</strong> A banca revisou sua documentação e homologou sua cota em 04/11/2026!<br>" if rec_hetero else ""
+                rec_html = "<div style='color: #15803D; font-weight: 700; margin-bottom: 6px;'>🎉 RECURSO ADMINISTRATIVO DEFERIDO! A banca revisou sua documentação e homologou sua cota em 04/11/2026!</div>" if rec_hetero else ""
                 bloco_bancas_html += f"""<div class="card-resultado-deferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-    <div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
-        ✅ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO (04/11/2026)
-    </div>
-    <span class="badge-pill">DEFERIDO DEFINITIVO</span>
+<div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
+✅ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO (04/11/2026)
+</div>
+<span class="badge-pill">DEFERIDO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Sua condição na Cota Étnico-Racial foi HOMOLOGADA DEFINITIVAMENTE!
+Sua condição na Cota Étnico-Racial foi HOMOLOGADA DEFINITIVAMENTE!
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.5; font-weight: 500;">
-    {rec_aviso}
-    • <strong>Posição Definitiva na Cota:</strong> <span style="color: #6D28D9; font-weight: 800; font-size: 1.05rem;">{nova_pos_etn}º Lugar na Cota</span> (Posição original: {pos_orig_etn}º)<br>
-    • <strong>Status da Concorrência:</strong> Habilitado a disputar as vagas reservadas aos candidatos pretos e pardos, indígenas e quilombolas.
+{rec_html}<div>• <strong>Posição Definitiva na Cota:</strong> <span style="color: #6D28D9; font-weight: 800; font-size: 1.05rem;">{nova_pos_etn}º Lugar na Cota</span> (Posição original: {pos_orig_etn}º)</div>
+<div style="margin-top: 4px;">• <strong>Status da Concorrência:</strong> Habilitado a disputar as vagas reservadas aos candidatos pretos e pardos, indígenas e quilombolas.</div>
 </div>
 </div>"""
             else:
                 bloco_bancas_html += f"""<div class="card-resultado-indeferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-    <div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em;">
-        ⚠️ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO PÓS-RECURSOS (04/11/2026)
-    </div>
-    <span class="badge-pill-amber">INDEFERIDO DEFINITIVO</span>
+<div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em;">
+⚠️ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO PÓS-RECURSOS (04/11/2026)
+</div>
+<span class="badge-pill-amber">INDEFERIDO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Solicitação de Cota Étnico-Racial Indeferida em Definitivo
+Solicitação de Cota Étnico-Racial Indeferida em Definitivo
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.55; font-weight: 500;">
-    ⚖️ <strong>Regra do Edital (Art. 4º do Edital de Convocação):</strong> O indeferimento da cota <strong>NÃO ELIMINA você do concurso</strong>! Você continua concorrendo normalmente pelas vagas da <strong>Ampla Concorrência</strong>.<br>
-    Sua classificação geral na Ampla: <strong>{pos_geral}º Lugar Geral ({nota_total} pontos)</strong>.
+<div>⚖️ <strong>Regra do Edital (Art. 4º do Edital de Convocação):</strong> O indeferimento da cota <strong>NÃO ELIMINA você do concurso</strong>! Você continua concorrendo normalmente pelas vagas da <strong>Ampla Concorrência</strong>.</div>
+<div style="margin-top: 4px;">Sua classificação geral na Ampla: <strong>{pos_geral}º Lugar Geral ({nota_total} pontos)</strong>.</div>
 </div>
 </div>"""
 
@@ -206,50 +205,49 @@ def render_tab_boletim(df_base, mapa_inscricoes):
             if res_pcd_def == 'DEFERIDO':
                 nova_pos_pcd = int(candidato_selecionado['Nova_Pos_Lista_PCD_Definitivo']) if pd.notna(candidato_selecionado.get('Nova_Pos_Lista_PCD_Definitivo')) else int(candidato_selecionado['Nova_Pos_Lista_PCD'])
                 pos_orig_pcd = int(candidato_selecionado['Pos_Lista_PCD'])
-                rec_aviso_pcd = "🎉 <strong>RECURSO ADMINISTRATIVO DEFERIDO!</strong> A perícia médica acolheu seu recurso em 04/11/2026!<br>" if rec_pcd else ""
+                rec_html_pcd = "<div style='color: #15803D; font-weight: 700; margin-bottom: 6px;'>🎉 RECURSO ADMINISTRATIVO DEFERIDO! A perícia médica acolheu seu recurso em 04/11/2026!</div>" if rec_pcd else ""
                 bloco_bancas_html += f"""<div class="card-resultado-deferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-    <div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
-        ✅ RESULTADO DEFINITIVO DA PERÍCIA MÉDICA PCD (04/11/2026)
-    </div>
-    <span class="badge-pill">LAUDO HOMOLOGADO DEFINITIVO</span>
+<div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
+✅ RESULTADO DEFINITIVO DA PERÍCIA MÉDICA PCD (04/11/2026)
+</div>
+<span class="badge-pill">LAUDO HOMOLOGADO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Laudo Médico e Condição de Pessoa com Deficiência (PCD) HOMOLOGADOS!
+Laudo Médico e Condição de Pessoa com Deficiência (PCD) HOMOLOGADOS!
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.5; font-weight: 500;">
-    {rec_aviso_pcd}
-    • <strong>Posição Definitiva PCD:</strong> <span style="color: #15803D; font-weight: 800; font-size: 1.05rem;">{nova_pos_pcd}º Lugar PCD</span> (Posição original: {pos_orig_pcd}º)<br>
-    • <strong>Convocação TAF:</strong> Todos os 534 candidatos PCD deferidos foram convocados para o TAF (Item 13.1.2 do edital).
+{rec_html_pcd}<div>• <strong>Posição Definitiva PCD:</strong> <span style="color: #15803D; font-weight: 800; font-size: 1.05rem;">{nova_pos_pcd}º Lugar PCD</span> (Posição original: {pos_orig_pcd}º)</div>
+<div style="margin-top: 4px;">• <strong>Convocação TAF:</strong> Todos os 534 candidatos PCD deferidos foram convocados para o TAF (Item 13.1.2 do edital).</div>
 </div>
 </div>"""
             else:
                 bloco_bancas_html += f"""<div class="card-resultado-indeferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-    <div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em;">
-        ⚠️ RESULTADO DEFINITIVO DA PERÍCIA MÉDICA PCD PÓS-RECURSOS (04/11/2026)
-    </div>
-    <span class="badge-pill-amber">LAUDO INDEFERIDO DEFINITIVO</span>
+<div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em;">
+⚠️ RESULTADO DEFINITIVO DA PERÍCIA MÉDICA PCD PÓS-RECURSOS (04/11/2026)
+</div>
+<span class="badge-pill-amber">LAUDO INDEFERIDO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Solicitação de Cota PCD Indeferida em Definitivo
+Solicitação de Cota PCD Indeferida em Definitivo
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.55; font-weight: 500;">
-    ⚖️ <strong>Regra do Edital (Art. 3º do Edital de Perícia Médica PCD):</strong> O não acolhimento do laudo na perícia médica <strong>NÃO ELIMINA você do concurso</strong>! Você continua concorrendo pelas vagas da <strong>Ampla Concorrência</strong>.<br>
-    Sua classificação geral na Ampla: <strong>{pos_geral}º Lugar Geral ({nota_total} pontos)</strong>.
+<div>⚖️ <strong>Regra do Edital (Art. 3º do Edital de Perícia Médica PCD):</strong> O não acolhimento do laudo na perícia médica <strong>NÃO ELIMINA você do concurso</strong>! Você continua concorrendo pelas vagas da <strong>Ampla Concorrência</strong>.</div>
+<div style="margin-top: 4px;">Sua classificação geral na Ampla: <strong>{pos_geral}º Lugar Geral ({nota_total} pontos)</strong>.</div>
 </div>
 </div>"""
 
         if is_ampla_pura:
             bloco_bancas_html += """<div class="card-resultado-ampla">
 <div style="font-size: 0.82rem; font-weight: 800; color: #0369A1; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.04em;">
-    🏛️ CANDIDATO NÃO COTISTA (AMPLA CONCORRÊNCIA PURA)
+🏛️ CANDIDATO NÃO COTISTA (AMPLA CONCORRÊNCIA PURA)
 </div>
 <div style="font-size: 1.05rem; font-weight: 800; color: #0F172A;">
-    ⚪ Concorrência Exclusiva na Ampla Concorrência
+⚪ Concorrência Exclusiva na Ampla Concorrência
 </div>
 <div style="font-size: 0.88rem; color: #334155; margin-top: 6px; line-height: 1.5; font-weight: 500;">
-    Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre diretamente no cômputo universal de vagas e foi submetida à linha de corte oficial de 119 pontos para o TAF.
+Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre diretamente no cômputo universal de vagas e foi submetida à linha de corte oficial de 119 pontos para o TAF.
 </div>
 </div>"""
 
@@ -266,13 +264,13 @@ def render_tab_boletim(df_base, mapa_inscricoes):
 
         taf_html = f"""<div class="{taf_class}">
 <div style="font-size: 0.82rem; font-weight: 800; color: {taf_badge_color}; text-transform: uppercase; margin-bottom: 6px;">
-    🎯 {taf_badge_text}
+🎯 {taf_badge_text}
 </div>
 <div style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin-bottom: 4px;">
-    {status_taf_oficial}
+{status_taf_oficial}
 </div>
 <div style="font-size: 0.88rem; color: #475569; font-weight: 600;">
-    📋 Modalidade de Convocação: <strong>{mod_convocacao}</strong>{pos_taf_txt}
+📋 Modalidade de Convocação: <strong>{mod_convocacao}</strong>{pos_taf_txt}
 </div>
 </div>"""
 
