@@ -10,7 +10,7 @@ import streamlit as st
 
 # 1. Configuração da Página
 st.set_page_config(
-    page_title="PPRN - Resultado Preliminar das Bancas de Cotas (23/10)",
+    page_title="PPRN - Convocação Oficial do TAF e Bancas Definitivas (04/11)",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="collapsed",

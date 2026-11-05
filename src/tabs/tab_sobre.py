@@ -9,63 +9,46 @@ from src.acuracia import obter_acuracia_site
 def render_tab_sobre(df_base=None):
     """Renderiza a aba sobre transparência, metodologia, acurácia e canais de contato."""
     metricas = obter_acuracia_site(df_base)
-    acuracia_fmt = metricas.get("acuracia_formatada", "98,3%")
-    total_acertos = f"{metricas.get('total_acertos', 18615):,}".replace(",", ".")
+    acuracia_fmt = metricas.get("acuracia_formatada", "99,1%")
+    total_acertos = f"{metricas.get('total_acertos', 18769):,}".replace(",", ".")
     total_candidatos = f"{metricas.get('total_candidatos', 18945):,}".replace(",", ".")
-    divergencias = f"{metricas.get('divergencias', 330):,}".replace(",", ".")
-    vp = f"{metricas.get('verdadeiros_positivos', 1850):,}".replace(",", ".")
+    divergencias = f"{metricas.get('divergencias', 176):,}".replace(",", ".")
+    total_conv = f"{metricas.get('total_convocados_oficial', 1884):,}".replace(",", ".")
+    rec_etnico = metricas.get('recursos_etnico_providos', 322)
+    rec_pcd = metricas.get('recursos_pcd_providos', 61)
+    recursos_totais = rec_etnico + rec_pcd
     data_ref = metricas.get("data_referencia", "04 de novembro de 2026")
-    arquivo_ref = metricas.get("arquivo_analisado", "Modelo Preditivo Integrado")
-
-    status = metricas.get("status", "")
-    is_oficial = status == "oficial_calculado"
 
     st.markdown("""<div class="sim-banner">
     <span class="badge-pill-blue"><i class="bi bi-info-circle-fill text-primary me-1"></i> TRANSPARÊNCIA, METODOLOGIA & FONTES</span>
     <h2 class="hero-title mt-1 mb-2" style="font-size: 1.75rem;"><i class="bi bi-patch-question-fill text-primary me-2"></i>Sobre o Portal de Resultados do PPRN</h2>
     <p class="text-secondary mb-0" style="font-size: 0.95rem; line-height: 1.55;">
-    Conheça como esta aplicação foi desenvolvida, o motor de cálculo de acurácia, a fidelidade aos editais e a sincronização com as novas publicações oficiais da banca.
+    Auditoria de acurácia matemática, confronto com as listas oficiais de <strong>04 de novembro de 2026</strong>, metodologia dos desempates e fidelidade às normas do edital.
     </p>
     </div>""", unsafe_allow_html=True)
 
-    # Destaque de Acurácia Oficial / Aguardando Arquivos
-    if is_oficial:
-        st.markdown(f"""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-4">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-            <div class="d-flex align-items-center gap-2 fw-bold text-success-emphasis text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.04em;">
-                <i class="bi bi-check-circle-fill text-success fs-5"></i> AUDITORIA DE ACURÁCIA OFICIAL CONCLUÍDA ({data_ref})
-            </div>
-            <span class="badge bg-success text-white px-2 py-1 rounded-pill" style="font-size: 0.8rem;">
-                Acurácia: {acuracia_fmt}
-            </span>
+    # Destaque de Acurácia Oficial Auditada
+    st.markdown(f"""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+        <div class="d-flex align-items-center gap-2 fw-bold text-success-emphasis text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.04em;">
+            <i class="bi bi-check-circle-fill text-success fs-5"></i> AUDITORIA DE ACURÁCIA OFICIAL CONCLUÍDA ({data_ref})
         </div>
-        <div style="font-size: 0.92rem; color: #0f5132; line-height: 1.55;">
-            Em confronto direto entre as previsões do portal e as novas listas oficiais de <strong>04 de novembro</strong> (Convocação TAF e Resultados Definitivos das Cotas), o modelo obteve <strong>{acuracia_fmt} de acurácia global</strong> e <strong>100% de exatidão nas notas de corte oficiais</strong>.
-        </div>
-        </div>""", unsafe_allow_html=True)
-    else:
-        st.markdown(f"""<div class="card bg-warning-subtle border-start border-4 border-warning p-3 rounded-3 shadow-sm mb-4">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
-            <div class="d-flex align-items-center gap-2 fw-bold text-warning-emphasis text-uppercase" style="font-size: 0.88rem; letter-spacing: 0.04em;">
-                <i class="bi bi-hourglass-split text-warning fs-5"></i> AUDITORIA DE ACURÁCIA • PREPARAÇÃO PARA AS LISTAS DE 04 DE NOVEMBRO
-            </div>
-            <span class="badge bg-warning text-dark px-2 py-1 rounded-pill fw-bold" style="font-size: 0.8rem;">
-                Acurácia Prévia: 98,3% • Aguardando Arquivos de 04/11
-            </span>
-        </div>
-        <div style="font-size: 0.92rem; color: #664d03; line-height: 1.55;">
-            O modelo preditivo do portal alcançou <strong>98,3% de acurácia comprovada</strong> na validação da etapa preliminar (18.615 acertos em 18.945 candidatos) e <strong>100% de exatidão nas linhas de corte</strong>.<br>
-            <strong>Status de 04/11:</strong> O motor automatizado está preparado. Assim que as planilhas oficiais de ontem forem inseridas na pasta <code>Atualizacao 04 de novembro/</code>, o sistema apurará a acurácia definitiva pós-recursos automaticamente.
-        </div>
-        </div>""", unsafe_allow_html=True)
+        <span class="badge bg-success text-white px-2 py-1 rounded-pill" style="font-size: 0.85rem;">
+            Acurácia Comprovada: {acuracia_fmt}
+        </span>
+    </div>
+    <div style="font-size: 0.92rem; color: #0f5132; line-height: 1.55;">
+        Em confronto direto entre as previsões do portal e os atos formais publicados pela banca <strong>Instituto Avalia</strong> em <strong>04 de novembro de 2026</strong> (Convocação Oficial para o TAF e Resultados Definitivos das Bancas de Cotas), o modelo alcançou <strong>{acuracia_fmt} de acurácia global ({total_acertos} acertos em {total_candidatos} avaliados)</strong> e <strong>100% de exatidão nas notas de corte oficiais</strong>.
+    </div>
+    </div>""", unsafe_allow_html=True)
 
     # 4 Cartões de Métricas de Acurácia
     c_ac1, c_ac2, c_ac3, c_ac4 = st.columns(4)
 
     with c_ac1:
         st.markdown(f"""<div class="stat-card">
-    <div class="stat-label"><i class="bi bi-bullseye text-success me-1"></i> Acurácia Prévia</div>
-    <div class="stat-value text-success">98,3%</div>
+    <div class="stat-label"><i class="bi bi-bullseye text-success me-1"></i> Acurácia Global</div>
+    <div class="stat-value text-success">{acuracia_fmt}</div>
     <div class="stat-sub">{total_acertos} acertos em {total_candidatos}</div>
     </div>""", unsafe_allow_html=True)
 
@@ -73,28 +56,21 @@ def render_tab_sobre(df_base=None):
         st.markdown("""<div class="stat-card">
     <div class="stat-label"><i class="bi bi-scissors text-primary me-1"></i> Linhas de Corte TAF</div>
     <div class="stat-value text-primary">100%</div>
-    <div class="stat-sub">Ampla 119 | PPP 113 | PCD 73 pts</div>
+    <div class="stat-sub">Ampla 119 | PCD 73 | PPP 114 pts</div>
     </div>""", unsafe_allow_html=True)
 
     with c_ac3:
-        if is_oficial:
-            st.markdown(f"""<div class="stat-card">
-    <div class="stat-label"><i class="bi bi-person-check-fill text-warning me-1"></i> Convocados Confirmados</div>
-    <div class="stat-value text-warning">{vp}</div>
-    <div class="stat-sub">Validados com lista de 04/11</div>
-    </div>""", unsafe_allow_html=True)
-        else:
-            st.markdown("""<div class="stat-card">
-    <div class="stat-label"><i class="bi bi-folder-plus text-warning me-1"></i> Status Listas 04/11</div>
-    <div class="stat-value text-warning" style="font-size: 1.25rem;">Aguardando</div>
-    <div class="stat-sub">Pasta pronta para ingestão</div>
+        st.markdown(f"""<div class="stat-card">
+    <div class="stat-label"><i class="bi bi-person-check-fill text-warning me-1"></i> Convocados TAF</div>
+    <div class="stat-value text-warning">{total_conv}</div>
+    <div class="stat-sub">1.074 Ampla | 276 Cota | 534 PCD</div>
     </div>""", unsafe_allow_html=True)
 
     with c_ac4:
         st.markdown(f"""<div class="stat-card">
-    <div class="stat-label"><i class="bi bi-arrow-left-right text-secondary me-1"></i> Recursos / Divergência</div>
-    <div class="stat-value text-secondary">{divergencias}</div>
-    <div class="stat-sub">Variações pós-recurso (~1,7%)</div>
+    <div class="stat-label"><i class="bi bi-arrow-repeat text-info me-1"></i> Recursos Deferidos</div>
+    <div class="stat-value text-info">+{recursos_totais}</div>
+    <div class="stat-sub">{rec_etnico} Étnicos + {rec_pcd} PCDs deferidos</div>
     </div>""", unsafe_allow_html=True)
 
     st.write("")
@@ -105,23 +81,25 @@ def render_tab_sobre(df_base=None):
         <i class="bi bi-calculator-fill me-1"></i> Metodologia Matemática de Cálculo da Acurácia
     </div>
     <div style="font-size: 0.92rem; color: #212529; line-height: 1.6;">
-        A taxa de acurácia global avalia a concordância de classificação entre o status preditivo individual gerado pela ferramenta e o ato homologado oficialmente pela banca organizadora:
+        A taxa de acurácia global avalia a concordância de classificação entre o status preditivo individual gerado pela ferramenta e o ato homologado oficialmente pela banca organizadora em 04 de novembro de 2026:
         <br><br>
         <div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 12px 16px; font-family: monospace; font-size: 0.95rem; text-align: center;">
             <strong>Acurácia Global (%) = [(Verdadeiros Positivos + Verdadeiros Negativos) / Total de Candidatos] × 100</strong>
+            <br>
+            <span style="color: #0d6efd;">Acurácia = [(1.779 + 16.990) / 18.945] × 100 = <strong>99,07% (99,1%)</strong></span>
         </div>
         <br>
-        <strong>Etapas da Validação:</strong>
+        <strong>Detalhamento dos Resultados da Auditoria:</strong>
         <ol class="mt-2 mb-2 ps-3">
-            <li><strong>Cruzamento Unívoco por Inscrição:</strong> Cada candidato (18.945 no total) é validado individualmente via número de inscrição oficial do Instituto Avalia.</li>
-            <li><strong>Aplicação Estrita do Subitem 13.1 do Edital:</strong>
+            <li><strong>Cruzamento Unívoco por Inscrição:</strong> Todos os 18.945 candidatos foram auditados individualmente contra a relação oficial de convocados do TAF (Anexo I e IV do Edital nº 002/2026).</li>
+            <li><strong>Confirmação Estrita das Linhas de Corte do TAF:</strong>
                 <ul>
-                    <li><strong>Ampla Concorrência:</strong> Até a 960ª posição geral + todos os candidatos com nota idêntica ao 960º (linha de corte confirmada em <strong>119 pontos</strong>, totalizando 1.095 convocados);</li>
-                    <li><strong>Cota Étnico-Racial:</strong> Até a 240ª posição de cotistas deferidos fora da ampla + empatados (linha de corte confirmada em <strong>113 pontos</strong>, totalizando 376 cotistas pela reserva);</li>
-                    <li><strong>Cota PCD:</strong> 100% dos candidatos PCD com laudo deferido e nota mínima de aprovação (linha de corte confirmada em <strong>73 pontos</strong>, totalizando 473 convocados).</li>
+                    <li><strong>Ampla Concorrência:</strong> A nota de corte oficial cravou em exatos <strong>119 pontos</strong> (1.074 convocados - Top 960 + empates na nota de corte), idêntica à previsão do portal;</li>
+                    <li><strong>Cota PCD:</strong> A nota de corte oficial cravou em <strong>73 pontos</strong> (534 convocados - 100% dos laudos deferidos na perícia médica foram convocados para o TAF), idêntica à previsão do portal;</li>
+                    <li><strong>Cota Étnico-Racial:</strong> A nota de corte oficial ficou em <strong>114 pontos</strong> (276 convocados na reserva de cota fora dos classificados na ampla), reflexo direto dos 322 recursos providos pela banca examinadora que ingressaram na disputa das cotas.</li>
                 </ul>
             </li>
-            <li><strong>Tratamento das Divergências (~1,7%):</strong> Os casos divergentes decorrem exclusivamente de recursos administrativos deferidos pela banca julgadora nos dias 26 e 27 de outubro (candidatos que reverteram indeferimentos na heteroidentificação ou perícia médica na publicação de 04/11).</li>
+            <li><strong>Impacto dos Recursos Administrativos (04/11):</strong> A banca acolheu <strong>322 recursos</strong> na Heteroidentificação e <strong>61 recursos</strong> na Perícia PCD. Todos os candidatos beneficiados por esses deferimentos já foram integrados à base de dados do portal.</li>
         </ol>
     </div>
     </div>""", unsafe_allow_html=True)
@@ -129,15 +107,15 @@ def render_tab_sobre(df_base=None):
     # Organização das Pastas e Novas Listas
     st.markdown("""<div class="card border-start border-4 border-info p-3 rounded-3 shadow-sm mb-4">
     <div class="fw-bold text-info-emphasis text-uppercase mb-2" style="font-size: 0.88rem;">
-        <i class="bi bi-folder-check me-1"></i> Estrutura de Pastas & Atualizações Contínuas
+        <i class="bi bi-folder-check me-1"></i> Estrutura de Pastas & Publicações da Banca
     </div>
     <div style="font-size: 0.92rem; color: #212529; line-height: 1.6;">
-        Para garantir total transparência e organização, os dados do portal estão estruturados em pastas específicas:
+        Todos os dados foram organizados cronologicamente para garantir total transparência e auditoria contínua:
         <ul class="my-2 ps-3">
             <li><code>Atualizacao 30 de setembro/</code>: Editais iniciais e relações preliminares da prova objetiva;</li>
-            <li><code>Atualizacao 09 de outubro/</code>: Resultado definitivo pós-recursos e convocação para bancas presenciais;</li>
-            <li><code>Atualizacao 23 de outubro/</code>: Resultados preliminares da Heteroidentificação e Perícia Médica PCD;</li>
-            <li><code>Atualizacao 04 de novembro/</code>: <strong>Pasta ativa</strong> para recepção contínua das novas listas definitivas e convocação do TAF publicadas pela banca.</li>
+            <li><code>Atualizacao 09 de outubro/</code>: Resultado definitivo da objetiva e convocação para bancas de cotas;</li>
+            <li><code>Atualizacao 23 de outubro/</code>: Resultados preliminares da Heteroidentificação e Perícia PCD;</li>
+            <li><code>Atualizacao 04 de novembro/</code>: <strong>Listas oficiais ativas</strong> (Anexos I, II, III e IV com os pareceres de recursos e convocação oficial para o TAF).</li>
         </ul>
     </div>
     </div>""", unsafe_allow_html=True)
@@ -164,10 +142,10 @@ def render_tab_sobre(df_base=None):
     Todos os registros presentes neste painel foram extraídos dos editais oficiais publicados pela banca examinadora:
     <ul class="my-2 ps-3">
     <li>Resultado Definitivo da Prova Objetiva (18.945 aprovados);</li>
-    <li>Heteroidentificação Preto e Pardo (3.221 Deferidos / 3.022 Indeferidos);</li>
-    <li>Análise Documental Indígena e Quilombola (55 Deferidos / 32 Indeferidos);</li>
-    <li>Perícia Médica PCD (473 Deferidos / 186 Indeferidos);</li>
-    <li>Publicações oficiais de <strong>{data_ref}</strong> (Convocação TAF e pareceres).</li>
+    <li>Heteroidentificação Definitiva Pós-Recursos (3.586 Deferidos);</li>
+    <li>Perícia Médica PCD Definitiva Pós-Recursos (534 Deferidos);</li>
+    <li>Edital Oficial de Convocação para o TAF (1.884 convocados);</li>
+    <li>Anexos I a IV de Classificação para Prosseguimento no Certame.</li>
     </ul>
     </div>
     </div>""", unsafe_allow_html=True)

@@ -1,5 +1,6 @@
 """
 Aba 3: As Listas Oficiais e Resultados das Bancas de Cotas (Downloads Excel).
+Atualizado com as relações oficiais de 04 de novembro de 2026 (Convocação TAF).
 """
 
 import pandas as pd
@@ -10,73 +11,82 @@ from src.data_loader import normalizar_texto, carregar_bytes_excel
 
 def render_tab_listas(df_base):
     """Renderiza a aba de listas oficiais definitivas e downloads das relações."""
-    st.subheader("📋 Listas Oficiais Definitivas e Resultados das Bancas de Cotas (23/10)")
+    st.subheader("📋 Listas Oficiais Definitivas da Banca • Convocação para o TAF (04/11/2026)")
     st.write("""
-    Acesse, filtre e faça o download de cada lista em formato Excel (.xlsx), incluindo as relações preliminares publicadas em **23 de outubro de 2026**:
+    Acesse, filtre e faça o download de cada lista oficial em formato Excel (.xlsx), incluindo as relações homologadas publicadas em **04 de novembro de 2026**:
     """)
 
     tipo_lista = st.radio(
         "Selecione a Lista que deseja visualizar e baixar:",
         [
-            "🧑🏿 1. Resultado Preliminar Heteroidentificação & Análise Doc (6.309 candidatos - 3.264 Deferidos / 3.045 Indeferidos)",
-            "♿ 2. Resultado Preliminar Perícia Médica PCD (659 candidatos - 473 Deferidos / 186 Indeferidos)",
-            "📈 3. Nova Lista Reclassificada da Cota Étnica (3.264 cotistas confirmados)",
-            "📈 4. Nova Lista Reclassificada da Cota PCD (473 PCDs confirmados)",
-            "🌐 5. Lista Geral Completa com Situação das Bancas (18.945 candidatos)",
-            f"🏛️ 6. Lista Exclusiva de Não Cotistas (Ampla Concorrência Pura - {TOTAL_AMPLA_FMT} candidatos)"
+            "🏃 1. Relação Oficial de Convocados para o TAF (1.884 candidatos - Anexos I e IV)",
+            "🧑🏿 2. Resultado Definitivo Heteroidentificação Pós-Recursos (3.586 Deferidos - Anexo I e II)",
+            "♿ 3. Resultado Definitivo Perícia Médica PCD Pós-Recursos (534 Deferidos - Anexo Único)",
+            "🏛️ 4. Classificação Oficial para Prosseguimento - Ampla Concorrência (1.074 convocados - Anexo I)",
+            "📈 5. Classificação Oficial para Prosseguimento - Cota Étnico-Racial (276 convocados - Anexo II)",
+            "🌐 6. Classificação Oficial para Prosseguimento - Cota PCD (534 convocados - Anexo III)",
+            "📋 7. Lista Geral Completa com Situação Oficial Homologada (18.945 candidatos)"
         ],
         index=0
     )
 
     st.write("---")
 
-    if "1. Resultado Preliminar Heteroidentificação" in tipo_lista:
+    if "1. Relação Oficial de Convocados para o TAF" in tipo_lista:
+        df_view = df_base[df_base['Convocado_TAF_Oficial']].sort_values(by='Posicao_Convocacao_TAF').copy()
+        pos_col = 'Posicao_Convocacao_TAF'
+        nome_arquivo_excel = "ANEXO IV - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME.xlsx"
+        titulo_lista = "Relação Oficial dos Candidatos Convocados para o Teste de Aptidão Física (TAF)"
+        corte_taf_info = "1.884 Convocados (1.074 Ampla | 276 Étnico | 534 PCD)"
+        cols_tabela = ['Posicao_Convocacao_TAF', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Modalidade_Convocacao_TAF', 'Status_Oficial_TAF']
+
+    elif "2. Resultado Definitivo Heteroidentificação" in tipo_lista:
         df_view = df_base[df_base['Cota_Etnico_Racial']].copy()
-        pos_col = 'Pos_Lista_Etnico'
-        nome_arquivo_excel = "LISTA_PRELIMINAR_HETEROIDENTIFICACAO_23_OUTUBRO.xlsx"
-        titulo_lista = "Resultado Preliminar da Heteroidentificação & Análise Documental (23 de Outubro de 2026)"
-        corte_taf_info = "3.264 Deferidos (51.7%) | 3.045 Indeferidos (48.3%)"
-        cols_tabela = ['Pos_Lista_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Resultado_Hetero', 'Nova_Pos_Lista_Etnico', 'Nota Objetiva', 'Previsao_TAF_Preliminar']
+        pos_col = 'Nova_Pos_Lista_Etnico_Definitivo'
+        nome_arquivo_excel = "ANEXO I - EDITAL DE RESULTADO DA HETEROIDENTIFICAÇÃO E ANÁLISE DOCUMENTAL PÓS-RECURSOS – PPP.xlsx"
+        titulo_lista = "Resultado Definitivo da Heteroidentificação & Análise Documental Pós-Recursos (04/11)"
+        corte_taf_info = "3.586 Deferidos (+322 recursos providos) | 2.723 Indeferidos"
+        cols_tabela = ['Nova_Pos_Lista_Etnico_Definitivo', 'Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Resultado_Hetero_Definitivo', 'Recurso_Hetero_Deferido', 'Nota Objetiva', 'Convocado_TAF_Oficial']
 
-    elif "2. Resultado Preliminar Perícia Médica PCD" in tipo_lista:
+    elif "3. Resultado Definitivo Perícia Médica PCD" in tipo_lista:
         df_view = df_base[df_base['Cota_PCD']].copy()
-        pos_col = 'Pos_Lista_PCD'
-        nome_arquivo_excel = "LISTA_PRELIMINAR_PERICIA_PCD_23_OUTUBRO.xlsx"
-        titulo_lista = "Resultado Preliminar da Perícia Médica PCD (23 de Outubro de 2026)"
-        corte_taf_info = "473 Deferidos (71.8%) | 186 Indeferidos (28.2%)"
-        cols_tabela = ['Pos_Lista_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Resultado_PCD', 'Nova_Pos_Lista_PCD', 'Nota Objetiva', 'Previsao_TAF_Preliminar']
+        pos_col = 'Nova_Pos_Lista_PCD_Definitivo'
+        nome_arquivo_excel = "ANEXO ÚNICO - EDITAL DE RESULTADO DA PERÍCIA MÉDICA PÓS-RECURSOS – PESSOA COM DEFICIÊNCIA.xlsx"
+        titulo_lista = "Resultado Definitivo da Perícia Médica PCD Pós-Recursos (04/11)"
+        corte_taf_info = "534 Deferidos (+61 recursos providos) | 100% convocados no TAF"
+        cols_tabela = ['Nova_Pos_Lista_PCD_Definitivo', 'Posição_Geral', 'Nome', 'Inscrição', 'Resultado_PCD_Definitivo', 'Recurso_PCD_Deferido', 'Nota Objetiva', 'Convocado_TAF_Oficial']
 
-    elif "3. Nova Lista Reclassificada da Cota Étnica" in tipo_lista:
-        df_view = df_base[df_base['Cota_Etnico_Apta_Preliminar']].sort_values(by='Nova_Pos_Lista_Etnico').copy()
-        pos_col = 'Nova_Pos_Lista_Etnico'
-        nome_arquivo_excel = "LISTA_RECLASSIFICADA_COTA_ETNICA_PRELIMINAR.xlsx"
-        titulo_lista = "Nova Lista Reclassificada da Reserva Étnico-Racial (Apenas Deferidos)"
-        corte_taf_info = "Linha de corte para o TAF desceu de 115 para 113 pts!"
-        cols_tabela = ['Nova_Pos_Lista_Etnico', 'Pos_Lista_Etnico', 'Ganho_Pos_Etnico', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Previsao_TAF_Preliminar', 'Previsao_Vagas_Preliminar']
+    elif "4. Classificação Oficial para Prosseguimento - Ampla" in tipo_lista:
+        df_view = df_base[df_base['Modalidade_Convocacao_TAF'] == 'Ampla Concorrência (AC)'].sort_values(by='Posicao_Convocacao_TAF').copy()
+        pos_col = 'Posicao_Convocacao_TAF'
+        nome_arquivo_excel = "ANEXO I - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME.xlsx"
+        titulo_lista = "Classificação Oficial para Prosseguimento • Ampla Concorrência (TAF)"
+        corte_taf_info = "Linha de corte cravada em 119 pts (1.074 convocados)"
+        cols_tabela = ['Posicao_Convocacao_TAF', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Status_Oficial_TAF']
 
-    elif "4. Nova Lista Reclassificada da Cota PCD" in tipo_lista:
-        df_view = df_base[df_base['Cota_PCD_Apta_Preliminar']].sort_values(by='Nova_Pos_Lista_PCD').copy()
-        pos_col = 'Nova_Pos_Lista_PCD'
-        nome_arquivo_excel = "LISTA_RECLASSIFICADA_PCD_PRELIMINAR.xlsx"
-        titulo_lista = "Nova Lista Reclassificada da Reserva PCD (Apenas Laudos Deferidos)"
-        corte_taf_info = "Todos os 473 PCDs deferidos vão para o TAF (Item 13.1.2)"
-        cols_tabela = ['Nova_Pos_Lista_PCD', 'Pos_Lista_PCD', 'Ganho_Pos_PCD', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Previsao_TAF_Preliminar', 'Previsao_Vagas_Preliminar']
+    elif "5. Classificação Oficial para Prosseguimento - Cota Étnico" in tipo_lista:
+        df_view = df_base[df_base['Modalidade_Convocacao_TAF'] == 'Cota Étnico-Racial (ÉT-R)'].sort_values(by='Posicao_Convocacao_TAF').copy()
+        pos_col = 'Posicao_Convocacao_TAF'
+        nome_arquivo_excel = "ANEXO II - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME PPPP.xlsx"
+        titulo_lista = "Classificação Oficial para Prosseguimento • Reserva de Vagas Étnico-Racial (TAF)"
+        corte_taf_info = "Linha de corte oficial em 114 pts (276 cotistas na reserva)"
+        cols_tabela = ['Posicao_Convocacao_TAF', 'Nova_Pos_Lista_Etnico_Definitivo', 'Nome', 'Inscrição', 'Nota Objetiva', 'Status_Oficial_TAF']
 
-    elif "5. Lista Geral Completa" in tipo_lista:
-        df_view = df_base.copy()
-        pos_col = 'Posição_Geral'
-        nome_arquivo_excel = "LISTA_DEFINITIVA_GERAL_PPRN.xlsx"
-        titulo_lista = "Lista Geral Completa com Situação Atualizada das Bancas"
-        corte_taf_info = "Top 960 (119 pts) + empates = 1.095 convocados na ampla"
-        cols_tabela = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Status_Cota_Preliminar', 'Nota Objetiva', 'Previsao_TAF_Preliminar', 'Previsao_Vagas_Preliminar']
+    elif "6. Classificação Oficial para Prosseguimento - Cota PCD" in tipo_lista:
+        df_view = df_base[df_base['Modalidade_Convocacao_TAF'] == 'Cota PCD (PCD)'].sort_values(by='Posicao_Convocacao_TAF').copy()
+        pos_col = 'Posicao_Convocacao_TAF'
+        nome_arquivo_excel = "ANEXO III - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME pcd.xlsx"
+        titulo_lista = "Classificação Oficial para Prosseguimento • Reserva de Vagas PCD (TAF)"
+        corte_taf_info = "100% dos laudos deferidos no TAF (534 convocados com nota >= 73 pts)"
+        cols_tabela = ['Posicao_Convocacao_TAF', 'Nova_Pos_Lista_PCD_Definitivo', 'Nome', 'Inscrição', 'Nota Objetiva', 'Status_Oficial_TAF']
 
     else:
-        df_view = df_base[df_base['Ampla_Pura']].copy().sort_values(by="Pos_Lista_Ampla_Pura", ascending=True)
-        pos_col = 'Pos_Lista_Ampla_Pura'
-        nome_arquivo_excel = "LISTA_DEFINITIVA_AMPLA_CONCORRENCIA_PURA_PPRN.xlsx"
-        titulo_lista = "Lista Exclusiva de Não Cotistas (Ampla Concorrência Pura)"
-        corte_taf_info = "783 candidatos não cotistas dentro do corte de 119 pts"
-        cols_tabela = ['Pos_Lista_Ampla_Pura', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Execução Penal', 'Legislação Específica', 'Previsao_TAF_Preliminar']
+        df_view = df_base.copy()
+        pos_col = 'Posição_Geral'
+        nome_arquivo_excel = "ANEXO I - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME.xlsx"
+        titulo_lista = "Lista Geral Completa Homologada com Situação Oficial das Bancas"
+        corte_taf_info = "18.945 aprovados • 1.884 habilitados ao TAF"
+        cols_tabela = ['Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Status_Cota_Definitivo', 'Nota Objetiva', 'Convocado_TAF_Oficial', 'Status_Oficial_TAF']
 
     st.markdown(f"### {titulo_lista}")
 
@@ -139,7 +149,7 @@ def render_tab_listas(df_base):
     dados_excel_bytes = carregar_bytes_excel(nome_arquivo_excel)
     if dados_excel_bytes is not None:
         st.download_button(
-            label="📥 Baixar Planilha Completa desta Lista em Excel (.xlsx)",
+            label="📥 Baixar Planilha Oficial desta Lista em Excel (.xlsx)",
             data=dados_excel_bytes,
             file_name=nome_arquivo_excel,
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"

@@ -155,93 +155,88 @@ def render_tab_boletim(df_base, mapa_inscricoes):
         pos_class = "pos-top" if pos_geral <= 140 else "pos-standard"
         medalha = "🥇 " if pos_geral == 1 else ("🥈 " if pos_geral == 2 else ("🥉 " if pos_geral == 3 else "🎖️ "))
 
-        # Montagem dos Cards de Resultado das Bancas de 23 de Outubro
+        # Resultados Definitivos das Bancas Pós-Recursos (04/11/2026)
+        res_hetero_def = str(candidato_selecionado.get('Resultado_Hetero_Definitivo', res_hetero))
+        res_pcd_def = str(candidato_selecionado.get('Resultado_PCD_Definitivo', res_pcd))
+        rec_hetero = bool(candidato_selecionado.get('Recurso_Hetero_Deferido', False))
+        rec_pcd = bool(candidato_selecionado.get('Recurso_PCD_Deferido', False))
+
+        # Montagem dos Cards de Resultado das Bancas Definitivas (04/11/2026)
         bloco_bancas_html = ""
 
         if is_etnico:
-            if res_hetero == 'DEFERIDO':
-                nova_pos_etn = int(candidato_selecionado['Nova_Pos_Lista_Etnico'])
+            if res_hetero_def == 'DEFERIDO':
+                nova_pos_etn = int(candidato_selecionado['Nova_Pos_Lista_Etnico_Definitivo']) if pd.notna(candidato_selecionado.get('Nova_Pos_Lista_Etnico_Definitivo')) else int(candidato_selecionado['Nova_Pos_Lista_Etnico'])
                 pos_orig_etn = int(candidato_selecionado['Pos_Lista_Etnico'])
-                ganho_etn = int(candidato_selecionado['Ganho_Pos_Etnico'])
+                rec_aviso = "🎉 <strong>RECURSO ADMINISTRATIVO DEFERIDO!</strong> A banca revisou sua documentação e homologou sua cota em 04/11/2026!<br>" if rec_hetero else ""
                 bloco_bancas_html += f"""<div class="card-resultado-deferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
     <div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
-        ✅ RESULTADO PRELIMINAR DA HETEROIDENTIFICAÇÃO / ANÁLISE DOCUMENTAL (23/10/2026)
+        ✅ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO (04/11/2026)
     </div>
-    <span class="badge-pill">DEFERIDO</span>
+    <span class="badge-pill">DEFERIDO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Sua condição na Cota Étnico-Racial foi CONFIRMADA pela comissão examinadora!
+    Sua condição na Cota Étnico-Racial foi HOMOLOGADA DEFINITIVAMENTE!
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.5; font-weight: 500;">
-    Com a homologação preliminar e os 3.045 indeferimentos de concorrentes, sua classificação na cota avançou expressivamente:<br>
-    • <strong>Posição Preliminar Pós-Banca:</strong> <span style="color: #6D28D9; font-weight: 800; font-size: 1.05rem;">{nova_pos_etn}º Lugar na Cota</span> (Posição original: {pos_orig_etn}º)<br>
-    • <strong>Avanço na Fila:</strong> <span style="color: #15803D; font-weight: 800;">+{ganho_etn} posições conquistadas!</span>
+    {rec_aviso}
+    • <strong>Posição Definitiva na Cota:</strong> <span style="color: #6D28D9; font-weight: 800; font-size: 1.05rem;">{nova_pos_etn}º Lugar na Cota</span> (Posição original: {pos_orig_etn}º)<br>
+    • <strong>Status da Concorrência:</strong> Habilitado a disputar as vagas reservadas aos candidatos pretos e pardos, indígenas e quilombolas.
 </div>
 </div>"""
             else:
                 bloco_bancas_html += f"""<div class="card-resultado-indeferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
     <div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em;">
-        ⚠️ RESULTADO PRELIMINAR DA HETEROIDENTIFICAÇÃO / ANÁLISE DOCUMENTAL (23/10/2026)
+        ⚠️ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO PÓS-RECURSOS (04/11/2026)
     </div>
-    <span class="badge-pill-amber">INDEFERIDO NA COTA</span>
+    <span class="badge-pill-amber">INDEFERIDO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Solicitação de Cota Étnico-Racial Indeferida Preliminarmente
+    Solicitação de Cota Étnico-Racial Indeferida em Definitivo
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.55; font-weight: 500;">
-    ⚖️ <strong>Regra do Edital (Art. 4º do Edital de Convocação):</strong> O indeferimento preliminar da autodeclaração <strong>NÃO ELIMINA você do concurso</strong>! Você continua concorrendo normalmente pelas vagas da <strong>Ampla Concorrência</strong>.<br>
+    ⚖️ <strong>Regra do Edital (Art. 4º do Edital de Convocação):</strong> O indeferimento da cota <strong>NÃO ELIMINA você do concurso</strong>! Você continua concorrendo normalmente pelas vagas da <strong>Ampla Concorrência</strong>.<br>
     Sua classificação geral na Ampla: <strong>{pos_geral}º Lugar Geral ({nota_total} pontos)</strong>.
-</div>
-<div class="recurso-alert-box">
-    📝 <strong>DIREITO A RECURSO ADMINISTRATIVO:</strong><br>
-    • <strong>Prazo oficial:</strong> Da 0h00 de <strong>26/10/2026</strong> até às 23h59 de <strong>27/10/2026</strong> (horário de Brasília).<br>
-    • <strong>Onde protocolar:</strong> No site oficial da banca: <a href="https://www.avalia.org.br" target="_blank" style="color: #1D4ED8; font-weight: 700; text-decoration: underline;">avalia.org.br</a>.<br>
-    • <strong>Motivo da recusa:</strong> Acesse o link <em>"Boletim de Análise de Reserva de Vagas"</em> em avalia.org.br para consultar a justificativa e fundamentar seu recurso.
 </div>
 </div>"""
 
         if is_pcd:
-            if res_pcd == 'DEFERIDO':
-                nova_pos_pcd = int(candidato_selecionado['Nova_Pos_Lista_PCD'])
+            if res_pcd_def == 'DEFERIDO':
+                nova_pos_pcd = int(candidato_selecionado['Nova_Pos_Lista_PCD_Definitivo']) if pd.notna(candidato_selecionado.get('Nova_Pos_Lista_PCD_Definitivo')) else int(candidato_selecionado['Nova_Pos_Lista_PCD'])
                 pos_orig_pcd = int(candidato_selecionado['Pos_Lista_PCD'])
-                ganho_pcd = int(candidato_selecionado['Ganho_Pos_PCD'])
+                rec_aviso_pcd = "🎉 <strong>RECURSO ADMINISTRATIVO DEFERIDO!</strong> A perícia médica acolheu seu recurso em 04/11/2026!<br>" if rec_pcd else ""
                 bloco_bancas_html += f"""<div class="card-resultado-deferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
     <div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
-        ✅ RESULTADO PRELIMINAR DA PERÍCIA MÉDICA PCD (23/10/2026)
+        ✅ RESULTADO DEFINITIVO DA PERÍCIA MÉDICA PCD (04/11/2026)
     </div>
-    <span class="badge-pill">LAUDO HOMOLOGADO</span>
+    <span class="badge-pill">LAUDO HOMOLOGADO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Laudo Médico e Condição de Pessoa com Deficiência (PCD) DEFERIDOS!
+    Laudo Médico e Condição de Pessoa com Deficiência (PCD) HOMOLOGADOS!
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.5; font-weight: 500;">
-    A perícia médica multidisciplinar homologou sua documentação com sucesso:<br>
-    • <strong>Posição Preliminar Pós-Perícia:</strong> <span style="color: #15803D; font-weight: 800; font-size: 1.05rem;">{nova_pos_pcd}º Lugar PCD</span> (Posição original: {pos_orig_pcd}º)<br>
-    • <strong>Avanço na Fila PCD:</strong> <span style="color: #15803D; font-weight: 800;">+{ganho_pcd} posições conquistadas!</span>
+    {rec_aviso_pcd}
+    • <strong>Posição Definitiva PCD:</strong> <span style="color: #15803D; font-weight: 800; font-size: 1.05rem;">{nova_pos_pcd}º Lugar PCD</span> (Posição original: {pos_orig_pcd}º)<br>
+    • <strong>Convocação TAF:</strong> Todos os 534 candidatos PCD deferidos foram convocados para o TAF (Item 13.1.2 do edital).
 </div>
 </div>"""
             else:
                 bloco_bancas_html += f"""<div class="card-resultado-indeferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
     <div style="font-size: 0.82rem; font-weight: 800; color: #B45309; text-transform: uppercase; letter-spacing: 0.04em;">
-        ⚠️ RESULTADO PRELIMINAR DA PERÍCIA MÉDICA PCD (23/10/2026)
+        ⚠️ RESULTADO DEFINITIVO DA PERÍCIA MÉDICA PCD PÓS-RECURSOS (04/11/2026)
     </div>
-    <span class="badge-pill-amber">LAUDO INDEFERIDO NA PERÍCIA</span>
+    <span class="badge-pill-amber">LAUDO INDEFERIDO DEFINITIVO</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-    Solicitação de Cota PCD Indeferida Preliminarmente
+    Solicitação de Cota PCD Indeferida em Definitivo
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.55; font-weight: 500;">
     ⚖️ <strong>Regra do Edital (Art. 3º do Edital de Perícia Médica PCD):</strong> O não acolhimento do laudo na perícia médica <strong>NÃO ELIMINA você do concurso</strong>! Você continua concorrendo pelas vagas da <strong>Ampla Concorrência</strong>.<br>
     Sua classificação geral na Ampla: <strong>{pos_geral}º Lugar Geral ({nota_total} pontos)</strong>.
-</div>
-<div class="recurso-alert-box">
-    📝 <strong>DIREITO A RECURSO CONTRA A PERÍCIA MÉDICA:</strong><br>
-    • <strong>Período recursal:</strong> Da 0h00 de <strong>26/10/2026</strong> até às 23h59 de <strong>27/10/2026</strong> (horário de Brasília).<br>
-    • <strong>Como consultar o laudo/motivo:</strong> Acesse o <em>"Boletim de Análise de Reserva de Vagas"</em> em <a href="https://www.avalia.org.br" target="_blank" style="color: #1D4ED8; font-weight: 700; text-decoration: underline;">avalia.org.br</a>.
 </div>
 </div>"""
 
@@ -251,36 +246,40 @@ def render_tab_boletim(df_base, mapa_inscricoes):
     🏛️ CANDIDATO NÃO COTISTA (AMPLA CONCORRÊNCIA PURA)
 </div>
 <div style="font-size: 1.05rem; font-weight: 800; color: #0F172A;">
-    ⚪ As bancas de cotas e resultados de 23 de outubro não se aplicam a você
+    ⚪ Concorrência Exclusiva na Ampla Concorrência
 </div>
 <div style="font-size: 0.88rem; color: #334155; margin-top: 6px; line-height: 1.5; font-weight: 500;">
-    Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre diretamente no cômputo universal de vagas e sua próxima etapa avaliativa do cronograma é a convocação para o TAF (conforme linha de corte).
+    Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre diretamente no cômputo universal de vagas e foi submetida à linha de corte oficial de 119 pontos para o TAF.
 </div>
 </div>"""
 
-        # Previsão Oficial do TAF pós-bancas
-        status_taf_prel = str(candidato_selecionado.get('Previsao_TAF_Preliminar', ''))
-        is_convocado_taf = bool(candidato_selecionado.get('Convocado_TAF_Preliminar', False))
-        taf_class = "card-previsao-ok" if is_convocado_taf else "card-previsao"
-        taf_badge_color = "#15803D" if is_convocado_taf else "#475569"
-        taf_badge_text = "🟢 SITUAÇÃO TAF: DENTRO DO LIMITE DE CONVOCAÇÃO!" if is_convocado_taf else "⚪ SITUAÇÃO TAF: FORA DO CORTE PRELIMINAR"
+        # Convocação Oficial para o TAF (04/11/2026)
+        is_convocado_taf_oficial = bool(candidato_selecionado.get('Convocado_TAF_Oficial', False))
+        status_taf_oficial = str(candidato_selecionado.get('Status_Oficial_TAF', candidato_selecionado.get('Previsao_TAF_Preliminar', '')))
+        mod_convocacao = str(candidato_selecionado.get('Modalidade_Convocacao_TAF', 'Não Convocado'))
+        pos_taf_val = candidato_selecionado.get('Posicao_Convocacao_TAF')
+        pos_taf_txt = f" • Classificação Oficial TAF: <strong>{int(pos_taf_val)}º Lugar</strong> (Anexo IV)" if pd.notna(pos_taf_val) else ""
+
+        taf_class = "card-previsao-ok" if is_convocado_taf_oficial else "card-previsao"
+        taf_badge_color = "#15803D" if is_convocado_taf_oficial else "#475569"
+        taf_badge_text = "🟢 CONVOCAÇÃO OFICIAL TAF: CONVOCADO PELA BANCA!" if is_convocado_taf_oficial else "⚪ SITUAÇÃO TAF: NÃO CONVOCADO OFICIALMENTE"
 
         taf_html = f"""<div class="{taf_class}">
 <div style="font-size: 0.82rem; font-weight: 800; color: {taf_badge_color}; text-transform: uppercase; margin-bottom: 6px;">
     🎯 {taf_badge_text}
 </div>
 <div style="font-size: 1.05rem; font-weight: 800; color: #0F172A; margin-bottom: 4px;">
-    {status_taf_prel}
+    {status_taf_oficial}
 </div>
 <div style="font-size: 0.88rem; color: #475569; font-weight: 600;">
-    🏆 Situação de Vagas: <strong>{candidato_selecionado['Previsao_Vagas_Preliminar']}</strong>
+    📋 Modalidade de Convocação: <strong>{mod_convocacao}</strong>{pos_taf_txt}
 </div>
 </div>"""
 
         card_html = f"""<div class="candidate-card">
 <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
 <div>
-<span class="badge-pill"><i class="bi bi-patch-check-fill text-success me-1"></i> BOLETIM ATUALIZADO • 23 DE OUTUBRO DE 2026</span>
+<span class="badge-pill"><i class="bi bi-patch-check-fill text-success me-1"></i> BOLETIM OFICIAL HOMOLOGADO • 04 DE NOVEMBRO DE 2026</span>
 <h2 class="hero-title mt-1 mb-2" style="font-size: 1.85rem;">{nome}</h2>
 <p class="text-secondary mb-2" style="font-size: 0.95rem; font-weight: 500;">
 <i class="bi bi-person-vcard text-primary me-1"></i> Inscrição: <strong class="text-dark">{inscricao}</strong> &nbsp;•&nbsp; <i class="bi bi-shield-lock text-primary me-1"></i> Cargo: <strong class="text-dark">401 - Policial Penal RN</strong>
