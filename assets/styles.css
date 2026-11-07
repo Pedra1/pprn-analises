@@ -655,3 +655,236 @@ div[data-testid="stDialog"] div[role="dialog"] {
         padding: 1rem !important;
     }
 }
+
+/* ==============================================================================
+   4.3: MODO DE IMPRESSÃO LIMPA (SALVAR BOLETIM EM PDF)
+   ============================================================================== */
+
+/* Elementos visíveis exclusivamente durante a impressão / PDF */
+.print-only {
+    display: none !important;
+}
+
+/* Barra de ação de impressão na interface de tela */
+.print-actions-bar {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    padding: 0.65rem 1rem;
+    margin-bottom: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.btn-print-boletim {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    color: #ffffff !important;
+    border: 1px solid #0a58ca;
+    padding: 0.45rem 1rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(13, 110, 253, 0.25);
+    white-space: nowrap;
+}
+
+.btn-print-boletim:hover {
+    background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
+    box-shadow: 0 3px 8px rgba(13, 110, 253, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-print-boletim:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(13, 110, 253, 0.2);
+}
+
+/* ------------------------------------------------------------------------------
+   Regras Oficiais de Impressão (@media print)
+   Oculta controles interativos e gera um PDF limpo e formatado do Boletim Oficial
+   ------------------------------------------------------------------------------ */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 10mm 12mm 10mm 12mm;
+    }
+
+    /* 1. Preservação Fidedigna de Cores, Badges e Fundos */
+    *, *:before, *:after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+
+    /* 2. Ocultação de Streamlit Chrome, Menus, Cabeçalhos Gerais e Widgets Interativos */
+    header[data-testid="stHeader"],
+    [data-testid="stHeader"],
+    [data-testid="stToolbar"],
+    [data-testid="stSidebar"],
+    [data-testid="stDecoration"],
+    [data-testid="stStatusWidget"],
+    .stDeployButton,
+    #MainMenu,
+    footer,
+    .footer-container,
+    .hero-container,
+    .header-stat-card,
+    [data-testid="stHorizontalBlock"]:has(.header-stat-card),
+    [data-testid="column"]:has(.header-stat-card),
+    .stTabs [data-baseweb="tab-list"],
+    .stTabs [role="tablist"],
+    .no-print,
+    .print-actions-bar,
+    .btn-print-boletim,
+    .boletim-search-header,
+    .empty-search-card,
+    [data-testid="stTextInput"],
+    [data-testid="stSelectbox"],
+    [data-testid="stButton"],
+    [data-testid="stAlert"],
+    .stAlert,
+    [data-testid="stHorizontalBlock"]:has([data-testid="stTextInput"]),
+    [data-testid="stHorizontalBlock"]:has([data-testid="stSelectbox"]),
+    [data-testid="column"]:has([data-testid="stTextInput"]),
+    [data-testid="column"]:has([data-testid="stButton"]),
+    [data-testid="column"]:has([data-testid="stSelectbox"]) {
+        display: none !important;
+    }
+
+    /* 3. Ocultar Expanders fechados ou de ferramentas interativas */
+    [data-testid="stExpander"]:not([open]),
+    details:not([open]),
+    [data-testid="stExpander"]:has([data-testid="stTextInput"]) {
+        display: none !important;
+    }
+
+    /* 4. Exibir elementos exclusivos de impressão */
+    .print-only {
+        display: block !important;
+    }
+
+    /* 5. Ajustes de Layout e Margens do Papel */
+    html, body, .stApp {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        font-size: 10.5pt !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .main,
+    .main .block-container,
+    [data-testid="stMainBlockContainer"],
+    [data-testid="stAppViewContainer"] {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    /* 6. Prevenção de quebra de página inadequada no meio de blocos */
+    .candidate-card,
+    .stat-card,
+    .card-resultado-deferido,
+    .card-resultado-indeferido,
+    .card-resultado-ampla,
+    .card-previsao-ok,
+    .card-previsao,
+    [data-testid="stDataFrame"],
+    .stDataFrame,
+    table,
+    tr,
+    .print-header,
+    .print-footer,
+    .js-plotly-plot,
+    .plot-container {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    /* 7. Grid de Colunas no Papel A4 */
+    [data-testid="stHorizontalBlock"] {
+        gap: 0.5rem !important;
+    }
+
+    [data-testid="column"] {
+        min-width: 0 !important;
+        flex: 1 1 0% !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 8. Estilização dos Cards no Papel */
+    .candidate-card {
+        padding: 0.85rem 1rem !important;
+        margin-bottom: 0.65rem !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+    }
+
+    .stat-card {
+        padding: 0.55rem 0.7rem !important;
+        margin-bottom: 0.5rem !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.25rem !important;
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.75rem !important;
+    }
+
+    .stat-card .stat-sub {
+        font-size: 0.7rem !important;
+    }
+
+    .candidate-card .hero-title {
+        font-size: 1.45rem !important;
+        margin-bottom: 0.25rem !important;
+    }
+
+    /* 9. Expander aberto (Projeções TAF) formatado para impressão */
+    [data-testid="stExpander"][open] {
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        margin-bottom: 0.65rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    [data-testid="stExpander"][open] > summary {
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        font-size: 0.95rem !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        padding-bottom: 4px !important;
+        margin-bottom: 6px !important;
+        list-style: none !important;
+    }
+
+    [data-testid="stExpander"][open] > summary::-webkit-details-marker {
+        display: none !important;
+    }
+
+    /* 10. Links com contraste legível em preto/azul */
+    a {
+        color: #0d6efd !important;
+        text-decoration: none !important;
+    }
+}
