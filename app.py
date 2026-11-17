@@ -10,7 +10,7 @@ import streamlit as st
 
 # 1. Configuração da Página
 st.set_page_config(
-    page_title="PPRN - Convocação Oficial do TAF e Bancas Definitivas (04/11)",
+    page_title="PPRN - Republicação do TAF (Nova Data: 19 e 20/12) & Retificação do Edital",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="collapsed",

@@ -17,7 +17,7 @@ def render_footer(metricas_acuracia=None):
 
     if status == "oficial_calculado":
         badge_html = f"""<span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 rounded-pill" style="font-size: 0.85rem;">
-            <i class="bi bi-check-circle-fill me-1"></i> Acurácia Oficial 04/11: <strong>{acuracia_fmt}</strong> (18.769 acertos em 18.945 candidatos)
+            <i class="bi bi-check-circle-fill me-1"></i> Acurácia Oficial: <strong>{acuracia_fmt}</strong> (18.769 acertos em 18.945 candidatos • Confirmada em 17/11)
         </span>"""
     else:
         badge_html = """<span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1 rounded-pill" style="font-size: 0.85rem;">

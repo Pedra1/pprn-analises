@@ -11,15 +11,59 @@ from src.data_loader import normalizar_texto, carregar_bytes_excel
 
 def render_tab_listas(df_base):
     """Renderiza a aba de listas oficiais definitivas e downloads das relações."""
-    st.subheader("📋 Listas Oficiais Definitivas da Banca • Convocação para o TAF (04/11/2026)")
+    st.subheader("📋 Listas e Editais Oficiais da Banca • Convocação para o TAF (Atualizado em 17/11/2026)")
+
+    # Publicações Oficiais Mais Recentes (17 de Novembro de 2026)
+    st.markdown("""<div class="card bg-primary-subtle border-start border-4 border-primary p-3 rounded-3 shadow-sm mb-3">
+    <div class="d-flex align-items-center gap-2 mb-1 fw-bold text-primary text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
+        <i class="bi bi-file-earmark-pdf-fill fs-5"></i> PUBLICAÇÕES OFICIAIS MAIS RECENTES (17 DE NOVEMBRO DE 2026)
+    </div>
+    <div style="font-size: 0.92rem; color: #084298; line-height: 1.55;">
+        A banca <strong>Instituto Avalia</strong> e a <strong>SEAD/SEAP</strong> republicaram a convocação do TAF (reagendado oficialmente para <strong>19 e 20 de dezembro de 2026</strong>) e o <strong>Primeiro Termo de Retificação ao Edital de Abertura</strong> (novo cronograma e regras de atestado). Baixe os documentos oficiais em PDF:
+    </div>
+    </div>""", unsafe_allow_html=True)
+
+    col_pdf1, col_pdf2, col_pdf3 = st.columns(3)
+    with col_pdf1:
+        bytes_retif = carregar_bytes_excel("PRIMEIRO TERMO DE RETIFICAÇÃO AO EDITAL DE ABERTURA.pdf")
+        if bytes_retif:
+            st.download_button(
+                "📄 1º Termo de Retificação (PDF)",
+                data=bytes_retif,
+                file_name="PRIMEIRO TERMO DE RETIFICAÇÃO AO EDITAL DE ABERTURA.pdf",
+                mime="application/pdf",
+                width="stretch"
+            )
+    with col_pdf2:
+        bytes_repub = carregar_bytes_excel("REPUBLICAÇÃO - EDITAL DE CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf")
+        if bytes_repub:
+            st.download_button(
+                "🏃 Republicação Convocação TAF (PDF)",
+                data=bytes_repub,
+                file_name="REPUBLICAÇÃO - EDITAL DE CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf",
+                mime="application/pdf",
+                width="stretch"
+            )
+    with col_pdf3:
+        bytes_anexo1 = carregar_bytes_excel("ANEXO I - EDITAL DE CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf")
+        if bytes_anexo1:
+            st.download_button(
+                "📋 Anexo I - 1.884 Convocados (PDF)",
+                data=bytes_anexo1,
+                file_name="ANEXO I - EDITAL DE CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf",
+                mime="application/pdf",
+                width="stretch"
+            )
+
+    st.write("")
     st.write("""
-    Acesse, filtre e faça o download de cada lista oficial em formato Excel (.xlsx), incluindo as relações homologadas publicadas em **04 de novembro de 2026**:
+    Acesse, filtre e faça o download das planilhas detalhadas em formato Excel (.xlsx):
     """)
 
     tipo_lista = st.radio(
         "Selecione a Lista que deseja visualizar e baixar:",
         [
-            "🏃 1. Relação Oficial de Convocados para o TAF (1.884 candidatos - Anexos I e IV)",
+            "🏃 1. Relação Oficial de Convocados para o TAF (1.884 candidatos - Confirmada em 17/11/2026)",
             "🧑🏿 2. Resultado Definitivo Heteroidentificação Pós-Recursos (3.586 Deferidos - Anexo I e II)",
             "♿ 3. Resultado Definitivo Perícia Médica PCD Pós-Recursos (534 Deferidos - Anexo Único)",
             "🏛️ 4. Classificação Oficial para Prosseguimento - Ampla Concorrência (1.074 convocados - Anexo I)",

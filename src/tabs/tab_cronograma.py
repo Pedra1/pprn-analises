@@ -22,7 +22,7 @@ def parse_periodo(texto):
     if m1 and 'até' in texto:
         d1, m1_, d2, m2_, y = m1.groups()
         return datetime.date(int(y), int(m1_), int(d1)), datetime.date(int(y), int(m2_), int(d2))
-    m2 = re.search(r'(\d{2})/(\d{2})\s*(?:a|e)\s*(\d{2})/(\d{2})/(\d{4})', texto)
+    m2 = re.search(r'(\d{2})/(\d{2})\s*(?:a|e|à)\s*(\d{2})/(\d{2})/(\d{4})', texto)
     if m2:
         d1, m1_, d2, m2_, y = m2.groups()
         return datetime.date(int(y), int(m1_), int(d1)), datetime.date(int(y), int(m2_), int(d2))
@@ -144,26 +144,31 @@ CRONOGRAMA_OFICIAL_DADOS = [
     {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "Divulgação do resultado preliminar da heteroidentificação e análise documental", "Período / Data": "23/10/2026"},
     {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "Período para recurso contra o resultado provisório da heteroidentificação e análise documental", "Período / Data": "26/10 a 27/10/2026"},
     {"Etapa / Fase": "PROCEDIMENTO DE HETEROIDENTIFICAÇÃO", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da heteroidentificação e análise documental e resultado definitivo da heteroidentificação", "Período / Data": "04/11/2026"},
-    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Convocação para o teste de aptidão física", "Período / Data": "04/11/2026"},
-    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "APLICAÇÃO DO TESTE DE APTIDÃO FÍSICA", "Período / Data": "14/11 e 15/11/2026"},
-    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do resultado preliminar do teste de aptidão física", "Período / Data": "23/11/2026"},
-    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Período para recurso contra o resultado provisório do teste de aptidão física", "Período / Data": "24/11 a 25/11/2026"},
-    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado do teste de aptidão física e resultado definitivo", "Período / Data": "03/12/2026"},
-    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Convocação para a avaliação psicológica", "Período / Data": "03/12/2026"},
-    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "APLICAÇÃO DA AVALIAÇÃO PSICOLÓGICA", "Período / Data": "20/12/2026"},
-    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Divulgação do resultado preliminar da avaliação psicológica", "Período / Data": "05/01/2027"},
-    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Entrevista devolutiva", "Período / Data": "10/01/2027"},
-    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Período para recurso contra o resultado preliminar da avaliação psicológica", "Período / Data": "11/01 a 12/01/2027"},
-    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da avaliação psicológica e resultado definitivo", "Período / Data": "19/01/2027"},
-    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Convocação para a entrega do exame toxicológico", "Período / Data": "03/12/2026"},
-    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "ENTREGA DO EXAME TOXICOLÓGICO (no mesmo dia da avaliação psicológica)", "Período / Data": "20/12/2026"},
-    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Divulgação do resultado preliminar do exame toxicológico", "Período / Data": "19/01/2027"},
-    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Período para recurso contra o resultado provisório do exame toxicológico", "Período / Data": "20/01 a 21/01/2027"},
-    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado do exame toxicológico e resultado definitivo", "Período / Data": "28/01/2027"},
-    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Convocação para a investigação social", "Período / Data": "28/01/2027"},
-    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "PREENCHIMENTO DO FORMULÁRIO DE INFORMAÇÕES PARA INVESTIGAÇÃO SOCIAL", "Período / Data": "28/01 a 17/02/2027"},
-    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Divulgação do resultado preliminar da investigação social", "Período / Data": "26/02/2027"},
-    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Período para recurso contra o resultado provisório da investigação social", "Período / Data": "01/03 a 02/03/2027"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Convocação para o teste de aptidão física (Republicação Oficial)", "Período / Data": "17/11/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Período para solicitação de adaptação para o teste de aptidão física (somente candidatos PcD)", "Período / Data": "17/11 à 24/11/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do resultado preliminar da solicitação de adaptação", "Período / Data": "04/12/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Período para recurso contra o resultado preliminar da solicitação de adaptação", "Período / Data": "07/12 à 08/12/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do resultado definitivo da solicitação de adaptação para o TAF e do Cartão de Informação do Candidato para o TAF", "Período / Data": "14/12/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Prazo limite para solicitação de remarcação de TAF por candidata gestante ou puerperal", "Período / Data": "18/12/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "APLICAÇÃO DO TESTE DE APTIDÃO FÍSICA (REAGENDADO)", "Período / Data": "19/12 e 20/12/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do resultado preliminar do teste de aptidão física", "Período / Data": "29/12/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Período para recurso contra o resultado provisório do teste de aptidão física", "Período / Data": "30/12 à 31/12/2026"},
+    {"Etapa / Fase": "DO TESTE DE APTIDÃO FÍSICA", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado do teste de aptidão física e resultado definitivo", "Período / Data": "08/01/2027"},
+    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Convocação para a avaliação psicológica", "Período / Data": "08/01/2027"},
+    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "APLICAÇÃO DA AVALIAÇÃO PSICOLÓGICA", "Período / Data": "17/01/2027"},
+    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Divulgação do resultado preliminar da avaliação psicológica", "Período / Data": "03/02/2027"},
+    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Entrevista devolutiva da avaliação psicológica", "Período / Data": "14/02/2027"},
+    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Período para recurso contra o resultado preliminar da avaliação psicológica", "Período / Data": "15/02 à 16/02/2027"},
+    {"Etapa / Fase": "DA AVALIAÇÃO PSICOLÓGICA", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da avaliação psicológica e resultado definitivo", "Período / Data": "23/02/2027"},
+    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Convocação para a entrega do exame toxicológico", "Período / Data": "08/01/2027"},
+    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "ENTREGA DO EXAME TOXICOLÓGICO (no mesmo dia de realização da avaliação psicológica)", "Período / Data": "17/01/2027"},
+    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Divulgação do resultado preliminar do exame toxicológico", "Período / Data": "23/02/2027"},
+    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Período para recurso contra o resultado provisório do exame toxicológico", "Período / Data": "24/02 à 25/02/2027"},
+    {"Etapa / Fase": "DO EXAME TOXICOLÓGICO", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado do exame toxicológico e resultado definitivo", "Período / Data": "02/03/2027"},
+    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Convocação para a investigação social", "Período / Data": "08/01/2027"},
+    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "PREENCHIMENTO DO FORMULÁRIO DE INFORMAÇÕES PARA INVESTIGAÇÃO SOCIAL", "Período / Data": "08/01 à 28/01/2027"},
+    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Divulgação do resultado preliminar da investigação social", "Período / Data": "02/03/2027"},
+    {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Período para recurso contra o resultado provisório da investigação social", "Período / Data": "03/03 à 04/03/2027"},
     {"Etapa / Fase": "DA INVESTIGAÇÃO SOCIAL", "Evento / Atividade": "Divulgação do parecer do recurso contra o resultado da investigação social e resultado definitivo", "Período / Data": "10/03/2027"},
     {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "Convocação dos candidatos habilitados para matrícula no curso de formação", "Período / Data": "10/03/2027"},
     {"Etapa / Fase": "DO CURSO DE FORMAÇÃO", "Evento / Atividade": "PERÍODO PARA MATRÍCULA", "Período / Data": "10/03 a 12/03/2027"},
@@ -193,7 +198,7 @@ def render_tab_cronograma():
     status_fase = info_crono["status_fase"]
 
     st.subheader("📅 Cronograma Oficial de Execução do Concurso")
-    st.caption("Tabela 2.1 – Policial Penal • Anexo III do Edital nº 002/2026 (Governo do Estado do RN • SEAD/SEAP)")
+    st.caption("Tabela 2.1 – Policial Penal • Anexo III do Edital nº 002/2026 (Retificado pelo 1º Termo de Retificação em 17/11/2026 • SEAD/SEAP)")
 
     # Destaque em Tempo Real da Fase Atual
     if prox and dias_prox is not None:
@@ -269,12 +274,15 @@ O concurso encontra-se oficialmente na etapa de <strong>{fase_ativa}</strong>. O
     if "TESTE DE APTIDÃO FÍSICA" in fase_ativa.upper():
         st.markdown("""<div class="card bg-warning-subtle border-start border-4 border-warning p-3 rounded-3 shadow-sm mb-3">
 <div class="d-flex align-items-center gap-2 mb-1 fw-bold text-warning-emphasis text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
-<i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i> ORIENTAÇÕES ESSENCIAIS PARA O TAF (14 E 15 DE NOVEMBRO DE 2026)
+<i class="bi bi-exclamation-triangle-fill text-warning fs-5"></i> ORIENTAÇÕES ESSENCIAIS PARA O TAF (19 E 20 DE DEZEMBRO DE 2026 - REAGENDADO)
 </div>
 <div style="font-size: 0.9rem; color: #212529; line-height: 1.55;">
-<div>• <strong>Atestado Médico Obrigatório:</strong> Deve conter expressamente a autorização para submissão a esforços físicos intensos, emitido com antecedência máxima de 30 dias.</div>
-<div style="margin-top: 3px;">• <strong>Documento de Identificação:</strong> Apresentar documento oficial original com foto no dia e turno designados no Anexo IV.</div>
-<div style="margin-top: 3px;">• <strong>Traje Adequado:</strong> Camiseta, calção ou bermuda apropriada para prática esportiva e calçado esportivo (tênis).</div>
+<div>• <strong>Nova Data de Realização:</strong> O TAF foi oficialmente reagendado para os dias <strong>19 e 20 de dezembro de 2026</strong>.</div>
+<div style="margin-top: 3px;">• <strong>Cartão de Informação (Local e Horário):</strong> Disponível para consulta individual a partir das <strong>15h00 do dia 14/12/2026</strong> no site da banca (www.avalia.org.br).</div>
+<div style="margin-top: 3px;">• <strong>Atestado Médico Retificado (Item 14.4 "c"):</strong> Serão aceitos atestados médicos emitidos especificamente para este fim a partir de <strong>15 de outubro de 2026</strong> (quem já havia emitido atestado para novembro NÃO precisará emitir outro!).</div>
+<div style="margin-top: 3px;">• <strong>Adaptação para Candidatos PcD:</strong> Novo período para solicitar adaptação pelo link específico no site da banca até <strong>24/11/2026</strong>.</div>
+<div style="margin-top: 3px;">• <strong>Candidatas Gestantes ou Puerperais:</strong> Solicitação de remarcação via e-mail (candidato@avalia.org.br) até às 23h59min do dia <strong>18/12/2026</strong>.</div>
+<div style="margin-top: 3px;">• <strong>Traje e Documento:</strong> Camiseta, calção ou bermuda apropriada para prática esportiva, tênis adequado e documento oficial físico original com foto.</div>
 </div>
 </div>""", unsafe_allow_html=True)
 

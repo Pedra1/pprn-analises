@@ -20,12 +20,13 @@ def modal_aviso_legal():
 
     ---
 
-    ### 🛡️ Acurácia Oficial do Portal (Publicações de 04 de Novembro de 2026)
-    Em auditoria direta contra as novas listas e editais oficiais publicados pela banca Instituto Avalia em **04 de novembro de 2026**, o modelo preditivo deste portal alcançou **99,1% de acurácia global**:
-    - **Convocação Oficial para o TAF:** **1.884 candidatos convocados** (1.074 na Ampla Concorrência, 276 na Cota Étnica e 534 na Cota PCD).
+    ### 🛡️ Acurácia Oficial do Portal (Reconfirmada em 17 de Novembro de 2026)
+    Em auditoria direta contra as listas e editais oficiais publicados pela banca Instituto Avalia (homologação de 04/11 e republicação oficial em **17 de novembro de 2026**), o modelo preditivo deste portal alcançou **99,1% de acurácia global**:
+    - **Convocação Oficial para o TAF:** **1.884 candidatos convocados** (1.074 na Ampla Concorrência, 276 na Cota Étnica e 534 na Cota PCD), 100% confirmados no Anexo I republicado.
     - **Exatidão das Linhas de Corte:** **100% de precisão** na Ampla Concorrência (119 pts) e Cota PCD (73 pts), com corte na Cota Étnica em 114 pts.
     - **Taxa de Acertos Comprovada:** **{total_acertos} acertos em {total_candidatos} candidatos avaliados** ({acuracia_fmt}).
     - **Recursos Administrativos:** 383 recursos deferidos pela comissão julgadora (322 em heteroidentificação e 61 em perícia médica) foram devidamente integrados aos boletins individuais.
+    - **Novo Cronograma:** TAF reagendado oficialmente para **19 e 20 de dezembro de 2026** e atestados médicos válidos emitidos desde 15/10/2026.
 
     ---
 

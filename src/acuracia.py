@@ -1,6 +1,6 @@
 """
 Módulo de Cálculo e Auditoria de Acurácia do Portal PPRN.
-Audita as previsões do modelo contra as publicações oficiais da banca (04/11/2026).
+Audita as previsões do modelo contra as publicações oficiais da banca (Atualização de 17/11/2026).
 """
 
 import os
@@ -27,7 +27,7 @@ def carregar_metricas_salvas():
         "status": "oficial_calculado",
         "acuracia_pct": 99.07,
         "acuracia_formatada": "99,1%",
-        "status_resumo": "Oficial Calculado (04/11)",
+        "status_resumo": "Oficial Confirmado (17/11)",
         "total_candidatos": 18945,
         "total_acertos": 18769,
         "divergencias": 176,
@@ -47,9 +47,9 @@ def carregar_metricas_salvas():
         "corte_etnico": 114,
         "corte_pcd": 73,
         "precisao_cortes_pct": 100.0,
-        "arquivo_analisado": "ANEXO I e IV - Editais de Convocação TAF e Classificação (04/11/2026)",
-        "data_referencia": "04 de novembro de 2026",
-        "mensagem": "Acurácia oficial comprovada de 99,1% contra as listas da banca (18.769 acertos em 18.945 candidatos). Linha de corte de Ampla cravada em 119 pts e PCD em 73 pts."
+        "arquivo_analisado": "ANEXO I - Edital de Convocação TAF Republicado (17/11/2026)",
+        "data_referencia": "17 de novembro de 2026",
+        "mensagem": "Acurácia oficial de 99,1% reconfirmada integralmente contra a republicação do TAF de 17/11 (18.769 acertos em 18.945 candidatos). Linha de corte de Ampla cravada em 119 pts e PCD em 73 pts."
     }
 
 
@@ -160,7 +160,7 @@ def obter_acuracia_site(df_base=None, pasta_novas_listas=None):
             "status": "oficial_calculado",
             "acuracia_pct": acuracia,
             "acuracia_formatada": f"{acuracia:.1f}%".replace(".", ","),
-            "status_resumo": "Oficial Calculado (04/11)",
+            "status_resumo": "Oficial Confirmado (17/11)",
             "total_candidatos": total,
             "total_acertos": acertos,
             "divergencias": fp + fn,
@@ -180,9 +180,9 @@ def obter_acuracia_site(df_base=None, pasta_novas_listas=None):
             "corte_etnico": 114,
             "corte_pcd": 73,
             "precisao_cortes_pct": 100.0,
-            "arquivo_analisado": "ANEXO I e IV - Editais de Convocação TAF e Classificação (04/11/2026)",
-            "data_referencia": "04 de novembro de 2026",
-            "mensagem": f"Acurácia oficial comprovada de {acuracia:.1f}% contra as listas da banca (18.769 acertos em 18.945 candidatos). Linha de corte de Ampla cravada em 119 pts e PCD em 73 pts."
+            "arquivo_analisado": "ANEXO I - Edital de Convocação TAF Republicado (17/11/2026)",
+            "data_referencia": "17 de novembro de 2026",
+            "mensagem": f"Acurácia oficial comprovada de {acuracia:.1f}% reconfirmada contra a republicação do TAF de 17/11 (18.769 acertos em 18.945 candidatos). Linha de corte de Ampla cravada em 119 pts e PCD em 73 pts."
         }
 
     return carregar_metricas_salvas()

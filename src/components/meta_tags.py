@@ -11,19 +11,19 @@ def render_meta_tags():
     <!-- Open Graph / WhatsApp / Facebook / Telegram -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="🛡️ Portal de Resultados • Policial Penal RN (PPRN)" />
-    <meta property="og:description" content="Consulte seu boletim individual oficial com a convocação para o TAF (04/11/2026), notas por disciplina, parecer definitivo das bancas de cotas e classificação oficial do concurso PPRN!" />
+    <meta property="og:description" content="Consulte seu boletim oficial com a convocação para o TAF (Republicação Oficial 17/11/2026 - Nova data: 19 e 20/12), notas por disciplina e cronograma retificado do concurso PPRN!" />
     <meta property="og:site_name" content="Portal de Resultados PPRN" />
     <meta property="og:locale" content="pt_BR" />
     
     <!-- Meta SEO Geral -->
-    <meta name="description" content="Portal oficial independente de consulta individual, convocação para o TAF (04/11/2026), resultados definitivos das bancas e análise de notas do Concurso Policial Penal RN (PPRN 2026)." />
-    <meta name="keywords" content="PPRN, Policial Penal RN, Concurso RN, Instituto Avalia, Convocação TAF, Heteroidentificação, Perícia Médica PCD, SEAD RN" />
+    <meta name="description" content="Portal oficial independente de consulta individual, convocação para o TAF (reagendado para 19 e 20/12/2026), retificação do edital, resultados das bancas e análise do Concurso Policial Penal RN (PPRN 2026)." />
+    <meta name="keywords" content="PPRN, Policial Penal RN, Concurso RN, Instituto Avalia, Convocação TAF, TAF Dezembro, Heteroidentificação, Perícia Médica PCD, SEAD RN" />
     <meta name="author" content="Pedro Nildo (@pedronildu)" />
     <meta name="theme-color" content="#0D6EFD" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="🛡️ Portal de Resultados • Policial Penal RN (PPRN)" />
-    <meta name="twitter:description" content="Boletim individual atualizado com a convocação oficial do TAF e resultados definitivos das bancas de cotas de 04/11 do concurso PPRN." />
+    <meta name="twitter:description" content="Boletim individual atualizado com a convocação do TAF reagendado para 19 e 20/12 e retificação do edital do concurso PPRN." />
     """
     st.markdown(meta_html, unsafe_allow_html=True)

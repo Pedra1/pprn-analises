@@ -115,7 +115,7 @@ def render_tab_boletim(df_base, mapa_inscricoes):
 <div class="my-2">
     <i class="bi bi-person-badge text-primary" style="font-size: 3rem;"></i>
 </div>
-<h4 class="fw-bold text-dark mb-2">Consulte seu Boletim Individual • Convocação Oficial do TAF (04/11/2026)</h4>
+<h4 class="fw-bold text-dark mb-2">Consulte seu Boletim Individual • Convocação Oficial do TAF (Republicada em 17/11/2026)</h4>
 <p class="text-secondary mx-auto mb-0" style="max-width: 620px; font-size: 0.95rem; line-height: 1.6;">
     Digite seu <strong>Nome Completo</strong> ou número de <strong>Inscrição</strong> no campo de busca acima para visualizar seu boletim oficial com nota objetiva, parecer da banca de cotas e projeção de convocação.
 </p>
@@ -262,6 +262,10 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
         taf_badge_color = "#15803D" if is_convocado_taf_oficial else "#475569"
         taf_badge_text = "🟢 CONVOCAÇÃO OFICIAL TAF: CONVOCADO PELA BANCA!" if is_convocado_taf_oficial else "⚪ SITUAÇÃO TAF: NÃO CONVOCADO OFICIALMENTE"
 
+        aviso_taf_reagendado = """<div style="font-size: 0.83rem; color: #15803D; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #86efac; font-weight: 600;">
+📅 <strong>TAF Reagendado (Republicação 17/11):</strong> 19 e 20 de Dezembro de 2026 &nbsp;•&nbsp; 📄 Cartão de Informação (Local/Hora) a partir das <strong>15h de 14/12/2026</strong> &nbsp;•&nbsp; 🩺 Atestados médicos válidos emitidos desde <strong>15/10/2026</strong>.
+</div>""" if is_convocado_taf_oficial else ""
+
         taf_html = f"""<div class="{taf_class}">
 <div style="font-size: 0.82rem; font-weight: 800; color: {taf_badge_color}; text-transform: uppercase; margin-bottom: 6px;">
 🎯 {taf_badge_text}
@@ -272,6 +276,7 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
 <div style="font-size: 0.88rem; color: #475569; font-weight: 600;">
 📋 Modalidade de Convocação: <strong>{mod_convocacao}</strong>{pos_taf_txt}
 </div>
+{aviso_taf_reagendado}
 </div>"""
 
         # Cabeçalho Oficial exclusivo para Impressão / PDF (@media print)
@@ -282,7 +287,7 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
 <div>
 <div style="font-size: 1.1rem; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.2;">Secretaria de Estado da Administração e Penitenciária • SEAP/RN</div>
 <div style="font-size: 0.92rem; font-weight: 700; color: #0d6efd; margin-top: 2px;">Concurso Público para Policial Penal do RN • Edital nº 001/2026</div>
-<div style="font-size: 0.8rem; color: #475569; font-weight: 500; margin-top: 2px;">Boletim Individual Oficial de Desempenho e Convocação TAF • Homologação Definitiva de 04/11/2026</div>
+<div style="font-size: 0.8rem; color: #475569; font-weight: 500; margin-top: 2px;">Boletim Individual Oficial de Desempenho e Convocação TAF • Republicação de 17/11/2026 (TAF em 19 e 20/12)</div>
 </div>
 </div>
 <div style="text-align: right; min-width: 130px;">
@@ -614,7 +619,7 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
         # Rodapé Oficial exclusivo para Impressão / PDF (@media print)
         st.markdown("""<div class="print-only print-footer">
 <div style="margin-top: 18px; border-top: 1px solid #cbd5e1; padding-top: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: #64748b;">
-<span>Portal de Resultados PPRN • Relatório oficial emitido a partir dos atos homologados da SEAP/RN em 04 de Novembro de 2026.</span>
+<span>Portal de Resultados PPRN • Relatório oficial emitido a partir dos atos homologados da SEAP/RN republicados em 17 de Novembro de 2026.</span>
 <span>Acurácia Oficial Comprovada: 99,1%</span>
 </div>
 </div>""", unsafe_allow_html=True)

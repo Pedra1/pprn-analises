@@ -60,6 +60,7 @@ def carregar_bytes_excel(caminho):
 
     # 2. Procurar em subpastas organizadas de dados (priorizando a publicação oficial mais recente)
     subpastas_candidatas = [
+        "Atualização 17 de novembro",
         "Atualizacao 04 de novembro",
         "Atualizacao 23 de outubro",
         "Atualizacao 09 de outubro",

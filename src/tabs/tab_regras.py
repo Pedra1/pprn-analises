@@ -29,17 +29,18 @@ from src.config import (
 
 def render_tab_regras():
     """Renderiza a aba de regras do edital, resultados definitivos e cortes do TAF."""
-    st.subheader("🎯 Regras Oficiais do Edital, Resultados Definitivos e Cortes do TAF (04/11/2026)")
+    st.subheader("🎯 Regras Oficiais do Edital, Resultados Definitivos e Cortes do TAF (Atualizado em 17/11/2026)")
 
     st.markdown(f"""<div class="card bg-success-subtle border-start border-4 border-success p-3 rounded-3 shadow-sm mb-3">
     <div class="d-flex align-items-center gap-2 mb-1 fw-bold text-success-emphasis text-uppercase" style="font-size: 0.85rem; letter-spacing: 0.04em;">
-        <i class="bi bi-patch-check-fill text-success fs-5"></i> RESULTADOS DEFINITIVOS DAS BANCAS DE COTAS & CONVOCAÇÃO DO TAF (04/11/2026)
+        <i class="bi bi-patch-check-fill text-success fs-5"></i> RESULTADOS DAS BANCAS DE COTAS & CONVOCAÇÃO DO TAF (ATUALIZADO EM 17/11/2026)
     </div>
     <div style="font-size: 0.93rem; color: #0f5132; line-height: 1.6;">
-        A banca <strong>Instituto Avalia</strong> divulgou os pareceres dos recursos e homologou o <strong>resultado definitivo</strong> das bancas de cotas em <strong>04 de novembro de 2026</strong>:<br>
+        A banca <strong>Instituto Avalia</strong> e a <strong>SEAD/SEAP</strong> republicaram a convocação oficial para o TAF e o 1º Termo de Retificação em <strong>17 de novembro de 2026</strong>:<br>
         • <strong>Recursos Deferidos:</strong> Foram acolhidos <strong>{RECURSOS_ETNICO_PROVIDOS} recursos</strong> na Cota Étnico-Racial e <strong>{RECURSOS_PCD_PROVIDOS} recursos</strong> na Perícia PCD, totalizando <strong>383 candidatos reclassificados</strong>.<br>
-        • <strong>Convocação Oficial para o TAF:</strong> Foram convocados oficialmente <strong>{TOTAL_CONVOCADOS_TAF_OFICIAL:,} candidatos</strong> (Anexos I e IV do Edital nº 002/2026).<br>
-        • <strong>Próxima Fase do Concurso:</strong> Realização presencial do <strong>Teste de Aptidão Física (TAF)</strong> nos dias <strong>14 e 15 de novembro de 2026</strong>.
+        • <strong>Convocação Oficial para o TAF:</strong> Confirmada a convocação de <strong>{TOTAL_CONVOCADOS_TAF_OFICIAL:,} candidatos</strong> (Anexo I republicado em 17/11/2026).<br>
+        • <strong>Nova Data Oficial do TAF:</strong> Reagendado para os dias <strong>19 e 20 de dezembro de 2026</strong>.<br>
+        • <strong>Atestados Médicos (Item 14.4 "c"):</strong> Validade retificada para atestados emitidos a partir de <strong>15 de outubro de 2026</strong> (quem já havia emitido atestado para novembro não precisará emitir outro!).
     </div>
     </div>""".replace(",", "."), unsafe_allow_html=True)
 
@@ -238,7 +239,17 @@ def render_tab_regras():
         Na publicação preliminar de 23/10, o corte estimado da cota era 113 pontos. Contudo, na publicação definitiva de 04/11, **a banca acolheu 322 recursos administrativos** de candidatos que reverteram o indeferimento. Com mais 322 cotistas deferidos disputando as 240 vagas de reserva fora da ampla, a linha de corte subiu naturalmente 1 ponto, fixando-se oficialmente em **114 pontos**.
         """)
 
-    with st.expander("Quais são as datas de realização do TAF?"):
+    with st.expander("Quais são as novas datas oficiais de realização do TAF?"):
         st.markdown("""
-        Conforme o edital oficial de convocação de 04 de novembro de 2026, o Teste de Aptidão Física (TAF) será aplicado nos dias **14 e 15 de novembro de 2026**. O resultado preliminar do TAF tem previsão de publicação em **23 de novembro de 2026**.
+        Conforme a **Republicação Oficial do Edital de Convocação e o 1º Termo de Retificação**, publicados em **17 de novembro de 2026**, o Teste de Aptidão Física (TAF) foi oficialmente reagendado para os dias **19 e 20 de dezembro de 2026**. O resultado preliminar do TAF tem previsão de publicação em **29 de dezembro de 2026**.
+        """)
+
+    with st.expander("Meu atestado médico foi emitido antes do reagendamento. Ele ainda é válido?"):
+        st.markdown("""
+        **SIM!** A Retificação ao Edital de Abertura alterou os subitens 14.4 'c' e 14.4.3 para dispor expressamente que **são aceitos atestados médicos emitidos a partir de 15 de outubro de 2026**. Portanto, quem já havia emitido o documento para a data anterior NÃO precisará pagar ou emitir novo atestado!
+        """)
+
+    with st.expander("Quando e onde consulto meu local e horário exato de prova do TAF?"):
+        st.markdown("""
+        O **Cartão de Informação do Candidato para o TAF** estará disponível para consulta individual a partir das **15h00 do dia 14 de dezembro de 2026** no site oficial da banca: [www.avalia.org.br](https://www.avalia.org.br).
         """)

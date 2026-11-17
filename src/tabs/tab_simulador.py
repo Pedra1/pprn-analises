@@ -186,7 +186,7 @@ Se o Estado chamar turmas extras até <strong>{total_necessario} convocados</str
 
     with sim_subtab2:
         st.markdown("#### ⚙️ Parâmetros de Simulação pós-Bancas Definitivas & TAF")
-        st.caption("Projete o impacto da **reprovação/abstenção no TAF (14 e 15 de novembro)** e eventuais reversões nas vagas imediatas:")
+        st.caption("Projete o impacto da **reprovação/abstenção no TAF (19 e 20 de dezembro)** e eventuais reversões nas vagas imediatas:")
 
         col_ctrl1, col_ctrl2 = st.columns(2)
         with col_ctrl1:
@@ -203,13 +203,13 @@ Se o Estado chamar turmas extras até <strong>{total_necessario} convocados</str
 
         with col_ctrl2:
             taxa_taf = st.slider(
-                "Taxa Estimada de Reprovação / Abstenção no TAF (14-15/Nov):",
+                "Taxa Estimada de Reprovação / Abstenção no TAF (19-20/Dez):",
                 min_value=0, max_value=45, value=20, step=1, format="%d%%",
                 help="Atrito médio nos testes físicos (barra fixa, corrida, abdominal flexão)."
             )
             st.markdown(f"""
             <div class="card bg-light border p-3 rounded-3 mt-1" style="font-size: 0.85rem; line-height: 1.45;">
-            <div class="fw-bold text-dark mb-1"><i class="bi bi-pin-angle-fill text-primary me-1"></i> Resumo dos Parâmetros Oficiais (04/11):</div>
+            <div class="fw-bold text-dark mb-1"><i class="bi bi-pin-angle-fill text-primary me-1"></i> Resumo dos Parâmetros Oficiais (17/11):</div>
             • Cotistas Étnico-Raciais Deferidos: <strong>3.586</strong> (pós-recursos)<br>
             • Cotistas PCD Deferidos: <strong>534</strong> (100% deferidos)<br>
             • Atrito Previsto no TAF: <strong>{taxa_taf}%</strong> de inaptidão/abstenção

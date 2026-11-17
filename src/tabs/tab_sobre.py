@@ -17,13 +17,13 @@ def render_tab_sobre(df_base=None):
     rec_etnico = metricas.get('recursos_etnico_providos', 322)
     rec_pcd = metricas.get('recursos_pcd_providos', 61)
     recursos_totais = rec_etnico + rec_pcd
-    data_ref = metricas.get("data_referencia", "04 de novembro de 2026")
+    data_ref = metricas.get("data_referencia", "17 de novembro de 2026")
 
     st.markdown("""<div class="sim-banner">
     <span class="badge-pill-blue"><i class="bi bi-info-circle-fill text-primary me-1"></i> TRANSPARÊNCIA, METODOLOGIA & FONTES</span>
     <h2 class="hero-title mt-1 mb-2" style="font-size: 1.75rem;"><i class="bi bi-patch-question-fill text-primary me-2"></i>Sobre o Portal de Resultados do PPRN</h2>
     <p class="text-secondary mb-0" style="font-size: 0.95rem; line-height: 1.55;">
-    Auditoria de acurácia matemática, confronto com as listas oficiais de <strong>04 de novembro de 2026</strong>, metodologia dos desempates e fidelidade às normas do edital.
+    Auditoria de acurácia matemática, confronto com as listas e editais oficiais republicados em <strong>17 de novembro de 2026</strong>, metodologia dos desempates e fidelidade às normas do certame.
     </p>
     </div>""", unsafe_allow_html=True)
 
@@ -38,7 +38,7 @@ def render_tab_sobre(df_base=None):
         </span>
     </div>
     <div style="font-size: 0.92rem; color: #0f5132; line-height: 1.55;">
-        Em confronto direto entre as previsões do portal e os atos formais publicados pela banca <strong>Instituto Avalia</strong> em <strong>04 de novembro de 2026</strong> (Convocação Oficial para o TAF e Resultados Definitivos das Bancas de Cotas), o modelo alcançou <strong>{acuracia_fmt} de acurácia global ({total_acertos} acertos em {total_candidatos} avaliados)</strong> e <strong>100% de exatidão nas notas de corte oficiais</strong>.
+        Em confronto direto entre as previsões do portal e os atos formais publicados pela banca <strong>Instituto Avalia</strong> (homologação de 04/11 e republicação da Convocação do TAF em <strong>17 de novembro de 2026</strong>), o modelo alcançou <strong>{acuracia_fmt} de acurácia global ({total_acertos} acertos em {total_candidatos} avaliados)</strong> e <strong>100% de exatidão nas notas de corte oficiais</strong>.
     </div>
     </div>""", unsafe_allow_html=True)
 
@@ -115,7 +115,8 @@ def render_tab_sobre(df_base=None):
             <li><code>Atualizacao 30 de setembro/</code>: Editais iniciais e relações preliminares da prova objetiva;</li>
             <li><code>Atualizacao 09 de outubro/</code>: Resultado definitivo da objetiva e convocação para bancas de cotas;</li>
             <li><code>Atualizacao 23 de outubro/</code>: Resultados preliminares da Heteroidentificação e Perícia PCD;</li>
-            <li><code>Atualizacao 04 de novembro/</code>: <strong>Listas oficiais ativas</strong> (Anexos I, II, III e IV com os pareceres de recursos e convocação oficial para o TAF).</li>
+            <li><code>Atualizacao 04 de novembro/</code>: Pareceres de recursos das cotas e convocação oficial preliminar para o TAF;</li>
+            <li><code>Atualização 17 de novembro/</code>: <strong>Republicação Oficial do Edital de Convocação do TAF</strong> (reagendado para 19 e 20/12/2026), <strong>1º Termo de Retificação ao Edital de Abertura</strong> (novo cronograma e regras de atestado médico) e <strong>Anexo I Republicado</strong> (1.884 convocados).</li>
         </ul>
     </div>
     </div>""", unsafe_allow_html=True)
@@ -144,7 +145,8 @@ def render_tab_sobre(df_base=None):
     <li>Resultado Definitivo da Prova Objetiva (18.945 aprovados);</li>
     <li>Heteroidentificação Definitiva Pós-Recursos (3.586 Deferidos);</li>
     <li>Perícia Médica PCD Definitiva Pós-Recursos (534 Deferidos);</li>
-    <li>Edital Oficial de Convocação para o TAF (1.884 convocados);</li>
+    <li>Republicação do Edital de Convocação para o TAF (1.884 convocados - 17/11/2026);</li>
+    <li>Primeiro Termo de Retificação ao Edital de Abertura nº 002/2026 (17/11/2026);</li>
     <li>Anexos I a IV de Classificação para Prosseguimento no Certame.</li>
     </ul>
     </div>

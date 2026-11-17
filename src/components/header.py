@@ -31,11 +31,11 @@ from src.config import (
 
 
 def render_header():
-    """Renderiza o Hero Banner institucional e os cartões com métricas oficiais de 04/11."""
+    """Renderiza o Hero Banner institucional e os cartões com métricas oficiais atualizadas (17/11/2026)."""
     st.markdown("""<div class="hero-container">
     <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
         <span class="badge-pill-amber">
-            <i class="bi bi-patch-check-fill text-success me-1"></i> ATUALIZAÇÃO OFICIAL 04 DE NOVEMBRO DE 2026 • CONVOCAÇÃO DO TAF & BANCAS DEFINITIVAS
+            <i class="bi bi-patch-check-fill text-success me-1"></i> ATUALIZAÇÃO OFICIAL 17 DE NOVEMBRO DE 2026 • REPUBLICAÇÃO DO TAF (NOVA DATA: 19 E 20/12) & RETIFICAÇÃO DO EDITAL
         </span>
         <span class="badge bg-success text-white px-2 py-1 rounded-pill fw-bold" style="font-size: 0.8rem;">
             <i class="bi bi-shield-check me-1"></i> Acurácia Comprovada: 99,1%
@@ -43,7 +43,7 @@ def render_header():
     </div>
     <h1 class="hero-title"><i class="bi bi-shield-fill-check text-primary me-2"></i>Portal de Resultados • Concurso Policial Penal RN</h1>
     <p class="hero-subtitle mb-0">
-    Boletim individual sincronizado com a <strong>Convocação Oficial para o Teste de Aptidão Física (TAF)</strong> e os resultados definitivos pós-recursos da <strong>Heteroidentificação Étnico-Racial</strong> e <strong>Perícia Médica PCD</strong>.
+    Boletim individual sincronizado com a <strong>Republicação Oficial da Convocação do TAF (reagendado para 19 e 20/12/2026)</strong>, <strong>Retificação nº 001/2026</strong> (novo cronograma e regras de atestado médico) e homologações definitivas das bancas de cotas.
     </p>
     </div>""", unsafe_allow_html=True)
 
