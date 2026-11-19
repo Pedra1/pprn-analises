@@ -85,93 +85,85 @@ A participação de um candidato sob a condição de *sub judice* decorre de uma
 
     with col_j1:
         st.markdown("""<div class="card p-3 shadow-sm rounded-3 mb-3" style="background: #ffffff; border-left: 4px solid #0d6efd;">
-        <div class="fw-bold text-primary mb-2" style="font-size: 1.05rem;">
-            🏛️ 1. O Dever da Administração de Cumprir a Liminar
-        </div>
-        <div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
-            • <strong>Inafastabilidade da Jurisdição (Art. 5º, XXXV, CF/88):</strong> Nenhuma lesão ou ameaça a direito pode ser excluída da apreciação judicial.<br>
-            • <strong>Eficácia Mandamental (Art. 536 do CPC):</strong> Deferida a liminar pelo juiz ou desembargador, a comissão do concurso (SEAD/SEAP e Instituto Avalia) é obrigada por lei a cumpri-la de forma imediata, sob pena de crime de desobediência (art. 330 do Código Penal) e imposição de multa cominatória diária (*astreintes*).<br>
-            • <strong>Instrumento Formal:</strong> O cumprimento ocorre mediante publicação formal de <strong>Edital de Cumprimento Liminar</strong>, como o republicado pela SEAD/RN em 18 de novembro de 2026.
-        </div>
-        </div>""", unsafe_allow_html=True)
+<div class="fw-bold text-primary mb-2" style="font-size: 1.05rem;">
+🏛️ 1. O Dever da Administração de Cumprir a Liminar
+</div>
+<div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
+• <strong>Inafastabilidade da Jurisdição (Art. 5º, XXXV, CF/88):</strong> Nenhuma lesão ou ameaça a direito pode ser excluída da apreciação judicial.<br>
+• <strong>Eficácia Mandamental (Art. 536 do CPC):</strong> Deferida a liminar pelo juiz ou desembargador, a comissão do concurso (SEAD/SEAP e Instituto Avalia) é obrigada por lei a cumpri-la de forma imediata, sob pena de crime de desobediência (art. 330 do Código Penal) e imposição de multa cominatória diária (*astreintes*).<br>
+• <strong>Instrumento Formal:</strong> O cumprimento ocorre mediante publicação formal de <strong>Edital de Cumprimento Liminar</strong>, como o republicado pela SEAD/RN em 18 de novembro de 2026.
+</div>
+</div>""", unsafe_allow_html=True)
 
         st.markdown("""<div class="card p-3 shadow-sm rounded-3 mb-3" style="background: #ffffff; border-left: 4px solid #f59e0b;">
-        <div class="fw-bold text-warning-emphasis mb-2" style="font-size: 1.05rem;">
-            ⚠️ 2. A Precaridade da Decisão e a Súmula 405 do STF
-        </div>
-        <div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
-            • <strong>Natureza Provisória (Art. 4º do Edital Liminar):</strong> A decisão liminar é provisória e pode ser revogada ou reformada no decorrer do processo (ex: via Agravo de Instrumento ou na sentença de mérito). Ela <strong>não gera direito adquirido</strong>.<br>
-            • <strong>Súmula 405 do STF:</strong> <em>"Denegado o mandado de segurança pela sentença, ou no julgamento do agravo, dela interposto, fica sem efeito a liminar concedida, retroagindo os efeitos da decisão contrária."</em><br>
-            • Caso a decisão venha a ser cassada ou julgada improcedente, a convocação perde efeito automaticamente e o candidato é desclassificado do concurso.
-        </div>
-        </div>""", unsafe_allow_html=True)
+<div class="fw-bold text-warning-emphasis mb-2" style="font-size: 1.05rem;">
+⚠️ 2. A Precaridade da Decisão e a Súmula 405 do STF
+</div>
+<div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
+• <strong>Natureza Provisória (Art. 4º do Edital Liminar):</strong> A decisão liminar é provisória e pode ser revogada ou reformada no decorrer do processo (ex: via Agravo de Instrumento ou na sentença de mérito). Ela <strong>não gera direito adquirido</strong>.<br>
+• <strong>Súmula 405 do STF:</strong> <em>"Denegado o mandado de segurança pela sentença, ou no julgamento do agravo, dela interposto, fica sem efeito a liminar concedida, retroagindo os efeitos da decisão contrária."</em><br>
+• Caso a decisão venha a ser cassada ou julgada improcedente, a convocação perde efeito automaticamente e o candidato é desclassificado do concurso.
+</div>
+</div>""", unsafe_allow_html=True)
 
     with col_j2:
         st.markdown("""<div class="card p-3 shadow-sm rounded-3 mb-3" style="background: #ffffff; border-left: 4px solid #198754;">
-        <div class="fw-bold text-success mb-2" style="font-size: 1.05rem;">
-            🎯 3. Podem Participar do TAF Mesmo com Nota Abaixo do Corte?
-        </div>
-        <div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
-            • <strong>SIM para a realização do TAF!</strong> A própria publicação da SEAD/RN comprova: candidatos com notas entre 74 e 113 pontos (cujo corte regular foi 114 na cota e 119 na ampla) foram convocados para realizar o teste nos dias <strong>19 e 20 de dezembro de 2026</strong>.<br>
-            • <strong>Por que isso ocorre?</strong> O Judiciário, ao identificar plausibilidade do direito (<em>fumus boni iuris</em>) e perigo da demora (<em>periculum in mora</em> da realização iminente da prova física), suspende a exclusão do candidato perante a cláusula de barreira a fim de evitar perecimento do direito.<br>
-            • A realização do teste físico em data oficial evita dano irreparável caso a ação venha a ser julgada procedente no mérito.
-        </div>
-        </div>""", unsafe_allow_html=True)
+<div class="fw-bold text-success mb-2" style="font-size: 1.05rem;">
+🎯 3. Podem Participar do TAF Mesmo com Nota Abaixo do Corte?
+</div>
+<div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
+• <strong>SIM para a realização do TAF!</strong> A própria publicação da SEAD/RN comprova: candidatos com notas entre 74 e 113 pontos (cujo corte regular foi 114 na cota e 119 na ampla) foram convocados para realizar o teste nos dias <strong>19 e 20 de dezembro de 2026</strong>.<br>
+• <strong>Por que isso ocorre?</strong> O Judiciário, ao identificar plausibilidade do direito (<em>fumus boni iuris</em>) e perigo da demora (<em>periculum in mora</em> da realização iminente da prova física), suspende a exclusão do candidato perante a cláusula de barreira a fim de evitar perecimento do direito.<br>
+• A realização do teste físico em data oficial evita dano irreparável caso a ação venha a ser julgada procedente no mérito.
+</div>
+</div>""", unsafe_allow_html=True)
 
         st.markdown("""<div class="card p-3 shadow-sm rounded-3 mb-3" style="background: #ffffff; border-left: 4px solid #dc3545;">
-        <div class="fw-bold text-danger mb-2" style="font-size: 1.05rem;">
-            🚫 4. Inaplicabilidade da Teoria do Fato Consumado (Tema 476/STF)
-        </div>
-        <div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
-            • <strong>Tese de Repercussão Geral (STF - RE 608.482 - Tema 476):</strong><br>
-            <em>"Não é compatível com o regime constitucional de acesso aos cargos públicos a manutenção no cargo, sob fundamento de fato consumado, de candidato não aprovado que nele tomou posse em decorrência de decisão judicial precária."</em><br>
-            • <strong>Significado Prático:</strong> Mesmo que o candidato participe do TAF, realize exame psicológico ou conclua o Curso de Formação, <strong>o decurso do tempo não valida sua permanência definitiva</strong> se a ação for julgada improcedente. O direito à vaga só se consolida com o trânsito em julgado favorável.
-        </div>
-        </div>""", unsafe_allow_html=True)
+<div class="fw-bold text-danger mb-2" style="font-size: 1.05rem;">
+🚫 4. Inaplicabilidade da Teoria do Fato Consumado (Tema 476/STF)
+</div>
+<div style="font-size: 0.92rem; color: #334155; line-height: 1.6;">
+• <strong>Tese de Repercussão Geral (STF - RE 608.482 - Tema 476):</strong><br>
+<em>"Não é compatível com o regime constitucional de acesso aos cargos públicos a manutenção no cargo, sob fundamento de fato consumado, de candidato não aprovado que nele tomou posse em decorrência de decisão judicial precária."</em><br>
+• <strong>Significado Prático:</strong> Mesmo que o candidato participe do TAF, realize exame psicológico ou conclua o Curso de Formação, <strong>o decurso do tempo não valida sua permanência definitiva</strong> se a ação for julgada improcedente. O direito à vaga só se consolida com o trânsito em julgado favorável.
+</div>
+</div>""", unsafe_allow_html=True)
 
     st.write("---")
 
     # 5. A Grande Dúvida: Convocação para as Próximas Fases e Nomeação
     st.markdown("### ❓ O Candidato Sub Judice Será Convocado para as Fases Subsequentes?")
+    st.markdown("##### 🔷 Entenda as Duas Situações Distintas Existentes no Concurso PPRN:")
 
-    st.markdown("""<div class="card p-4 shadow-sm rounded-3 mb-4" style="background: #ffffff; border: 1px solid #e2e8f0;">
-    <h5 class="fw-bold text-primary mb-3">
-        <i class="bi bi-question-diamond-fill me-2"></i>Entenda as Duas Situações Distintas Existentes no Concurso PPRN:
-    </h5>
+    col_sit1, col_sit2 = st.columns(2)
+    with col_sit1:
+        st.markdown("""<div class="card p-3 shadow-sm rounded-3 mb-3" style="background: #f0fdf4; border: 1px solid #bbf7d0; height: 100%;">
+<div class="fw-bold text-success mb-2" style="font-size: 1rem;">
+🟢 Situação A: Candidato com Nota Suficiente cuja Cota foi Reconhecida Liminarmente
+</div>
+<div style="font-size: 0.9rem; color: #166534; line-height: 1.55;">
+<strong>Exemplo Real no PPRN:</strong> Candidato <strong>Bruno De Medeiros Celestino</strong> (Inscrição 2320054913).<br><br>
+• <strong>Nota Objetiva:</strong> 117 pontos.<br>
+• <strong>Linha de Corte da Cota Étnica:</strong> 114 pontos.<br>
+• <strong>O que aconteceu:</strong> Ele havia sido indeferido na heteroidentificação em 04/11. Em 12/11/2026, a SEAD/RN publicou cumprimento liminar (autos nº 0830487-85.2026.8.20.5106) deferindo provisoriamente sua condição de cotista.<br>
+• <strong>Impacto nas Fases Seguintes:</strong> Como sua nota (117) é <strong>superior à nota de corte (114)</strong>, enquanto a condição de cotista estiver resguardada pela liminar, ele preenche tanto o requisito numérico quanto o requisito de cota, seguindo normalmente o fluxo do certame em caso de aprovação no TAF.
+</div>
+</div>""", unsafe_allow_html=True)
 
-    <div class="row g-3">
-        <div class="col-md-6">
-            <div class="p-3 rounded-3" style="background: #f0fdf4; border: 1px solid #bbf7d0; height: 100%;">
-                <div class="fw-bold text-success mb-2" style="font-size: 1rem;">
-                    🟢 Situação A: Candidato com Nota Suficiente cuja Cota foi Reconhecida Liminarmente
-                </div>
-                <div style="font-size: 0.9rem; color: #166534; line-height: 1.55;">
-                    <strong>Exemplo Real no PPRN:</strong> Candidato <strong>Bruno De Medeiros Celestino</strong> (Inscrição 2320054913).<br>
-                    • <strong>Nota Objetiva:</strong> 117 pontos.<br>
-                    • <strong>Linha de Corte da Cota Étnica:</strong> 114 pontos.<br>
-                    • <strong>O que aconteceu:</strong> Ele havia sido indeferido na heteroidentificação em 04/11. Em 12/11/2026, a SEAD/RN publicou cumprimento liminar (autos nº 0830487-85.2026.8.20.5106) deferindo provisoriamente sua condição de cotista.<br>
-                    • <strong>Impacto nas Fases Seguintes:</strong> Como sua nota (117) é <strong>superior à nota de corte (114)</strong>, enquanto a condição de cotista estiver resguardada pela liminar, ele preenche tanto o requisito numérico quanto o requisito de cota, seguindo normalmente o fluxo do certame em caso de aprovação no TAF.
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="p-3 rounded-3" style="background: #eff6ff; border: 1px solid #bfdbfe; height: 100%;">
-                <div class="fw-bold text-primary mb-2" style="font-size: 1rem;">
-                    🔵 Situação B: Candidatos com Nota Objetiva Abaixo da Linha de Corte
-                </div>
-                <div style="font-size: 0.9rem; color: #1e40af; line-height: 1.55;">
-                    <strong>Exemplo:</strong> Candidatos cotistas convocados com notas entre 74 e 113 pontos (abaixo do corte de 114 pontos).<br>
-                    • <strong>Para o TAF:</strong> Foram convocados expressamente pelo Art. 1º do Edital de Cumprimento Liminar publicado em 18/11/2026.<br>
-                    • <strong>Para as Fases Seguintes (Avaliação Psicológica, Curso de Formação):</strong> A convocação <strong>depende estritamente do teor do dispositivo da ordem judicial</strong> em cada processo:<br>
-                    &nbsp;&nbsp;1. Se a liminar concedida determinar a participação <em>"no TAF e nas demais etapas subsequentes em caso de aptidão"</em>, a banca terá que convocá-los.<br>
-                    &nbsp;&nbsp;2. Se a liminar tiver autorizado <em>apenas a realização do TAF</em>, o candidato necessitará requerer ao juiz ou relator a extensão da tutela para as fases vindouras.<br>
-                    • <strong>Para a Nomeação Final:</strong> Conforme jurisprudência pacífica do STJ (AgInt no RMS 56.786/MS), a nomeação definitiva depende do trânsito em julgado favorável da ação ou de ordem judicial expressa transitada.
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>""", unsafe_allow_html=True)
+    with col_sit2:
+        st.markdown("""<div class="card p-3 shadow-sm rounded-3 mb-3" style="background: #eff6ff; border: 1px solid #bfdbfe; height: 100%;">
+<div class="fw-bold text-primary mb-2" style="font-size: 1rem;">
+🔵 Situação B: Candidatos com Nota Objetiva Abaixo da Linha de Corte
+</div>
+<div style="font-size: 0.9rem; color: #1e40af; line-height: 1.55;">
+<strong>Exemplo:</strong> Candidatos cotistas convocados com notas entre 74 e 113 pontos (abaixo do corte de 114 pontos).<br><br>
+• <strong>Para o TAF:</strong> Foram convocados expressamente pelo Art. 1º do Edital de Cumprimento Liminar publicado em 18/11/2026.<br>
+• <strong>Para as Fases Seguintes (Avaliação Psicológica, Curso de Formação):</strong> A convocação <strong>depende estritamente do teor do dispositivo da ordem judicial</strong> em cada processo:<br>
+&nbsp;&nbsp;1. Se a liminar concedida determinar a participação <em>"no TAF e nas demais etapas subsequentes em caso de aptidão"</em>, a banca terá que convocá-los.<br>
+&nbsp;&nbsp;2. Se a liminar tiver autorizado <em>apenas a realização do TAF</em>, o candidato necessitará requerer ao juiz ou relator a extensão da tutela para as fases vindouras.<br>
+• <strong>Para a Nomeação Final:</strong> Conforme jurisprudência pacífica do STJ (AgInt no RMS 56.786/MS), a nomeação definitiva depende do trânsito em julgado favorável da ação ou de ordem judicial expressa transitada.
+</div>
+</div>""", unsafe_allow_html=True)
 
     # 6. Tabela Interativa de Todos os 23 Candidatos Sub Judice
     st.markdown("### 📋 Relação Oficial dos 23 Candidatos Sub Judice no Concurso PPRN")
@@ -231,14 +223,12 @@ A participação de um candidato sob a condição de *sub judice* decorre de uma
     c_dw1, c_dw2 = st.columns([1, 1])
 
     with c_dw1:
-        st.markdown("""<div class="card p-3 shadow-sm rounded-3 h-100" style="background: #ffffff; border-left: 4px solid #0d6efd;">
-        <div class="fw-bold text-primary mb-2" style="font-size: 1rem;">
-            📥 Baixar Documentos Oficiais em PDF & Excel
-        </div>
-        <div style="font-size: 0.88rem; color: #475569; margin-bottom: 10px;">
-            Baixe as publicações originais da SEAD/RN e a planilha com os 23 candidatos:
-        </div>
-        """, unsafe_allow_html=True)
+        st.markdown("""<div class="fw-bold text-primary mb-1" style="font-size: 1rem;">
+📥 Baixar Documentos Oficiais em PDF & Excel
+</div>
+<div style="font-size: 0.88rem; color: #475569; margin-bottom: 12px;">
+Baixe as publicações oficiais da SEAD/RN e a planilha com os 23 candidatos:
+</div>""", unsafe_allow_html=True)
 
         col_b1, col_b2 = st.columns(2)
         with col_b1:
@@ -271,21 +261,20 @@ A participação de um candidato sob a condição de *sub judice* decorre de uma
                 mime="application/pdf",
                 width="stretch"
             )
-        st.markdown("</div>", unsafe_allow_html=True)
 
     with c_dw2:
         st.markdown("""<div class="card p-3 shadow-sm rounded-3 h-100" style="background: #ffffff; border-left: 4px solid #10b981;">
-        <div class="fw-bold text-success mb-2" style="font-size: 1rem;">
-            🔍 Como Acompanhar os Processos no PJe do TJRN
-        </div>
-        <div style="font-size: 0.88rem; color: #334155; line-height: 1.55;">
-            Os números de processo no padrão CNJ (ex: <code>0826153-97.2026.8.20.0000</code>) tramitam no <strong>Tribunal de Justiça do Estado do Rio Grande do Norte (TJRN)</strong>:<br>
-            • Processos terminados em <code>.0000</code>: Tramitam originariamente no <strong>2º Grau / Tribunal Pleno do TJRN</strong> (Mandados de Segurança contra o Secretário de Estado da Administração).<br>
-            • Processos terminados em <code>.5001</code>: Comarca de Natal (Varas da Fazenda Pública).<br>
-            • Processos terminados em <code>.5106</code>: Comarca de Mossoró.<br>
-            • <strong>Portal Oficial de Consulta Pública:</strong> Acesse o PJe do TJRN em <a href="https://pje.tjrn.jus.br" target="_blank" rel="noopener noreferrer">pje.tjrn.jus.br</a> para verificar despachos, petições e certidões.
-        </div>
-        </div>""", unsafe_allow_html=True)
+<div class="fw-bold text-success mb-2" style="font-size: 1rem;">
+    🔍 Como Acompanhar os Processos no PJe do TJRN
+</div>
+<div style="font-size: 0.88rem; color: #334155; line-height: 1.55;">
+    Os números de processo no padrão CNJ (ex: <code>0826153-97.2026.8.20.0000</code>) tramitam no <strong>Tribunal de Justiça do Estado do Rio Grande do Norte (TJRN)</strong>:<br><br>
+    • Processos terminados em <code>.0000</code>: Tramitam originariamente no <strong>2º Grau / Tribunal Pleno do TJRN</strong> (Mandados de Segurança contra o Secretário de Estado da Administração).<br>
+    • Processos terminados em <code>.5001</code>: Comarca de Natal (Varas da Fazenda Pública).<br>
+    • Processos terminados em <code>.5106</code>: Comarca de Mossoró.<br><br>
+    • <strong>Portal Oficial de Consulta Pública:</strong> Acesse o PJe do TJRN em <a href="https://pje.tjrn.jus.br" target="_blank" rel="noopener noreferrer">pje.tjrn.jus.br</a> para verificar despachos, petições e certidões.
+</div>
+</div>""", unsafe_allow_html=True)
 
     st.write("---")
 
