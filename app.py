@@ -35,6 +35,7 @@ from src.tabs.tab_boletim import render_tab_boletim
 from src.tabs.tab_simulador import render_tab_simulador
 from src.tabs.tab_listas import render_tab_listas
 from src.tabs.tab_regras import render_tab_regras
+from src.tabs.tab_subjudice import render_tab_subjudice
 from src.tabs.tab_cronograma import render_tab_cronograma
 from src.tabs.tab_sobre import render_tab_sobre
 
@@ -58,11 +59,12 @@ if "disclaimer_visto" not in st.session_state:
 render_header()
 
 # 8. Navegação Principal em Abas Enxutas e Otimizadas para Mobile (1.3)
-tab_busca, tab_simuladores, tab_listas, tab_regras, tab_cronograma, tab_sobre = st.tabs([
+tab_busca, tab_simuladores, tab_listas, tab_regras, tab_subjudice, tab_cronograma, tab_sobre = st.tabs([
     "🔍 Meu Boletim",
     "🔮 Simuladores",
     "📋 Listas Oficiais",
     "🎯 Regras & Cortes",
+    "⚖️ Painel Sub Judice",
     "📅 Cronograma",
     "ℹ️ Sobre o Portal"
 ])
@@ -79,6 +81,9 @@ with tab_listas:
 
 with tab_regras:
     render_tab_regras()
+
+with tab_subjudice:
+    render_tab_subjudice(df_base)
 
 with tab_cronograma:
     render_tab_cronograma()
