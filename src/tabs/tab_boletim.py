@@ -135,6 +135,9 @@ def render_tab_boletim(df_base, mapa_inscricoes):
         is_pcd = bool(candidato_selecionado['Cota_PCD'])
         is_etnico = bool(candidato_selecionado['Cota_Etnico_Racial'])
         is_ampla_pura = bool(candidato_selecionado['Ampla_Pura'])
+        is_sub_judice = bool(candidato_selecionado.get('Is_Sub_Judice', False))
+        proc_sub_judice = str(candidato_selecionado.get('Processo_Sub_Judice', ''))
+        tipo_sub_judice = str(candidato_selecionado.get('Tipo_Sub_Judice', ''))
 
         res_hetero = str(candidato_selecionado.get('Resultado_Hetero', 'Não se Aplica'))
         res_pcd = str(candidato_selecionado.get('Resultado_PCD', 'Não se Aplica'))
@@ -151,6 +154,8 @@ def render_tab_boletim(df_base, mapa_inscricoes):
             tags_html += '<span class="tag-cota tag-quilombola">🏺 Cota Quilombola</span>'
         if is_pcd:
             tags_html += '<span class="tag-cota tag-pcd">♿ Cota PCD</span>'
+        if is_sub_judice:
+            tags_html += f'<span class="tag-cota" style="background:#e0e7ff; color:#3730a3; border: 1px solid #c7d2fe; font-weight:700;">⚖️ Sub Judice (Proc. nº {proc_sub_judice})</span>'
 
         pos_class = "pos-top" if pos_geral <= 140 else "pos-standard"
         medalha = "🥇 " if pos_geral == 1 else ("🥈 " if pos_geral == 2 else ("🥉 " if pos_geral == 3 else "🎖️ "))
@@ -165,22 +170,40 @@ def render_tab_boletim(df_base, mapa_inscricoes):
         bloco_bancas_html = ""
 
         if is_etnico:
-            if res_hetero_def == 'DEFERIDO':
-                nova_pos_etn = int(candidato_selecionado['Nova_Pos_Lista_Etnico_Definitivo']) if pd.notna(candidato_selecionado.get('Nova_Pos_Lista_Etnico_Definitivo')) else int(candidato_selecionado['Nova_Pos_Lista_Etnico'])
-                pos_orig_etn = int(candidato_selecionado['Pos_Lista_Etnico'])
-                rec_html = "<div style='color: #15803D; font-weight: 700; margin-bottom: 6px;'>🎉 RECURSO ADMINISTRATIVO DEFERIDO! A banca revisou sua documentação e homologou sua cota em 04/11/2026!</div>" if rec_hetero else ""
+            if 'DEFERIDO' in res_hetero_def:
+                nova_pos_etn_val = candidato_selecionado.get('Nova_Pos_Lista_Etnico_Definitivo')
+                if pd.isna(nova_pos_etn_val):
+                    nova_pos_etn_val = candidato_selecionado.get('Nova_Pos_Lista_Etnico')
+                if pd.isna(nova_pos_etn_val):
+                    nova_pos_etn_val = candidato_selecionado.get('Pos_Lista_Etnico')
+
+                pos_orig_etn = int(candidato_selecionado['Pos_Lista_Etnico']) if pd.notna(candidato_selecionado.get('Pos_Lista_Etnico')) else '-'
+                pos_etn_display = f"{int(nova_pos_etn_val)}º Lugar na Cota" if pd.notna(nova_pos_etn_val) else "A definir pela Banca"
+                pos_orig_txt = f" (Posição original: {pos_orig_etn}º)" if pos_orig_etn != '-' else ""
+
+                if 'Sub Judice' in res_hetero_def:
+                    header_etn = "⚖️ RESULTADO DA HETEROIDENTIFICAÇÃO (CUMPRIMENTO LIMINAR)"
+                    badge_etn = "DEFERIDO (SUB JUDICE)"
+                    tit_etn = "Condição na Cota Étnico-Racial HOMOLOGADA POR LIMINAR (Sub Judice)!"
+                    rec_html = f"<div style='color: #4338ca; font-weight: 700; margin-bottom: 6px;'>⚖️ DECISÃO JUDICIAL LIMINAR: Condição de cotista deferida em caráter provisório nos autos do Processo nº <strong>{proc_sub_judice}</strong>.</div>"
+                else:
+                    header_etn = "✅ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO (04/11/2026)"
+                    badge_etn = "DEFERIDO DEFINITIVO"
+                    tit_etn = "Sua condição na Cota Étnico-Racial foi HOMOLOGADA DEFINITIVAMENTE!"
+                    rec_html = "<div style='color: #15803D; font-weight: 700; margin-bottom: 6px;'>🎉 RECURSO ADMINISTRATIVO DEFERIDO! A banca revisou sua documentação e homologou sua cota em 04/11/2026!</div>" if rec_hetero else ""
+
                 bloco_bancas_html += f"""<div class="card-resultado-deferido">
 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
 <div style="font-size: 0.82rem; font-weight: 800; color: #15803D; text-transform: uppercase; letter-spacing: 0.04em;">
-✅ RESULTADO DEFINITIVO DA HETEROIDENTIFICAÇÃO (04/11/2026)
+{header_etn}
 </div>
-<span class="badge-pill">DEFERIDO DEFINITIVO</span>
+<span class="badge-pill">{badge_etn}</span>
 </div>
 <div style="font-size: 1.15rem; font-weight: 800; color: #0F172A; margin: 6px 0;">
-Sua condição na Cota Étnico-Racial foi HOMOLOGADA DEFINITIVAMENTE!
+{tit_etn}
 </div>
 <div style="font-size: 0.9rem; color: #1E293B; line-height: 1.5; font-weight: 500;">
-{rec_html}<div>• <strong>Posição Definitiva na Cota:</strong> <span style="color: #6D28D9; font-weight: 800; font-size: 1.05rem;">{nova_pos_etn}º Lugar na Cota</span> (Posição original: {pos_orig_etn}º)</div>
+{rec_html}<div>• <strong>Posição na Cota:</strong> <span style="color: #6D28D9; font-weight: 800; font-size: 1.05rem;">{pos_etn_display}</span>{pos_orig_txt}</div>
 <div style="margin-top: 4px;">• <strong>Status da Concorrência:</strong> Habilitado a disputar as vagas reservadas aos candidatos pretos e pardos, indígenas e quilombolas.</div>
 </div>
 </div>"""
@@ -258,11 +281,18 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
         pos_taf_val = candidato_selecionado.get('Posicao_Convocacao_TAF')
         pos_taf_txt = f" • Classificação Oficial TAF: <strong>{int(pos_taf_val)}º Lugar</strong> (Anexo IV)" if pd.notna(pos_taf_val) else ""
 
-        taf_class = "card-previsao-ok" if is_convocado_taf_oficial else "card-previsao"
-        taf_badge_color = "#15803D" if is_convocado_taf_oficial else "#475569"
-        taf_badge_text = "🟢 CONVOCAÇÃO OFICIAL TAF: CONVOCADO PELA BANCA!" if is_convocado_taf_oficial else "⚪ SITUAÇÃO TAF: NÃO CONVOCADO OFICIALMENTE"
-
-        aviso_taf_reagendado = """<div style="font-size: 0.83rem; color: #15803D; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #86efac; font-weight: 600;">
+        if is_sub_judice:
+            taf_class = "card-previsao-ok"
+            taf_badge_color = "#4338ca"
+            taf_badge_text = "⚖️ CONVOCAÇÃO TAF POR DECISÃO JUDICIAL (SUB JUDICE)"
+            aviso_taf_reagendado = f"""<div style="font-size: 0.83rem; color: #4338ca; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #a5b4fc; font-weight: 600;">
+📅 <strong>TAF Oficial:</strong> 19 e 20 de Dezembro de 2026 &nbsp;•&nbsp; 📄 Cartão de Informação a partir das <strong>15h de 14/12/2026</strong> (avalia.org.br) &nbsp;•&nbsp; ⚖️ Convocação em caráter provisório em cumprimento à liminar no Processo nº <strong>{proc_sub_judice}</strong>.
+</div>"""
+        else:
+            taf_class = "card-previsao-ok" if is_convocado_taf_oficial else "card-previsao"
+            taf_badge_color = "#15803D" if is_convocado_taf_oficial else "#475569"
+            taf_badge_text = "🟢 CONVOCAÇÃO OFICIAL TAF: CONVOCADO PELA BANCA!" if is_convocado_taf_oficial else "⚪ SITUAÇÃO TAF: NÃO CONVOCADO OFICIALMENTE"
+            aviso_taf_reagendado = """<div style="font-size: 0.83rem; color: #15803D; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #86efac; font-weight: 600;">
 📅 <strong>TAF Reagendado (Republicação 17/11):</strong> 19 e 20 de Dezembro de 2026 &nbsp;•&nbsp; 📄 Cartão de Informação (Local/Hora) a partir das <strong>15h de 14/12/2026</strong> &nbsp;•&nbsp; 🩺 Atestados médicos válidos emitidos desde <strong>15/10/2026</strong>.
 </div>""" if is_convocado_taf_oficial else ""
 
@@ -359,11 +389,13 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
                 lbl_cota = "<i class='bi bi-universal-access text-success me-1'></i> Posição Oficial PCD"
                 val_cota = f"{int(pos_pcd_def_val)}º" if pd.notna(pos_pcd_def_val) else "-"
                 sub_cota = f"↑ De {TOTAL_PCD_APTOS} PCDs homologados"
-            elif is_etnico and res_hetero_def == 'DEFERIDO':
+            elif is_etnico and 'DEFERIDO' in res_hetero_def:
                 pos_etn_def_val = candidato_selecionado.get('Nova_Pos_Lista_Etnico_Definitivo', candidato_selecionado.get('Nova_Pos_Lista_Etnico'))
+                if pd.isna(pos_etn_def_val):
+                    pos_etn_def_val = candidato_selecionado.get('Pos_Lista_Etnico')
                 lbl_cota = "<i class='bi bi-person-fill-check me-1' style='color: #6f42c1;'></i> Posição Oficial na Cota"
                 val_cota = f"{int(pos_etn_def_val)}º" if pd.notna(pos_etn_def_val) else "-"
-                sub_cota = f"↑ De {TOTAL_ETNICO_APTOS:,} cotistas homologados"
+                sub_cota = "⚖️ Deferido Sub Judice" if is_sub_judice else f"↑ De {TOTAL_ETNICO_APTOS:,} cotistas homologados"
             elif is_etnico or is_pcd:
                 lbl_cota = "<i class='bi bi-exclamation-circle-fill text-warning me-1'></i> Cota Indeferida (Concorre Ampla)"
                 val_cota = f"{pos_geral}º"
@@ -386,7 +418,11 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
         with c4:
             is_conv_oficial = bool(candidato_selecionado.get('Convocado_TAF_Oficial', False))
             mod_conv_val = str(candidato_selecionado.get('Modalidade_Convocacao_TAF', 'Não Convocado'))
-            if is_conv_oficial:
+            if is_sub_judice:
+                val_vagas = "Convocado TAF ⚖️"
+                color_vagas = "#4338ca"
+                sub_vagas = "⚖️ Sub Judice (Liminar)"
+            elif is_conv_oficial:
                 val_vagas = "Convocado TAF 🏃"
                 color_vagas = "#198754"
                 sub_vagas = f"🎉 {mod_conv_val}"
@@ -410,7 +446,7 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
             with col_sim1:
                 pos_etn_sim = candidato_selecionado.get('Pos_Etnico_Sim_Padrao')
                 pos_pcd_sim = candidato_selecionado.get('Pos_PCD_Sim_Padrao')
-                if is_pcd and res_pcd_def == 'DEFERIDO' and is_etnico and res_hetero_def == 'DEFERIDO':
+                if is_pcd and res_pcd_def == 'DEFERIDO' and is_etnico and 'DEFERIDO' in res_hetero_def:
                     if nota_total < 114:
                         lbl_sim = "<i class='bi bi-universal-access text-success me-1'></i> Posição Estimada PCD (Convocado)"
                         val_sim = f"{int(pos_pcd_sim)}º" if pd.notnull(pos_pcd_sim) else "-"
@@ -432,7 +468,7 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
 <div class="stat-value text-success">{int(pos_pcd_sim)}º</div>
 <div class="stat-sub text-success fw-bold">Classificação pós-perícia definitiva</div>
 </div>""", unsafe_allow_html=True)
-                elif is_etnico and res_hetero_def == 'DEFERIDO' and pd.notnull(pos_etn_sim):
+                elif is_etnico and 'DEFERIDO' in res_hetero_def and pd.notnull(pos_etn_sim):
                     st.markdown(f"""<div class="stat-card">
 <div class="stat-label"><i class="bi bi-person-fill-check me-1" style="color: #6f42c1;"></i> Posição Estimada na Cota Étnica</div>
 <div class="stat-value" style="color: #6f42c1;">{int(pos_etn_sim)}º</div>
@@ -447,7 +483,14 @@ Como candidato exclusivo de Ampla Concorrência, sua pontuação concorre direta
 
             with col_sim2:
                 is_convocado_taf_sim = bool(candidato_selecionado.get('Convocado_TAF_Sim_Padrao', False))
-                status_taf_text = "🟢 Convocado para o TAF!" if is_convocado_taf_sim else "⚪ Fora do corte do TAF"
+                if is_sub_judice:
+                    status_taf_text = "⚖️ Convocado TAF (Sub Judice)"
+                    color_taf_text = "#4338ca"
+                    sub_taf_text = f"Liminar nos autos nº {proc_sub_judice}"
+                else:
+                    status_taf_text = "🟢 Convocado para o TAF!" if is_convocado_taf_sim else "⚪ Fora do corte do TAF"
+                    color_taf_text = "#198754" if is_convocado_taf_sim else "#6c757d"
+                    sub_taf_text = "Dentro da linha de corte estimada" if is_convocado_taf_sim else "Abaixo da pontuação de corte"
                 color_taf_text = "#198754" if is_convocado_taf_sim else "#6c757d"
                 sub_taf_text = "Dentro da linha de corte estimada" if is_convocado_taf_sim else "Abaixo da pontuação de corte"
                 st.markdown(f"""<div class="stat-card">

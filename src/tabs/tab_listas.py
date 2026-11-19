@@ -55,6 +55,41 @@ def render_tab_listas(df_base):
                 width="stretch"
             )
 
+    # Editais de Cumprimento de Liminar (Sub Judice)
+    with st.expander("⚖️ Documentos Oficiais de Cumprimento Liminar (Candidatos Sub Judice)", expanded=False):
+        st.caption("Editais publicados pela SEAD/RN convocando candidatos para o TAF e deferindo cotas em virtude de decisões judiciais liminares:")
+        col_sub1, col_sub2, col_sub3 = st.columns(3)
+        with col_sub1:
+            bytes_sub_repub = carregar_bytes_excel("REPUBLICAÇÃO - EDITAL DE CUMPRIMENTO LIMINAR – CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf")
+            if bytes_sub_repub:
+                st.download_button(
+                    "⚖️ Convocação TAF Sub Judice (PDF)",
+                    data=bytes_sub_repub,
+                    file_name="REPUBLICAÇÃO - EDITAL DE CUMPRIMENTO LIMINAR – CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf",
+                    mime="application/pdf",
+                    width="stretch"
+                )
+        with col_sub2:
+            bytes_sub_hetero = carregar_bytes_excel("EDITAL DE CUMPRIMENTO LIMINAR – ALTERAÇÃO DE RESULTADO NA HETEROIDENTIFICAÇÃO.pdf")
+            if bytes_sub_hetero:
+                st.download_button(
+                    "⚖️ Heteroidentificação Sub Judice (PDF)",
+                    data=bytes_sub_hetero,
+                    file_name="EDITAL DE CUMPRIMENTO LIMINAR – ALTERAÇÃO DE RESULTADO NA HETEROIDENTIFICAÇÃO.pdf",
+                    mime="application/pdf",
+                    width="stretch"
+                )
+        with col_sub3:
+            bytes_sub_orig = carregar_bytes_excel("EDITAL DE CUMPRIMENTO LIMINAR – CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf")
+            if bytes_sub_orig:
+                st.download_button(
+                    "⚖️ 1ª Convocação TAF Sub Judice (PDF)",
+                    data=bytes_sub_orig,
+                    file_name="EDITAL DE CUMPRIMENTO LIMINAR – CONVOCAÇÃO PARA O TESTE DE APTIDÃO FÍSICA.pdf",
+                    mime="application/pdf",
+                    width="stretch"
+                )
+
     st.write("")
     st.write("""
     Acesse, filtre e faça o download das planilhas detalhadas em formato Excel (.xlsx):
@@ -64,12 +99,13 @@ def render_tab_listas(df_base):
         "Selecione a Lista que deseja visualizar e baixar:",
         [
             "🏃 1. Relação Oficial de Convocados para o TAF (1.884 candidatos - Confirmada em 17/11/2026)",
-            "🧑🏿 2. Resultado Definitivo Heteroidentificação Pós-Recursos (3.586 Deferidos - Anexo I e II)",
-            "♿ 3. Resultado Definitivo Perícia Médica PCD Pós-Recursos (534 Deferidos - Anexo Único)",
-            "🏛️ 4. Classificação Oficial para Prosseguimento - Ampla Concorrência (1.074 convocados - Anexo I)",
-            "📈 5. Classificação Oficial para Prosseguimento - Cota Étnico-Racial (276 convocados - Anexo II)",
-            "🌐 6. Classificação Oficial para Prosseguimento - Cota PCD (534 convocados - Anexo III)",
-            "📋 7. Lista Geral Completa com Situação Oficial Homologada (18.945 candidatos)"
+            "⚖️ 2. Candidatos Convocados para o TAF Sub Judice (23 candidatos - Cumprimento Liminar)",
+            "🧑🏿 3. Resultado Definitivo Heteroidentificação Pós-Recursos (3.586 Deferidos - Anexo I e II)",
+            "♿ 4. Resultado Definitivo Perícia Médica PCD Pós-Recursos (534 Deferidos - Anexo Único)",
+            "🏛️ 5. Classificação Oficial para Prosseguimento - Ampla Concorrência (1.074 convocados - Anexo I)",
+            "📈 6. Classificação Oficial para Prosseguimento - Cota Étnico-Racial (276 convocados - Anexo II)",
+            "🌐 7. Classificação Oficial para Prosseguimento - Cota PCD (534 convocados - Anexo III)",
+            "📋 8. Lista Geral Completa com Situação Oficial Homologada (18.945 candidatos)"
         ],
         index=0
     )
@@ -77,14 +113,22 @@ def render_tab_listas(df_base):
     st.write("---")
 
     if "1. Relação Oficial de Convocados para o TAF" in tipo_lista:
-        df_view = df_base[df_base['Convocado_TAF_Oficial']].sort_values(by='Posicao_Convocacao_TAF').copy()
+        df_view = df_base[df_base['Convocado_TAF_Oficial'] & (~df_base.get('Is_Sub_Judice', False))].sort_values(by='Posicao_Convocacao_TAF').copy()
         pos_col = 'Posicao_Convocacao_TAF'
         nome_arquivo_excel = "ANEXO IV - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME.xlsx"
         titulo_lista = "Relação Oficial dos Candidatos Convocados para o Teste de Aptidão Física (TAF)"
         corte_taf_info = "1.884 Convocados (1.074 Ampla | 276 Étnico | 534 PCD)"
         cols_tabela = ['Posicao_Convocacao_TAF', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Modalidade_Convocacao_TAF', 'Status_Oficial_TAF']
 
-    elif "2. Resultado Definitivo Heteroidentificação" in tipo_lista:
+    elif "Candidatos Convocados para o TAF Sub Judice" in tipo_lista:
+        df_view = df_base[df_base.get('Is_Sub_Judice', False)].sort_values(by='Posição_Geral').copy()
+        pos_col = 'Posição_Geral'
+        nome_arquivo_excel = "RELAÇÃO OFICIAL - CANDIDATOS CONVOCADOS SUB JUDICE.xlsx"
+        titulo_lista = "Relação Oficial de Candidatos Convocados para o TAF Sub Judice (Cumprimento de Liminar)"
+        corte_taf_info = "23 Convocados por Liminar Judicial"
+        cols_tabela = ['Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Modalidade_Concorrencia', 'Processo_Sub_Judice', 'Tipo_Sub_Judice', 'Status_Oficial_TAF']
+
+    elif "3. Resultado Definitivo Heteroidentificação" in tipo_lista or "Resultado Definitivo Heteroidentificação" in tipo_lista:
         df_view = df_base[df_base['Cota_Etnico_Racial']].copy()
         pos_col = 'Nova_Pos_Lista_Etnico_Definitivo'
         nome_arquivo_excel = "ANEXO I - EDITAL DE RESULTADO DA HETEROIDENTIFICAÇÃO E ANÁLISE DOCUMENTAL PÓS-RECURSOS – PPP.xlsx"
@@ -92,7 +136,7 @@ def render_tab_listas(df_base):
         corte_taf_info = "3.586 Deferidos (+322 recursos providos) | 2.723 Indeferidos"
         cols_tabela = ['Nova_Pos_Lista_Etnico_Definitivo', 'Posição_Geral', 'Nome', 'Inscrição', 'Modalidade_Concorrencia', 'Resultado_Hetero_Definitivo', 'Recurso_Hetero_Deferido', 'Nota Objetiva', 'Convocado_TAF_Oficial']
 
-    elif "3. Resultado Definitivo Perícia Médica PCD" in tipo_lista:
+    elif "4. Resultado Definitivo Perícia Médica PCD" in tipo_lista or "Resultado Definitivo Perícia Médica PCD" in tipo_lista:
         df_view = df_base[df_base['Cota_PCD']].copy()
         pos_col = 'Nova_Pos_Lista_PCD_Definitivo'
         nome_arquivo_excel = "ANEXO ÚNICO - EDITAL DE RESULTADO DA PERÍCIA MÉDICA PÓS-RECURSOS – PESSOA COM DEFICIÊNCIA.xlsx"
@@ -100,7 +144,7 @@ def render_tab_listas(df_base):
         corte_taf_info = "534 Deferidos (+61 recursos providos) | 100% convocados no TAF"
         cols_tabela = ['Nova_Pos_Lista_PCD_Definitivo', 'Posição_Geral', 'Nome', 'Inscrição', 'Resultado_PCD_Definitivo', 'Recurso_PCD_Deferido', 'Nota Objetiva', 'Convocado_TAF_Oficial']
 
-    elif "4. Classificação Oficial para Prosseguimento - Ampla" in tipo_lista:
+    elif "Classificação Oficial para Prosseguimento - Ampla" in tipo_lista:
         df_view = df_base[df_base['Modalidade_Convocacao_TAF'] == 'Ampla Concorrência (AC)'].sort_values(by='Posicao_Convocacao_TAF').copy()
         pos_col = 'Posicao_Convocacao_TAF'
         nome_arquivo_excel = "ANEXO I - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME.xlsx"
@@ -108,7 +152,7 @@ def render_tab_listas(df_base):
         corte_taf_info = "Linha de corte cravada em 119 pts (1.074 convocados)"
         cols_tabela = ['Posicao_Convocacao_TAF', 'Posição_Geral', 'Nome', 'Inscrição', 'Nota Objetiva', 'Status_Oficial_TAF']
 
-    elif "5. Classificação Oficial para Prosseguimento - Cota Étnico" in tipo_lista:
+    elif "Classificação Oficial para Prosseguimento - Cota Étnico" in tipo_lista:
         df_view = df_base[df_base['Modalidade_Convocacao_TAF'] == 'Cota Étnico-Racial (ÉT-R)'].sort_values(by='Posicao_Convocacao_TAF').copy()
         pos_col = 'Posicao_Convocacao_TAF'
         nome_arquivo_excel = "ANEXO II - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME PPPP.xlsx"
@@ -116,7 +160,7 @@ def render_tab_listas(df_base):
         corte_taf_info = "Linha de corte oficial em 114 pts (276 cotistas na reserva)"
         cols_tabela = ['Posicao_Convocacao_TAF', 'Nova_Pos_Lista_Etnico_Definitivo', 'Nome', 'Inscrição', 'Nota Objetiva', 'Status_Oficial_TAF']
 
-    elif "6. Classificação Oficial para Prosseguimento - Cota PCD" in tipo_lista:
+    elif "Classificação Oficial para Prosseguimento - Cota PCD" in tipo_lista:
         df_view = df_base[df_base['Modalidade_Convocacao_TAF'] == 'Cota PCD (PCD)'].sort_values(by='Posicao_Convocacao_TAF').copy()
         pos_col = 'Posicao_Convocacao_TAF'
         nome_arquivo_excel = "ANEXO III - EDITAL DE CLASSIFICAÇÃO PARA PROSSEGUIMENTO NO CERTAME pcd.xlsx"

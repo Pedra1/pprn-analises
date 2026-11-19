@@ -39,6 +39,7 @@ def render_tab_regras():
         A banca <strong>Instituto Avalia</strong> e a <strong>SEAD/SEAP</strong> republicaram a convocação oficial para o TAF e o 1º Termo de Retificação em <strong>17 de novembro de 2026</strong>:<br>
         • <strong>Recursos Deferidos:</strong> Foram acolhidos <strong>{RECURSOS_ETNICO_PROVIDOS} recursos</strong> na Cota Étnico-Racial e <strong>{RECURSOS_PCD_PROVIDOS} recursos</strong> na Perícia PCD, totalizando <strong>383 candidatos reclassificados</strong>.<br>
         • <strong>Convocação Oficial para o TAF:</strong> Confirmada a convocação de <strong>{TOTAL_CONVOCADOS_TAF_OFICIAL:,} candidatos</strong> (Anexo I republicado em 17/11/2026).<br>
+        • <strong>Cumprimento Liminar (Sub Judice):</strong> Em cumprimento a decisões judiciais liminares, <strong>23 candidatos</strong> foram convocados ao TAF (Edital de Cumprimento Liminar), totalizando <strong>1.907 convocados ao todo</strong>.<br>
         • <strong>Nova Data Oficial do TAF:</strong> Reagendado para os dias <strong>19 e 20 de dezembro de 2026</strong>.<br>
         • <strong>Atestados Médicos (Item 14.4 "c"):</strong> Validade retificada para atestados emitidos a partir de <strong>15 de outubro de 2026</strong> (quem já havia emitido atestado para novembro não precisará emitir outro!).
     </div>
@@ -70,7 +71,7 @@ def render_tab_regras():
         st.markdown(f"""<div class="stat-card">
 <div class="stat-label"><i class="bi bi-award-fill text-warning me-1"></i> Total Habilitados no TAF</div>
 <div class="stat-value text-warning">{TOTAL_CONVOCADOS_TAF_OFICIAL:,}</div>
-<div class="stat-sub text-secondary fw-bold">Convocação oficial homologada</div>
+<div class="stat-sub text-secondary fw-bold">1.884 regulares + 23 sub judice</div>
 </div>""".replace(",", "."), unsafe_allow_html=True)
 
     st.write("")

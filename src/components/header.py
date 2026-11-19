@@ -75,7 +75,7 @@ def render_header():
         st.markdown(f"""<div class="stat-card header-stat-card">
     <div class="stat-label"><i class="bi bi-award-fill text-warning me-1"></i> Convocados TAF (Oficial)</div>
     <div class="stat-value text-warning">{TOTAL_CONVOCADOS_TAF_OFICIAL:,}</div>
-    <div class="stat-sub text-secondary fw-bold">1.074 Ampla | 276 Cota | 534 PCD</div>
+    <div class="stat-sub text-secondary fw-bold">1.074 Ampla | 276 Cota | 534 PCD (+23 Sub Judice)</div>
     </div>""".replace(",", "."), unsafe_allow_html=True)
 
     st.write("")
