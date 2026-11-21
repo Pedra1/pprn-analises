@@ -107,10 +107,14 @@ def render_tab_simulador(df_base, mapa_inscricoes):
             pos_etn_def = cand_sim_pessoal.get('Nova_Pos_Lista_Etnico_Definitivo')
             if pd.isna(pos_etn_def):
                 pos_etn_def = cand_sim_pessoal.get('Nova_Pos_Lista_Etnico')
+            if pd.isna(pos_etn_def):
+                pos_etn_def = cand_sim_pessoal.get('Pos_Lista_Etnico')
 
             pos_pcd_def = cand_sim_pessoal.get('Nova_Pos_Lista_PCD_Definitivo')
             if pd.isna(pos_pcd_def):
                 pos_pcd_def = cand_sim_pessoal.get('Nova_Pos_Lista_PCD')
+            if pd.isna(pos_pcd_def):
+                pos_pcd_def = cand_sim_pessoal.get('Pos_Lista_PCD')
 
             pos_orig_etn = cand_sim_pessoal.get('Pos_Lista_Etnico')
             pos_orig_pcd = cand_sim_pessoal.get('Pos_Lista_PCD')
@@ -118,14 +122,14 @@ def render_tab_simulador(df_base, mapa_inscricoes):
             pos_taf_val = cand_sim_pessoal.get('Posicao_Convocacao_TAF')
             txt_taf = f" • Classificação Oficial TAF: <strong>{int(pos_taf_val)}º Lugar</strong> (Anexo IV)" if pd.notna(pos_taf_val) else ""
 
-            if cand_sim_pessoal['Cota_Etnico_Racial'] and p_res_etn == 'DEFERIDO' and pd.notnull(pos_etn_def):
+            if cand_sim_pessoal['Cota_Etnico_Racial'] and p_res_etn.startswith('DEFERIDO') and pd.notnull(pos_etn_def):
                 p_modalidade = "Cota Étnico-Racial (Oficial 04/11)"
                 p_pos = int(pos_etn_def)
                 p_alcance = alcance_etn
                 p_vagas_pct = 0.20
                 orig_txt = f" (Posição inicial: {int(pos_orig_etn)}º)" if pd.notna(pos_orig_etn) else ""
                 tipo_fila = f"na Cota Étnica Oficial{orig_txt}"
-            elif cand_sim_pessoal['Cota_PCD'] and p_res_pcd == 'DEFERIDO' and pd.notnull(pos_pcd_def):
+            elif cand_sim_pessoal['Cota_PCD'] and p_res_pcd.startswith('DEFERIDO') and pd.notnull(pos_pcd_def):
                 p_modalidade = "Cota PCD (Oficial 04/11)"
                 p_pos = int(pos_pcd_def)
                 p_alcance = alcance_pcd

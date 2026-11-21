@@ -8,6 +8,7 @@ from src.acuracia import obter_acuracia_site
 
 @st.dialog("ℹ️ Informações Importantes & Aviso Legal", width="large")
 def modal_aviso_legal():
+    st.session_state["disclaimer_visto"] = True
     metricas = obter_acuracia_site()
     acuracia_fmt = metricas.get("acuracia_formatada", "98,3%")
     total_acertos = f"{metricas.get('total_acertos', 18615):,}".replace(",", ".")

@@ -51,8 +51,9 @@ if df_base is None:
 
 mapa_inscricoes = get_mapa_inscricoes(df_base)
 
-# 6. Aviso Inicial / Disclaimer da Banca (Aberto para o candidato na primeira visita)
+# 6. Aviso Inicial / Disclaimer da Banca (Apenas na primeira visita da sessão)
 if "disclaimer_visto" not in st.session_state:
+    st.session_state["disclaimer_visto"] = True
     modal_aviso_legal()
 
 # 7. Cabeçalho Hero e Métricas Oficiais
