@@ -4,9 +4,15 @@ Análise jurídica estrita com base na Constituição Federal, CPC, Lei 12.016/2
 jurisprudência vinculante do STF (Temas 376 e 476) e STJ, e regras do Edital nº 002/2026.
 """
 
+import io
 import pandas as pd
+import plotly.graph_objects as go
 import streamlit as st
 from src.data_loader import normalizar_texto, carregar_bytes_excel
+from src.subjudice_logic import (
+    construir_classificacao_combinada,
+    simular_cenario_subjudice,
+)
 
 
 def render_tab_subjudice(df_base):
@@ -278,7 +284,17 @@ Baixe as publicações oficiais da SEAD/RN e a planilha com os 23 candidatos:
 
     st.write("---")
 
-    # 8. FAQ Doutrinário e Jurisprudencial
+    # 8. Área Combinada: Sub Judice Integrados às Respectivas Cotas (Exclusivo desta aba)
+    _render_classificacao_combinada(df_base)
+
+    st.write("---")
+
+    # 9. Simulador Exclusivo para Candidatos Sub Judice (Exclusivo desta aba)
+    _render_simulador_subjudice(df_base)
+
+    st.write("---")
+
+    # 10. FAQ Doutrinário e Jurisprudencial
     st.markdown("### 💡 Perguntas Frequentes sobre Candidatos Sub Judice")
 
     with st.expander("1. O candidato convocado sub judice 'tira' a vaga de outro candidato convocado regularmente?"):
@@ -312,3 +328,509 @@ Conforme estabelecido no Artigo 3º do Edital de Cumprimento Liminar (republicad
 3. Consultar o **Cartão de Informação** com local e horário exatos, disponível no site da banca ([avalia.org.br](https://www.avalia.org.br)) a partir das **15h do dia 14 de dezembro de 2026**.
 4. Comparecer com documento oficial de identificação com foto e trajes esportivos adequados na data designada (19 ou 20 de dezembro de 2026).
 """)
+
+
+@st.cache_data(show_spinner=False)
+def _gerar_excel_combinado(_df_export):
+    """Gera bytes Excel (.xlsx) sob demanda para a lista combinada exibida na aba Sub Judice."""
+    buf = io.BytesIO()
+    with pd.ExcelWriter(buf, engine="openpyxl") as writer:
+        _df_export.to_excel(writer, index=False, sheet_name="Classificacao_Combinada")
+    return buf.getvalue()
+
+
+def _render_painel_cota_combinada(df_base, modalidade, key_prefix):
+    """Renderiza a tabela classificatória unindo os Sub Judice aos cotistas regulares respectivos."""
+    escopo = "taf"
+    if modalidade == "etnico":
+        escopo_label = st.radio(
+            "Recorte dos cotistas étnico-raciais regulares para unir aos 21 Sub Judice:",
+            [
+                "🏃 Cotistas Convocados ao TAF + Sub Judice (626)",
+                "🎯 Apenas Reserva ÉT-R do TAF (114–118 pts) + Sub Judice (297)",
+                "📋 Lista Completa de Deferidos (04/11) + Sub Judice (3.588)",
+            ],
+            horizontal=True,
+            key=f"sj_escopo_{key_prefix}",
+        )
+        if "Apenas Reserva ÉT-R" in escopo_label:
+            escopo = "reserva_taf"
+        elif "Lista Completa" in escopo_label:
+            escopo = "completa"
+        else:
+            escopo = "taf"
+    else:
+        st.caption(
+            "Na Cota PCD, todos os 534 candidatos deferidos na perícia médica foram convocados ao TAF; "
+            "unidos aos 2 candidatos PCD Sub Judice, formam 536 classificados."
+        )
+
+    df_comb, resumo = construir_classificacao_combinada(df_base, modalidade=modalidade, escopo_etnico=escopo)
+
+    c1, c2, c3, c4 = st.columns(4)
+    with c1:
+        total_fmt = f"{resumo['total']:,}".replace(",", ".")
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-people-fill text-primary me-1"></i> Total Combinado</div>
+<div class="stat-value">{total_fmt}</div>
+<div class="stat-sub">Regulares + Sub Judice</div>
+</div>""", unsafe_allow_html=True)
+    with c2:
+        reg_fmt = f"{resumo['total_regulares']:,}".replace(",", ".")
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-person-check-fill text-success me-1"></i> Cotistas Regulares</div>
+<div class="stat-value text-success">{reg_fmt}</div>
+<div class="stat-sub">Posição oficial preservada</div>
+</div>""", unsafe_allow_html=True)
+    with c3:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-scale me-1" style="color: #4338ca;"></i> Sub Judice na Lista</div>
+<div class="stat-value" style="color: #4338ca;">{resumo['total_sub_judice']}</div>
+<div class="stat-sub">Destacados em azul índigo</div>
+</div>""", unsafe_allow_html=True)
+    with c4:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-bar-chart-fill text-warning me-1"></i> Faixa de Notas</div>
+<div class="stat-value text-dark">{resumo['menor_nota_sj']}–{resumo['maior_nota']} pts</div>
+<div class="stat-sub">Menor Sub Judice a maior da cota</div>
+</div>""", unsafe_allow_html=True)
+
+    st.write("")
+
+    col_f1, col_f2, col_f3 = st.columns([1.4, 1.4, 1.0])
+    with col_f1:
+        busca_comb = st.text_input(
+            "Localizar candidato na lista combinada:",
+            placeholder="Nome, inscrição ou nº do processo...",
+            key=f"sj_comb_busca_{key_prefix}",
+        )
+    with col_f2:
+        modo_viz = st.selectbox(
+            "Modo de visualização:",
+            [
+                "📋 Lista Combinada Completa (Sub Judice destacados)",
+                "⚖️ Somente Candidatos Sub Judice (com posição combinada)",
+                "🔎 Janela ±5 posições ao redor de um Sub Judice",
+            ],
+            key=f"sj_comb_viz_{key_prefix}",
+        )
+
+    df_filtrado = df_comb.copy()
+
+    if "Janela ±5" in modo_viz:
+        sj_opcoes = df_comb[df_comb["Is_Sub_Judice"]].copy()
+        with col_f3:
+            idx_sj_escolhido = st.selectbox(
+                "Centralizar em:",
+                options=sj_opcoes.index.tolist(),
+                format_func=lambda idx: (
+                    f"{int(sj_opcoes.loc[idx, 'Class_Combinada'])}º - "
+                    f"{sj_opcoes.loc[idx, 'Nome']} ({int(sj_opcoes.loc[idx, 'Nota Objetiva'])} pts)"
+                ),
+                key=f"sj_comb_foco_{key_prefix}",
+            )
+        pos_central = int(df_comb.loc[idx_sj_escolhido, "Class_Combinada"])
+        df_filtrado = df_comb[
+            (df_comb["Class_Combinada"] >= pos_central - 5)
+            & (df_comb["Class_Combinada"] <= pos_central + 5)
+        ].copy()
+    elif "Somente Candidatos Sub Judice" in modo_viz:
+        df_filtrado = df_comb[df_comb["Is_Sub_Judice"]].copy()
+        with col_f3:
+            st.caption("Exibindo apenas os Sub Judice com sua classificação na cota combinada.")
+    else:
+        with col_f3:
+            opcoes_qtd = ["Todos", "Top 100", "Top 300", "Top 700"] if len(df_comb) <= 700 else ["Top 300", "Top 700", "Todos"]
+            qtd_exibir = st.selectbox("Quantidade exibida:", opcoes_qtd, key=f"sj_comb_qtd_{key_prefix}")
+
+    if busca_comb.strip():
+        norm_q = normalizar_texto(busca_comb)
+        df_filtrado = df_filtrado[
+            df_filtrado["Nome_Busca"].str.contains(norm_q, regex=False, na=False)
+            | df_filtrado["Inscrição_Str"].str.contains(norm_q, regex=False, na=False)
+            | df_filtrado["Processo_Sub_Judice"].fillna("").astype(str).str.contains(busca_comb.strip(), regex=False, na=False)
+        ]
+    elif "Lista Combinada Completa" in modo_viz and qtd_exibir != "Todos":
+        limite = int(qtd_exibir.replace("Top ", ""))
+        df_filtrado = df_filtrado.head(limite)
+
+    sj_indices = set(df_filtrado[df_filtrado["Is_Sub_Judice"]].index.tolist())
+
+    df_exibir = pd.DataFrame(index=df_filtrado.index)
+    df_exibir["Class. Combinada"] = df_filtrado["Class_Combinada"].astype(int)
+    df_exibir["Pos. Geral"] = df_filtrado["Posição_Geral"].astype(int)
+    df_exibir["Pos. Oficial Cota (04/11)"] = df_filtrado["Pos_Oficial_Display"]
+    df_exibir["Nome"] = df_filtrado["Nome"]
+    df_exibir["Inscrição"] = df_filtrado["Inscrição"].astype(str)
+    df_exibir["Nota"] = df_filtrado["Nota Objetiva"].astype(int)
+    df_exibir["Condição / Vínculo"] = df_filtrado["Condicao_Lista"]
+    df_exibir["Impacto (Simulação)"] = df_filtrado["Impacto_Display"]
+    df_exibir["Processo TJRN"] = (
+        df_filtrado["Processo_Sub_Judice"]
+        .fillna("—")
+        .astype(str)
+        .replace({"": "—", "None": "—", "nan": "—"})
+    )
+
+    def _destacar_subjudice(row):
+        if row.name in sj_indices:
+            return ["background-color: #e0e7ff; color: #312e81; font-weight: 700;"] * len(row)
+        return [""] * len(row)
+
+    if len(df_filtrado) == 0:
+        st.info("Nenhum candidato encontrado com os filtros aplicados.")
+    else:
+        st.dataframe(
+            df_exibir.style.apply(_destacar_subjudice, axis=1),
+            width="stretch",
+            hide_index=True,
+            height=460,
+            column_config={
+                "Class. Combinada": st.column_config.NumberColumn("Class. Combinada", format="%dº"),
+                "Pos. Geral": st.column_config.NumberColumn("Class. Geral", format="%dº"),
+                "Nota": st.column_config.NumberColumn("Nota", format="%d pts"),
+            },
+        )
+
+    col_dl1, col_dl2 = st.columns([1, 2])
+    with col_dl1:
+        df_export = pd.DataFrame({
+            "Classificacao_Combinada": df_comb["Class_Combinada"].astype(int),
+            "Classificacao_Geral": df_comb["Posição_Geral"].astype(int),
+            "Posicao_Oficial_Cota_04_11": df_comb["Pos_Oficial_Display"],
+            "Nome": df_comb["Nome"],
+            "Inscricao": df_comb["Inscrição"].astype(str),
+            "Nota_Objetiva": df_comb["Nota Objetiva"].astype(int),
+            "Sub_Judice": df_comb["Is_Sub_Judice"].map({True: "SIM", False: "NÃO"}),
+            "Condicao_Vinculo": df_comb["Condicao_Lista"],
+            "Impacto_Simulacao": df_comb["Impacto_Display"],
+            "Processo_TJRN": df_comb["Processo_Sub_Judice"].fillna("").astype(str),
+        })
+        st.download_button(
+            "📥 Baixar Classificação Combinada (.xlsx)",
+            data=_gerar_excel_combinado(df_export),
+            file_name=f"classificacao_combinada_subjudice_{modalidade}_{escopo}.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            width="stretch",
+            key=f"sj_comb_dl_{key_prefix}_{escopo}",
+        )
+    with col_dl2:
+        st.caption(
+            "ℹ️ Esta visualização simula exclusivamente a ordenação conjunta (Nota Objetiva + critérios de desempate do Item 21.2.1) "
+            "para fins comparativos na área Sub Judice, sem alterar as posições oficiais do Boletim ou das Listas Oficiais."
+        )
+
+
+def _render_classificacao_combinada(df_base):
+    """Renderiza a seção de união dos candidatos Sub Judice com as respectivas cotas."""
+    st.markdown("""<div class="sim-banner" style="border-left: 5px solid #4338ca;">
+    <span class="badge-pill" style="background: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe;">
+        <i class="bi bi-layers-fill me-1"></i> CLASSIFICAÇÃO COMBINADA • EXCLUSIVO ÁREA SUB JUDICE
+    </span>
+    <h3 class="hero-title mt-1 mb-2" style="font-size: 1.55rem;">
+        <i class="bi bi-list-ol text-primary me-2"></i>Sub Judice Integrados às Respectivas Cotas (Em Classificação)
+    </h3>
+    <p class="text-secondary mb-0" style="font-size: 0.93rem; line-height: 1.55;">
+        Veja onde cada candidato <strong>Sub Judice</strong> se posiciona quando reunido aos cotistas regulares da sua respectiva modalidade, respeitando rigorosamente a ordem de <strong>Nota Objetiva e desempates do Edital</strong>. As linhas em destaque índigo identificam os candidatos Sub Judice. <em>Nenhuma classificação oficial do Boletim ou das Listas Oficiais é modificada.</em>
+    </p>
+    </div>""", unsafe_allow_html=True)
+
+    tab_comb_etn, tab_comb_pcd = st.tabs([
+        "🧑🏿 Cota Étnico-Racial + 21 Sub Judice",
+        "♿ Cota PCD + 2 Sub Judice",
+    ])
+
+    with tab_comb_etn:
+        _render_painel_cota_combinada(df_base, modalidade="etnico", key_prefix="etn")
+
+    with tab_comb_pcd:
+        _render_painel_cota_combinada(df_base, modalidade="pcd", key_prefix="pcd")
+
+
+def _render_simulador_subjudice(df_base):
+    """Renderiza o simulador exclusivo para candidatos Sub Judice."""
+    st.markdown("""<div class="sim-banner" style="border-left: 5px solid #6f42c1;">
+    <span class="sim-badge">
+        <i class="bi bi-cpu-fill me-1"></i> SIMULADOR EXCLUSIVO • CANDIDATOS SUB JUDICE
+    </span>
+    <h3 class="hero-title mt-1 mb-2" style="font-size: 1.55rem;">
+        <i class="bi bi-graph-up-arrow me-2" style="color: #6f42c1;"></i>Simulador Preditivo Exclusivo para Candidatos Sub Judice
+    </h3>
+    <p class="text-secondary mb-0" style="font-size: 0.93rem; line-height: 1.55;">
+        Simule suas chances reais nas etapas seguintes e na validade de 4 anos considerando o grupo ativo de habilitados ao TAF (<strong>1.884 regulares + 23 Sub Judice</strong>), o atrito do TAF/fases subsequentes, a absorção de cotistas na Ampla Concorrência e a taxa de êxito das liminares. <em>Uso exclusivo desta área, sem impacto nas análises oficiais do portal.</em>
+    </p>
+    </div>""", unsafe_allow_html=True)
+
+    col_p1, col_p2 = st.columns(2)
+    with col_p1:
+        total_nomeacoes = st.slider(
+            "Total estimado de nomeações no concurso (validade 2+2 anos):",
+            min_value=200,
+            max_value=1800,
+            value=600,
+            step=25,
+            key="sj_sim_total_nomeacoes",
+            help="Projeção total de chamados (70% Ampla, 20% Cota Étnico-Racial, 10% Cota PCD).",
+        )
+        taxa_taf_pct = st.slider(
+            "Atrito / Reprovação estimada no TAF (19 e 20/Dez):",
+            min_value=0,
+            max_value=45,
+            value=20,
+            step=1,
+            format="%d%%",
+            key="sj_sim_taxa_taf",
+        )
+    with col_p2:
+        taxa_demais_pct = st.slider(
+            "Atrito nas demais etapas (Psico, Toxicológico, IS, CFP e desistências):",
+            min_value=0,
+            max_value=40,
+            value=15,
+            step=1,
+            format="%d%%",
+            key="sj_sim_taxa_demais",
+        )
+        taxa_exito_sj_pct = st.slider(
+            "Manutenção / Êxito no mérito dos demais Sub Judice:",
+            min_value=0,
+            max_value=100,
+            value=100,
+            step=5,
+            format="%d%%",
+            key="sj_sim_taxa_sj",
+            help="100% considera todos os demais Sub Judice ativos à sua frente; 0% simula como se apenas o seu processo permanecesse.",
+        )
+
+    incluir_indef_cota = st.checkbox(
+        "Considerar reconhecimento de cota na simulação para os 3 Sub Judice atualmente indeferidos na banca (Pablo, Cícero G. e Anna Beatriz)",
+        value=True,
+        key="sj_sim_incluir_indef",
+    )
+
+    df_res, meta = simular_cenario_subjudice(
+        df_base,
+        total_nomeacoes=total_nomeacoes,
+        taxa_taf_pct=taxa_taf_pct,
+        taxa_demais_pct=taxa_demais_pct,
+        taxa_exito_sj_pct=taxa_exito_sj_pct,
+        incluir_indef_cota=incluir_indef_cota,
+    )
+
+    m1, m2, m3, m4 = st.columns(4)
+    with m1:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-diagram-3-fill text-primary me-1"></i> Vagas do Cenário</div>
+<div class="stat-value text-primary">{total_nomeacoes:,}</div>
+<div class="stat-sub">{meta['vagas_ac']} AC • {meta['vagas_etn']} Étnico • {meta['vagas_pcd']} PCD</div>
+</div>""".replace(",", "."), unsafe_allow_html=True)
+    with m2:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-shield-check text-success me-1"></i> Retenção Pós-Etapas</div>
+<div class="stat-value text-success">{meta['taxa_retencao_pct']:.1f}%</div>
+<div class="stat-sub">~{meta['sobreviventes_totais']:,} aptos finais de {meta['total_pool']:,}</div>
+</div>""".replace(",", "."), unsafe_allow_html=True)
+    with m3:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-scale me-1" style="color: #4338ca;"></i> Sub Judice Alcançados</div>
+<div class="stat-value" style="color: #4338ca;">{meta['total_alcancados']} / 23</div>
+<div class="stat-sub">No cenário de {total_nomeacoes:,} chamados</div>
+</div>""".replace(",", "."), unsafe_allow_html=True)
+    with m4:
+        ac_txt = "AC Esgotada" if meta["ac_esgotada"] else "AC Com Saldo"
+        ac_cor = "#d97706" if meta["ac_esgotada"] else "#198754"
+        ac_sub = (
+            f"Faltam {meta['rem_ac']:.0f} na AC (≥119: ~{meta['sobreviventes_ac']} aptos)"
+            if meta["ac_esgotada"]
+            else f"Absorve {meta['vagas_ac']} de ~{meta['sobreviventes_ac']} aptos ≥119"
+        )
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label"><i class="bi bi-award-fill text-warning me-1"></i> Ampla Concorrência</div>
+<div class="stat-value" style="color: {ac_cor}; font-size: 1.35rem;">{ac_txt}</div>
+<div class="stat-sub">{ac_sub}</div>
+</div>""", unsafe_allow_html=True)
+
+    st.write("")
+    st.markdown("#### 🎯 Análise Individual do Candidato Sub Judice")
+
+    idx_sel = st.selectbox(
+        "Selecione o candidato Sub Judice para simular sua projeção individual:",
+        options=list(range(len(df_res))),
+        format_func=lambda idx: (
+            f"{int(df_res.loc[idx, 'Posição_Geral'])}º Geral • {df_res.loc[idx, 'Nome']} "
+            f"({int(df_res.loc[idx, 'Nota Objetiva'])} pts | Cota {df_res.loc[idx, 'Cota_Grupo']})"
+        ),
+        key="sj_sim_candidato_sel",
+    )
+
+    cand = df_res.loc[idx_sel]
+    cota_banca = (
+        cand["Resultado_PCD_Definitivo"]
+        if cand["Cota_Grupo"] == "PCD"
+        else cand["Resultado_Hetero_Definitivo"]
+    )
+
+    if cand["Alcancado"]:
+        box_cls = "bg-success-subtle border-success"
+        tit_cor = "text-success"
+        tit_txt = f"🏆 PROJEÇÃO FAVORÁVEL! ALCANÇADO VIA {cand['Vaga_Tipo'].upper()} NESTE CENÁRIO!"
+        det_txt = (
+            f"Considerando aprovação no TAF e etapas subsequentes, o cenário de <strong>{total_nomeacoes:,} chamados</strong> "
+            f"(com {taxa_taf_pct}% de atrito no TAF e {taxa_demais_pct}% nas demais fases) alcança sua posição na cota."
+        ).replace(",", ".")
+    else:
+        box_cls = "bg-warning-subtle border-warning"
+        tit_cor = "text-warning-emphasis"
+        tit_txt = f"⏳ {cand['Status_Cenario']}"
+        det_txt = (
+            f"Com os parâmetros atuais, seriam necessárias aproximadamente <strong>{cand['Min_Nomeacoes_Display']}</strong> no concurso "
+            f"(cerca de <strong>{cand['Vagas_Cota_Necessarias'] if cand['Vagas_Cota_Necessarias'] is not None else '-'} vagas na cota</strong>) "
+            f"para alcançar sua colocação."
+        )
+
+    st.markdown(f"""<div class="candidate-card" style="border-left: 5px solid #4338ca; margin-top: 8px;">
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+    <div>
+        <span class="badge-pill" style="background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe;">
+            ⚖️ SIMULAÇÃO INDIVIDUAL SUB JUDICE • {cand['Cota_Grupo'].upper()}
+        </span>
+        <h4 class="mt-1 mb-1">{cand['Nome']}</h4>
+        <div style="font-size: 0.9rem; color: #475569;">
+            Inscrição: <strong>{cand['Inscrição']}</strong> • Nota: <strong>{cand['Nota Objetiva']} pts</strong> •
+            Geral: <strong>{cand['Posição_Geral']}º</strong> • Processo: <strong>{cand['Processo_Sub_Judice']}</strong><br>
+            Objeto Liminar: <strong>{cand['Tipo_Sub_Judice']}</strong> • Parecer Banca na Cota: <strong>{cota_banca}</strong>
+        </div>
+    </div>
+</div>
+<div class="card {box_cls} border-start border-4 p-3 rounded-3 mt-3 mb-0">
+    <div class="fw-bold {tit_cor}" style="font-size: 1.02rem;">{tit_txt}</div>
+    <div class="text-dark mt-1" style="font-size: 0.9rem; line-height: 1.5;">{det_txt}</div>
+</div>
+</div>""", unsafe_allow_html=True)
+
+    sc1, sc2, sc3, sc4 = st.columns(4)
+    with sc1:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Posição Combinada (TAF Ativo)</div>
+<div class="stat-value" style="color: #4338ca;">{cand['Pos_Comb_TAF']}º</div>
+<div class="stat-sub">De {cand['Total_Comb_TAF']} na cota (TAF)</div>
+</div>""", unsafe_allow_html=True)
+    with sc2:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Posição Combinada (Geral Cota)</div>
+<div class="stat-value text-primary">{cand['Pos_Comb_Completa']}º</div>
+<div class="stat-sub">De {cand['Total_Comb_Completa']:,} na cota completa</div>
+</div>""".replace(",", "."), unsafe_allow_html=True)
+    with sc3:
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Aptos Estimados à Frente</div>
+<div class="stat-value text-dark">~{cand['Sobreviventes_Frente']:.0f}</div>
+<div class="stat-sub">Na cota (pós-atrito e pós-AC)</div>
+</div>""", unsafe_allow_html=True)
+    with sc4:
+        vagas_nec_txt = f"~{cand['Vagas_Cota_Necessarias']} vagas na cota" if cand["Vagas_Cota_Necessarias"] is not None else "Requer deferimento cota"
+        st.markdown(f"""<div class="stat-card">
+<div class="stat-label">Alcance Estimado</div>
+<div class="stat-value text-success" style="font-size: 1.25rem;">{cand['Min_Nomeacoes_Display']}</div>
+<div class="stat-sub">{vagas_nec_txt}</div>
+</div>""", unsafe_allow_html=True)
+
+    if int(cand["Nota Objetiva"]) >= 114 and cand["Cota_Grupo"] == "Étnico-Racial":
+        st.info(
+            "⚖️ **Nota acima da linha de corte regular (114 pts):** Este candidato atingiu pontuação superior ao corte da cota étnico-racial. "
+            "Sua permanência até a nomeação depende essencialmente do êxito no mérito quanto à validade da cota/liminar (e aprovação nas demais fases)."
+        )
+    else:
+        st.info(
+            "⚖️ **Nota abaixo da linha de corte regular da modalidade:** Além do aproveitamento do Cadastro de Reserva e aprovação em todas as etapas, "
+            "a consolidação da vaga depende do provimento definitivo de mérito sobre a cláusula de barreira (e da condição de cotista, se aplicável), nos termos do Tema 476/STF."
+        )
+
+    st.write("")
+    st.markdown("#### 📊 Panorama Comparativo dos 23 Candidatos Sub Judice")
+
+    df_plot = df_res.copy()
+    df_plot["Nome_Curto"] = df_plot.apply(
+        lambda r: f"{r['Nome'].split()[0]} {r['Nome'].split()[-1]} ({int(r['Nota Objetiva'])} pts • {r['Cota_Grupo']})",
+        axis=1,
+    )
+    df_plot["Alcance_Plot"] = df_plot["Min_Nomeacoes_Alcance"].fillna(3500)
+    df_plot["Cor_Plot"] = ["#198754" if alc else "#4338ca" for alc in df_plot["Alcancado"]]
+    df_plot["Texto_Plot"] = [
+        f"{int(v):,} chamados".replace(",", ".") if pd.notna(v) else "> 3.500 chamados"
+        for v in df_plot["Min_Nomeacoes_Alcance"]
+    ]
+
+    fig_sj = go.Figure(
+        go.Bar(
+            y=df_plot["Nome_Curto"],
+            x=df_plot["Alcance_Plot"],
+            orientation="h",
+            marker_color=df_plot["Cor_Plot"],
+            text=df_plot["Texto_Plot"],
+            textposition="auto",
+            textfont=dict(size=11, weight=700, family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"),
+        )
+    )
+    fig_sj.add_vline(
+        x=total_nomeacoes,
+        line_dash="dash",
+        line_color="#dc3545",
+        line_width=2,
+        annotation_text=f"Cenário Atual: {total_nomeacoes} chamados",
+        annotation_position="top right",
+    )
+    fig_sj.update_layout(
+        title=dict(
+            text="Estimativa de Chamados Totais Necessários para Alcançar Cada Candidato Sub Judice",
+            font=dict(color="#212529", size=14, family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"),
+        ),
+        font=dict(color="#212529", family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"),
+        xaxis=dict(
+            title="Total Estimado de Nomeações no Concurso",
+            gridcolor="#dee2e6",
+            tickfont=dict(color="#495057"),
+            title_font=dict(color="#212529"),
+        ),
+        yaxis=dict(autorange="reversed", tickfont=dict(color="#212529")),
+        template="plotly_white",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        margin=dict(l=10, r=20, t=50, b=30),
+        height=620,
+    )
+    st.plotly_chart(fig_sj, width="stretch")
+
+    df_tab_sim = pd.DataFrame(index=df_res.index)
+    df_tab_sim["Geral"] = df_res["Posição_Geral"].astype(int)
+    df_tab_sim["Nome"] = df_res["Nome"]
+    df_tab_sim["Nota"] = df_res["Nota Objetiva"].astype(int)
+    df_tab_sim["Cota"] = df_res["Cota_Grupo"]
+    df_tab_sim["Pos. Comb. (TAF)"] = [f"{int(r['Pos_Comb_TAF'])}º / {int(r['Total_Comb_TAF'])}" for _, r in df_res.iterrows()]
+    df_tab_sim["Pos. Comb. (Geral)"] = [f"{int(r['Pos_Comb_Completa'])}º / {int(r['Total_Comb_Completa'])}" for _, r in df_res.iterrows()]
+    df_tab_sim["Aptos à Frente"] = df_res["Sobreviventes_Frente"].round(0).astype(int)
+    df_tab_sim["Vagas Cota Nec."] = [
+        f"{int(v)} vagas" if pd.notna(v) else "—" for v in df_res["Vagas_Cota_Necessarias"]
+    ]
+    df_tab_sim["Mín. Chamados Est."] = df_res["Min_Nomeacoes_Display"]
+    df_tab_sim["Projeção no Cenário"] = df_res["Status_Cenario"]
+
+    alc_indices = set(df_res[df_res["Alcancado"]].index.tolist())
+
+    def _colorir_sim_sj(row):
+        if row.name in alc_indices:
+            return ["background-color: #dcfce7; color: #166534; font-weight: 700;"] * len(row)
+        return [""] * len(row)
+
+    st.dataframe(
+        df_tab_sim.style.apply(_colorir_sim_sj, axis=1),
+        width="stretch",
+        hide_index=True,
+        height=520,
+        column_config={
+            "Geral": st.column_config.NumberColumn("Pos. Geral", format="%dº"),
+            "Nota": st.column_config.NumberColumn("Nota", format="%d pts"),
+            "Aptos à Frente": st.column_config.NumberColumn("Aptos à Frente (Est.)", format="~%d"),
+        },
+    )
+
