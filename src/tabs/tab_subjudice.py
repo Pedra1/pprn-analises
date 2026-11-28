@@ -344,25 +344,19 @@ def _render_painel_cota_combinada(df_base, modalidade, key_prefix):
     escopo = "taf"
     if modalidade == "etnico":
         escopo_label = st.radio(
-            "Recorte dos cotistas étnico-raciais regulares para unir aos 21 Sub Judice:",
+            "Recorte dos cotistas étnico-raciais convocados ao TAF para unir aos 21 Sub Judice:",
             [
-                "🏃 Cotistas Convocados ao TAF + Sub Judice (626)",
+                "🏃 Todos os Cotistas Étnicos Convocados ao TAF + Sub Judice (626)",
                 "🎯 Apenas Reserva ÉT-R do TAF (114–118 pts) + Sub Judice (297)",
-                "📋 Lista Completa de Deferidos (04/11) + Sub Judice (3.588)",
             ],
             horizontal=True,
             key=f"sj_escopo_{key_prefix}",
         )
-        if "Apenas Reserva ÉT-R" in escopo_label:
-            escopo = "reserva_taf"
-        elif "Lista Completa" in escopo_label:
-            escopo = "completa"
-        else:
-            escopo = "taf"
+        escopo = "reserva_taf" if "Apenas Reserva ÉT-R" in escopo_label else "taf"
     else:
         st.caption(
             "Na Cota PCD, todos os 534 candidatos deferidos na perícia médica foram convocados ao TAF; "
-            "unidos aos 2 candidatos PCD Sub Judice, formam 536 classificados."
+            "unidos aos 2 candidatos PCD Sub Judice, formam 536 convocados ao TAF."
         )
 
     df_comb, resumo = construir_classificacao_combinada(df_base, modalidade=modalidade, escopo_etnico=escopo)
@@ -440,7 +434,7 @@ def _render_painel_cota_combinada(df_base, modalidade, key_prefix):
             st.caption("Exibindo apenas os Sub Judice com sua classificação na cota combinada.")
     else:
         with col_f3:
-            opcoes_qtd = ["Todos", "Top 100", "Top 300", "Top 700"] if len(df_comb) <= 700 else ["Top 300", "Top 700", "Todos"]
+            opcoes_qtd = ["Todos", "Top 100", "Top 300", "Top 700"]
             qtd_exibir = st.selectbox("Quantidade exibida:", opcoes_qtd, key=f"sj_comb_qtd_{key_prefix}")
 
     if busca_comb.strip():
@@ -528,10 +522,10 @@ def _render_classificacao_combinada(df_base):
         <i class="bi bi-layers-fill me-1"></i> CLASSIFICAÇÃO COMBINADA • EXCLUSIVO ÁREA SUB JUDICE
     </span>
     <h3 class="hero-title mt-1 mb-2" style="font-size: 1.55rem;">
-        <i class="bi bi-list-ol text-primary me-2"></i>Sub Judice Integrados às Respectivas Cotas (Em Classificação)
+        <i class="bi bi-list-ol text-primary me-2"></i>Convocados ao TAF: Sub Judice Integrados às Respectivas Cotas
     </h3>
     <p class="text-secondary mb-0" style="font-size: 0.93rem; line-height: 1.55;">
-        Veja onde cada candidato <strong>Sub Judice</strong> se posiciona quando reunido aos cotistas regulares da sua respectiva modalidade, respeitando rigorosamente a ordem de <strong>Nota Objetiva e desempates do Edital</strong>. As linhas em destaque índigo identificam os candidatos Sub Judice. <em>Nenhuma classificação oficial do Boletim ou das Listas Oficiais é modificada.</em>
+        Veja onde cada candidato <strong>Sub Judice</strong> se posiciona quando reunido <strong>exclusivamente aos cotistas regulares convocados para o TAF</strong> da sua respectiva modalidade, respeitando rigorosamente a ordem de <strong>Nota Objetiva e desempates do Edital</strong>. As linhas em destaque índigo identificam os candidatos Sub Judice. <em>Nenhuma classificação oficial do Boletim ou das Listas Oficiais é modificada.</em>
     </p>
     </div>""", unsafe_allow_html=True)
 
@@ -711,16 +705,16 @@ def _render_simulador_subjudice(df_base):
     sc1, sc2, sc3, sc4 = st.columns(4)
     with sc1:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Posição Combinada (TAF Ativo)</div>
+<div class="stat-label">Posição Combinada (Cotistas TAF)</div>
 <div class="stat-value" style="color: #4338ca;">{cand['Pos_Comb_TAF']}º</div>
-<div class="stat-sub">De {cand['Total_Comb_TAF']} na cota (TAF)</div>
+<div class="stat-sub">De {cand['Total_Comb_TAF']} convocados na cota</div>
 </div>""", unsafe_allow_html=True)
     with sc2:
         st.markdown(f"""<div class="stat-card">
-<div class="stat-label">Posição Combinada (Geral Cota)</div>
-<div class="stat-value text-primary">{cand['Pos_Comb_Completa']}º</div>
-<div class="stat-sub">De {cand['Total_Comb_Completa']:,} na cota completa</div>
-</div>""".replace(",", "."), unsafe_allow_html=True)
+<div class="stat-label">Posição na Reserva (TAF)</div>
+<div class="stat-value text-primary">{cand['Pos_Comb_Reserva']}º</div>
+<div class="stat-sub">De {cand['Total_Comb_Reserva']} na reserva TAF + SJ</div>
+</div>""", unsafe_allow_html=True)
     with sc3:
         st.markdown(f"""<div class="stat-card">
 <div class="stat-label">Aptos Estimados à Frente</div>
@@ -806,8 +800,8 @@ def _render_simulador_subjudice(df_base):
     df_tab_sim["Nome"] = df_res["Nome"]
     df_tab_sim["Nota"] = df_res["Nota Objetiva"].astype(int)
     df_tab_sim["Cota"] = df_res["Cota_Grupo"]
-    df_tab_sim["Pos. Comb. (TAF)"] = [f"{int(r['Pos_Comb_TAF'])}º / {int(r['Total_Comb_TAF'])}" for _, r in df_res.iterrows()]
-    df_tab_sim["Pos. Comb. (Geral)"] = [f"{int(r['Pos_Comb_Completa'])}º / {int(r['Total_Comb_Completa'])}" for _, r in df_res.iterrows()]
+    df_tab_sim["Pos. Cotistas (TAF)"] = [f"{int(r['Pos_Comb_TAF'])}º / {int(r['Total_Comb_TAF'])}" for _, r in df_res.iterrows()]
+    df_tab_sim["Pos. Reserva (TAF)"] = [f"{int(r['Pos_Comb_Reserva'])}º / {int(r['Total_Comb_Reserva'])}" for _, r in df_res.iterrows()]
     df_tab_sim["Aptos à Frente"] = df_res["Sobreviventes_Frente"].round(0).astype(int)
     df_tab_sim["Vagas Cota Nec."] = [
         f"{int(v)} vagas" if pd.notna(v) else "—" for v in df_res["Vagas_Cota_Necessarias"]

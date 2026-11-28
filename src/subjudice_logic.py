@@ -35,18 +35,20 @@ def _classificar_condicao_subjudice(row):
 @st.cache_data(show_spinner=False)
 def construir_classificacao_combinada(_df_base, modalidade="etnico", escopo_etnico="taf"):
     """
-    Constrói a classificação combinada (cotistas regulares + Sub Judice) para a aba Sub Judice.
+    Constrói a classificação combinada (somente cotistas convocados ao TAF + Sub Judice) para a aba Sub Judice.
 
     Parâmetros:
         _df_base: DataFrame base imutável (não é modificado).
         modalidade: 'etnico' ou 'pcd'.
         escopo_etnico:
-            - 'taf': Cotistas étnicos aptos convocados ao TAF (605) + 21 Sub Judice (626).
-            - 'reserva_taf': Cotistas convocados na reserva ÉT-R (276) + 21 Sub Judice (297).
-            - 'completa': Todos os cotistas étnicos deferidos (3.586) + Sub Judice (3.588).
+            - 'taf': Todos os cotistas étnicos aptos convocados ao TAF (605) + 21 Sub Judice (626).
+            - 'reserva_taf': Cotistas convocados na reserva ÉT-R do TAF (276) + 21 Sub Judice (297).
     """
     if modalidade == "pcd":
-        mascara = _df_base["Cota_PCD_Apta_Definitivo"].fillna(False) | (
+        mascara = (
+            _df_base["Cota_PCD_Apta_Definitivo"].fillna(False)
+            & _df_base["Convocado_TAF_Oficial"].fillna(False)
+        ) | (
             _df_base["Is_Sub_Judice"].fillna(False) & _df_base["Cota_PCD"].fillna(False)
         )
         col_pos_oficial = "Nova_Pos_Lista_PCD_Definitivo"
@@ -54,8 +56,6 @@ def construir_classificacao_combinada(_df_base, modalidade="etnico", escopo_etni
         is_sj_etn = _df_base["Is_Sub_Judice"].fillna(False) & _df_base["Cota_Etnico_Racial"].fillna(False)
         if escopo_etnico == "reserva_taf":
             mascara = (_df_base["Modalidade_Convocacao_TAF"] == "Cota Étnico-Racial (ÉT-R)") | is_sj_etn
-        elif escopo_etnico == "completa":
-            mascara = _df_base["Cota_Etnico_Apta_Definitivo"].fillna(False) | is_sj_etn
         else:
             mascara = (
                 _df_base["Cota_Etnico_Apta_Definitivo"].fillna(False)
@@ -85,12 +85,11 @@ def construir_classificacao_combinada(_df_base, modalidade="etnico", escopo_etni
     def _fmt_impacto(is_sj, pos_comb, pos_of, n_sj_acima):
         if is_sj:
             return "⚖️ DESTAQUE SUB JUDICE"
-        if modalidade == "pcd" or escopo_etnico == "completa":
-            if pd.notna(pos_of):
-                diff = int(pos_comb) - int(pos_of)
-                if diff > 0:
-                    return f"+{diff} pos. ({n_sj_acima} SJ acima)"
-                return "Sem deslocamento"
+        if modalidade == "pcd" and pd.notna(pos_of):
+            diff = int(pos_comb) - int(pos_of)
+            if diff > 0:
+                return f"+{diff} pos. ({n_sj_acima} SJ acima)"
+            return "Sem deslocamento"
         if n_sj_acima > 0:
             return f"{n_sj_acima} Sub Judice acima"
         return "Sem deslocamento"
@@ -121,15 +120,13 @@ def construir_classificacao_combinada(_df_base, modalidade="etnico", escopo_etni
 
 @st.cache_data(show_spinner=False)
 def obter_posicoes_combinadas_subjudice(_df_base):
-    """Mapeia as posições combinadas de todos os 23 candidatos Sub Judice em cada visão."""
+    """Mapeia as posições combinadas dos 23 candidatos Sub Judice entre os convocados para o TAF."""
     df_etn_taf, _ = construir_classificacao_combinada(_df_base, "etnico", "taf")
     df_etn_res, _ = construir_classificacao_combinada(_df_base, "etnico", "reserva_taf")
-    df_etn_full, _ = construir_classificacao_combinada(_df_base, "etnico", "completa")
     df_pcd, _ = construir_classificacao_combinada(_df_base, "pcd", "taf")
 
     map_taf = df_etn_taf.set_index("Inscrição")["Class_Combinada"].to_dict()
     map_res = df_etn_res.set_index("Inscrição")["Class_Combinada"].to_dict()
-    map_full = df_etn_full.set_index("Inscrição")["Class_Combinada"].to_dict()
     map_pcd = df_pcd.set_index("Inscrição")["Class_Combinada"].to_dict()
 
     posicoes = {}
@@ -143,8 +140,6 @@ def obter_posicoes_combinadas_subjudice(_df_base):
             "total_comb_taf": int(len(df_pcd)) if is_pcd else int(len(df_etn_taf)),
             "pos_comb_reserva": int(map_pcd[insc]) if is_pcd else int(map_res[insc]),
             "total_comb_reserva": int(len(df_pcd)) if is_pcd else int(len(df_etn_res)),
-            "pos_comb_completa": int(map_pcd[insc]) if is_pcd else int(map_full[insc]),
-            "total_comb_completa": int(len(df_pcd)) if is_pcd else int(len(df_etn_full)),
         }
     return posicoes
 
@@ -346,8 +341,6 @@ def simular_cenario_subjudice(
             "Total_Comb_TAF": pos_info["total_comb_taf"],
             "Pos_Comb_Reserva": pos_info["pos_comb_reserva"],
             "Total_Comb_Reserva": pos_info["total_comb_reserva"],
-            "Pos_Comb_Completa": pos_info["pos_comb_completa"],
-            "Total_Comb_Completa": pos_info["total_comb_completa"],
             "Sobreviventes_Frente": round(sobrev_frente, 1),
             "Vagas_Cota_Alvo": int(info_atual["vagas_alvo_cota"]),
             "Vagas_Cota_Necessarias": vagas_cota_nec,
